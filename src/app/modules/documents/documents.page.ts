@@ -5,7 +5,7 @@ import { DocumentsQuery } from '../../akita/query/documents.query';
 import { DocumentService } from '../../akita/service/documents.service';
 
 @Component({
-  selector: 'app-documents',
+  selector: 'page-documents',
   templateUrl: './documents.page.html',
   styleUrls: ['./documents.page.scss'],
 })
@@ -24,9 +24,7 @@ export class DocumentsPage implements OnInit {
     this.documentsService.add("ejemplo3")
   }
 
-  trackByFn(index, todo) {
-    return todo.id;
-  }
+ 
 
   delete(id){
     this.documentsService.delete(id);

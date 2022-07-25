@@ -7,7 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { DocumentsPageRoutingModule } from './documents-routing.module';
 
 import { DocumentsPage } from './documents.page';
-import { TodosComponent } from './components/documents.component';
+import { DocumentsComponent } from "./components/documents/documents.component";
+import { DocumentComponent } from "./components/document/document.component";
 
 @NgModule({
   imports: [
@@ -16,7 +17,7 @@ import { TodosComponent } from './components/documents.component';
     IonicModule,
     DocumentsPageRoutingModule
   ],
-  exports: [TodosComponent],
-  declarations: [DocumentsPage, TodosComponent]
+  exports: [ DocumentsComponent, DocumentComponent],
+  declarations: [DocumentsPage, DocumentsComponent, DocumentComponent]
 })
 export class DocumentsPageModule {}

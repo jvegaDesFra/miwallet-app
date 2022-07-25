@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { Folders } from '../app/akita/models/folders.model';
+import { FoldersQuery } from '../app/akita//query/folders.query';
+import { FoldersService } from '../app/akita//service/folders.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -14,5 +18,21 @@ export class AppComponent {
     { title: 'Spam', url: '/folder/Spam', icon: 'warning' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() {}
+
+  folders$: Observable<Folders[]>;
+  constructor(private service : FoldersService,
+    private query: FoldersQuery) {}
+
+  trackByFn(index, param) {
+    return param.id;
+  }
+
+  ngOnInit() {
+    this.folders$ = this.query.getFolders$;
+    
+    
+
+   this.service.add("Nuev carpetaa","#b71c1c")
+   
+  }
 }

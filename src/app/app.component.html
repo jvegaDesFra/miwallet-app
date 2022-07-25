@@ -3,15 +3,22 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>Inbox</ion-list-header>
-          <ion-note>hi@ionicframework.com</ion-note>
-
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+          <ion-list-header>Bienvenido</ion-list-header>
+          <ion-note>jose.juan.vega@outlook.com</ion-note>
+          <ion-button color="green" expand="block">Nueva categoria</ion-button>
+          <!--<ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
-          </ion-menu-toggle>
+          </ion-menu-toggle>-->
+          <app-folders [folders]="folders$ | async"></app-folders>
+          <!--<ion-menu-toggle auto-hide="false" *ngFor="let folder of folders$ | async; trackBy: trackByFn">
+            <ion-item lines="none" detail="true" >
+              <ion-icon name="folder-outline" size="large" slot="start" [ngStyle]="{'color':folder.color}"></ion-icon>              
+              <ion-label>{{ folder.name }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>-->
         </ion-list>
 
        

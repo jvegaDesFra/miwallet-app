@@ -3,6 +3,8 @@ import { Folders } from '../app/akita/models/folders.model';
 import { FoldersQuery } from '../app/akita//query/folders.query';
 import { FoldersService } from '../app/akita//service/folders.service';
 import { Observable } from 'rxjs';
+import { ModalController, MenuController  } from '@ionic/angular';
+import { FolderNewComponent } from './modules/folders/components/folder-new/folder-new.component';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -21,18 +23,33 @@ export class AppComponent {
 
   folders$: Observable<Folders[]>;
   constructor(private service : FoldersService,
-    private query: FoldersQuery) {}
+    private query: FoldersQuery,
+    private modalCtrl: ModalController,
+    public menuCtrl: MenuController) {}
 
   trackByFn(index, param) {
     return param.id;
   }
 
   ngOnInit() {
-    this.folders$ = this.query.getFolders$;
-    
-    
+    this.folders$ = this.query.getFolders$;  
+    this.menuCtrl.enable(true)
+  }
 
-   this.service.add("Nuev carpetaa","#b71c1c")
-   
+  async openModal() {
+    const modal = await this.modalCtrl.create({
+      component: FolderNewComponent,
+      //presentingElement: document.querySelector('.ion-page')
+      //initialBreakpoint:0.5,
+      //breakpoints: [0.5, 0.75]
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
+    if (role === 'confirm') {
+      console.log(role);
+      
+    }
   }
 }

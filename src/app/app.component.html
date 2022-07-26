@@ -1,17 +1,18 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
+    <ion-menu contentId="main-content">
       <ion-content>
         <ion-list id="inbox-list">
           <ion-list-header>Bienvenido</ion-list-header>
           <ion-note>jose.juan.vega@outlook.com</ion-note>
-          <ion-button color="green" expand="block">Nueva categoria</ion-button>
+          <br><br>
+          <ion-button color="green" expand="block" (click)="openModal()">Nueva categoria</ion-button>
           <!--<ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
-          </ion-menu-toggle>-->
+          </ion-menu-toggle>--><br>
           <app-folders [folders]="folders$ | async"></app-folders>
           <!--<ion-menu-toggle auto-hide="false" *ngFor="let folder of folders$ | async; trackBy: trackByFn">
             <ion-item lines="none" detail="true" >
@@ -19,6 +20,7 @@
               <ion-label>{{ folder.name }}</ion-label>
             </ion-item>
           </ion-menu-toggle>-->
+          
         </ion-list>
 
        

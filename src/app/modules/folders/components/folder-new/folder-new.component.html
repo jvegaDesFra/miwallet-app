@@ -1,0 +1,44 @@
+<ion-header   class="ion-no-border">
+  <ion-toolbar>
+   
+    <ion-title>Nueva categoria</ion-title>
+    <ion-buttons slot="end">
+      <ion-button title="Cerrar" (click)="CloseModal('close')">
+        <ion-icon size="large" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-header collapse="condense" class="ion-no-border">
+    <ion-toolbar>
+      <ion-title size="large">Nueva categoria</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-item>
+   <ion-label position="stacked">Nombre de categoria</ion-label> 
+    <ion-input [(ngModel)]="nombre" placeholder=""></ion-input>
+  </ion-item><br>
+  <br>
+  <ion-item>
+    <ion-label position="stacked">Selecciona un color</ion-label> 
+    <br>      
+      <div style="width: 100%">
+      <div 
+        [ngClass]="{'selected': selectedColor ? selectedColor.id == color.id : false}" 
+        [ngStyle]="{'background-color': color.hexa}"
+        class="color1" 
+        *ngFor="let color of colors; let i = index" 
+        (click)="setColor(color)" >
+      
+      </div>
+     </div>
+      <br><br>
+  </ion-item>
+  
+  <ion-button expand="block" color="green" (click)="save()">Guardar</ion-button>
+</ion-content>
+
+<ion-footer>
+ 
+</ion-footer>

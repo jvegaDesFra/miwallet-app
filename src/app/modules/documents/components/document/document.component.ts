@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DocumentService } from '../../../../akita/service/documents.service';
 import { Documentos } from '../../../../akita/models/documents.model';
 
 @Component({
@@ -8,8 +9,11 @@ import { Documentos } from '../../../../akita/models/documents.model';
 })
 export class DocumentComponent implements OnInit {
   @Input() document: Documentos;
-  constructor() { }
+  constructor(private documentsService : DocumentService) { }
 
   ngOnInit() {}
+  delete(id){
+    this.documentsService.delete(id);
+  }
 
 }

@@ -10,6 +10,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { DocumentsPageModule } from './modules/documents/documents.module';
 import { FoldersPageModule } from "./modules/folders/fodlers.module";
 
+//modals
+
+
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, DocumentsPageModule, FoldersPageModule],

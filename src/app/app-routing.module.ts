@@ -10,7 +10,8 @@ const routes: Routes = [
   {
     path: 'documents',
     loadChildren: () => import('./modules/documents/documents.module').then( m => m.DocumentsPageModule)
-  }
+  },
+  
 ];
 
 @NgModule({

@@ -1,0 +1,47 @@
+<ion-content class="ion-padding">
+  <form #form="ngForm" (ngSubmit)="submitForm(form)">
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="12" size-lg="12" size-xs="12">
+         
+          <div class="ion-text-center">
+            <img src="./../../../assets/logo.svg" style="width: 350px;" alt="">
+          </div>
+          <br>
+          <div class="ion-text-center">
+            <h3>Ingresa con tu cuenta</h3>
+          </div>
+          <div class="ion-padding">
+            <ion-item>
+              <ion-label position="stacked">Correo electronico</ion-label>
+              <ion-input [(ngModel)]="request.email" type="email" name="username" required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Contraseña</ion-label>
+              <ion-input [(ngModel)]="request.password" type="password" name="password" required></ion-input>
+            </ion-item>
+          </div>
+    
+          <div padding>
+            <ion-button color="green" type="submit" expand="block" disabled="{{!validForm}}">
+              <h3>Ingresar</h3>
+            </ion-button>
+          </div>
+          <div class="ion-text-center ion-padding" *ngIf="emailOK">
+            <a class="buttonCancel" (click)="cancel()">Cancelar</a>
+          </div>
+
+          <div class="ion-text-center ion-padding" *ngIf="canRecover">
+            <a (click)="OpenRecoverPage()">Recuperar Contraseña</a>
+          </div>
+        </ion-col>
+        <ion-col size-md="12" size-lg="12" size-xs="12">        
+          <div class="ion-text-center ion-padding">
+            <p>¿No tienes una cuenta?</p> 
+            <a (click)="OpenRegisterPage()">Registrarse</a>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

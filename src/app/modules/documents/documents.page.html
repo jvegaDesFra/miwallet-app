@@ -1,15 +1,23 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start" >
+    <ion-buttons slot="start">
       <ion-menu-button color="green"></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button> <ion-icon  size="large" name="help-circle-outline"></ion-icon> </ion-button>
-      <ion-button (click)="logout()"> <ion-icon size="large" name="log-out-outline"></ion-icon> </ion-button>
+      <ion-button>
+        <ion-icon size="large" name="help-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="logout()">
+        <ion-icon size="large" name="log-out-outline"></ion-icon>
+      </ion-button>
 
     </ion-buttons>
     <ion-title>Documentos Personales</ion-title>
 
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar [(ngModel)]="wordToSearch" (ionInput)="filterList($event)" showCancelButton="focus"
+      placeholder="Bùsqueda"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -19,14 +27,46 @@
       <ion-title size="large">Documentos</ion-title>
 
     </ion-toolbar>
-    
-    <ion-toolbar>
-      <ion-searchbar placeholder="Bùsqueda"></ion-searchbar>
-    </ion-toolbar>
+
+   
   </ion-header>
-  <br>             
   <br>
-  <app-documents [documents]="documentos$ | async"></app-documents>
+  <br>
+  <app-documents [documents]="lsFilter"></app-documents>
+
+  <div *ngIf="!loaded">
+    <ion-list>
+
+      <ion-item>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </h3>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </h3>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </h3>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </h3>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
   <!--<ion-list>
     <ion-item lines="full" *ngFor="let todo of documentos$ | async; trackBy: trackByFn">
       <ion-label>{{todo.title}}</ion-label>
@@ -38,8 +78,14 @@
   </ion-list>-->
 
   <div id="container">
-
-    <div>
+    <div *ngIf="lsFilter.length == 0 && loaded">
+      <h3>No se encontraron registros</h3>
     </div>
+  
   </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="green" (click)="openModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

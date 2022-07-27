@@ -1,5 +1,7 @@
 {
   "name": "miwallet-app",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

@@ -1,0 +1,36 @@
+<ion-header   class="ion-no-border">
+  <ion-toolbar>
+   
+    <ion-title>Datos generales</ion-title>
+    <ion-buttons slot="end">
+      <ion-button title="Cerrar" (click)="CloseModal('close')">
+        <ion-icon color="green" size="large" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-header collapse="condense" class="ion-no-border">
+    <ion-toolbar>
+      <ion-title size="large">Datos generales</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <br><br>
+  <ion-item>
+   <ion-label position="stacked">Nombre del archivo en tu wallet</ion-label> 
+    <ion-input [(ngModel)]="nombre" placeholder=""></ion-input>
+  </ion-item><br>
+  <br>
+  <ion-item>
+    <ion-label position="stacked">Categoria</ion-label> 
+    <ion-select interface="popover" placeholder="Selecione una opción" (ionChange)="handleChange($event)">
+      <ion-select-option color="green" value="{{folder.id}}" *ngFor="let folder of folders$ | async">{{folder.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <br>
+  <ion-button expand="block" color="green" (click)="save()">Guardar</ion-button>
+</ion-content>
+
+<ion-footer>
+ 
+</ion-footer>

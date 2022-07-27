@@ -40,7 +40,7 @@ export class LoginPage implements OnInit {
                 loader.dismiss();
                
                 if(userInfo == null){
-                  this.interfazService.presentToast("Usuarioy contraseña incorrecta", "error", 400, "error")
+                  this.interfazService.presentToast("Usuarioy contraseña incorrecta", "error")
                   return;
                 }
                 this.navController.navigateRoot("/documents")  

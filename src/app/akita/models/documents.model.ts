@@ -5,13 +5,15 @@ export type Documentos = {
   title: string;
   file: string;
   completed: boolean;
+  idFolder: string
 };
 
-export function createDocument(title: string) {
+export function createDocument(title: string, idFolder: string) {
   return {
     id: guid(),
     title,
     file: '',
-    completed: false
+    completed: false,
+    idFolder: idFolder
   } as Documentos;
 }

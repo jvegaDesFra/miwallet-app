@@ -1,9 +1,56 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    
+    <ion-title>Crear cuenta</ion-title>
+    <ion-buttons slot="primary" color="secondary">
+      <ion-button title="Cerrar" (click)="CloseModal('close')">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<ion-content class="ion-padding">
+  <ion-header collapse="condense" class="ion-no-border">
+    <ion-toolbar>
+      <ion-title size="large">Crear cuenta</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <form (ngSubmit)="Save(fRegister)" #fRegister="ngForm" autocomplete="off">
+    <div  class="ion-padding">
+      <ion-item>
+        <ion-label position="stacked">NOMBRE Y APELLIDO COMPLETO*</ion-label>
+        <ion-input name="name" [(ngModel)]="data.name" required autocomplete="off"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">CORREO*</ion-label>
+        <ion-input type="email" name="email" [(ngModel)]="data.email" required></ion-input>
+      </ion-item>
 
-<ion-content>
+      <ion-item>
+        <ion-label position="stacked">CONTRASEÑA*</ion-label>
+        <ion-input type="password" name="password" [(ngModel)]="data.password" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">CONFIRMAR CONTRASEÑA*</ion-label>
+        <ion-input type="password" name="password" [(ngModel)]="data.password" required></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-checkbox color="green" slot="start" checked="false"></ion-checkbox>
+        <ion-label>Recibir información via correo</ion-label>
+        
+      </ion-item>
 
+      <ion-item lines="none">
+        
+        <ion-label class="ion-text-wrap">AL REGISTRARTE, ACEPTAS LOS TERMINOS DE SERVICIO Y LA PÓLITICA DE PRIVACIDAD DE CREAMEDIC.</ion-label>
+        
+      </ion-item>
+    </div>
+    <div  class="ion-padding">
+      <ion-button expand="block" color="green" type="submit" [disabled]="fRegister.invalid">Registro
+      </ion-button>
+    </div>
+
+  </form>
 </ion-content>

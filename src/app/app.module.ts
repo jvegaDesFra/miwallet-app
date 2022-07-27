@@ -16,7 +16,7 @@ import { FoldersPageModule } from "./modules/folders/fodlers.module";
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [HttpClientModule, BrowserModule, IonicModule.forRoot(), AppRoutingModule, DocumentsPageModule, FoldersPageModule],
+  imports: [HttpClientModule, BrowserModule, IonicModule.forRoot({ mode: 'ios', animated: true }), AppRoutingModule, DocumentsPageModule, FoldersPageModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

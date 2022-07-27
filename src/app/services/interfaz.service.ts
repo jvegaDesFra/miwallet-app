@@ -63,12 +63,11 @@ export class InterfazService {
  //   //})
  // }
 
-  async presentToast(message:string, type: string = "primary", duration:number = 4000, color:string = "") {
+  async presentToast(message:string,color:string = "", duration:number = 4000) {
     console.log('toast');
     
-    const toast = await this.toastController.create({
-      message: message,
-      
+    const toast = await this.toastController.create( {
+      message: message,      
       color: color == "error" ? "danger" : color,
       duration: duration,
      // cssClass: this.GetCustomClassType(type),

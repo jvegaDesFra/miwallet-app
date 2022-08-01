@@ -7,6 +7,7 @@ import { DocumentService } from '../../akita/service/documents.service';
 import { MenuController, ModalController, NavController } from '@ionic/angular';
 import { DocumentNewComponent } from './components/document-new/document-new.component'
 import { first } from 'rxjs/operators';
+import { FoldersQuery } from 'src/app/akita/query/folders.query';
 
   @Component({
   selector: 'page-documents',
@@ -17,12 +18,15 @@ export class DocumentsPage implements OnInit {
   documentos$: Observable<Documentos[]>;
   loaded = false;
   wordToSearch = "";
+  nameFolder = "";
+  idFolder$;
   constructor(    private documentsService : DocumentService,
     private documentQuery: DocumentsQuery,
     private auth: AuthenticationService,
     private navController: NavController,
     private modalCtrl: ModalController,
-    private menuController: MenuController) { }
+    private menuController: MenuController,
+    private folderQuery: FoldersQuery) { }
 
   ngOnInit() {
     
@@ -31,6 +35,15 @@ export class DocumentsPage implements OnInit {
     this.loaded = true;
     this.documentos$ = this.documentQuery.getDocs$;
     this.menuController.enable(true);
+    this.idFolder$ = this.documentQuery.selectVisibilityFilter$;
+    this.documentQuery.selectVisibilityFilter$.subscribe(idFolder=>{
+      console.log(idFolder);
+      this.folderQuery.getNameFolder(idFolder).subscribe(folder=>{
+        console.log(folder);
+        this.nameFolder = folder.shift().name;
+      })
+    })
+   // 
 
    // this.openModal();
   }

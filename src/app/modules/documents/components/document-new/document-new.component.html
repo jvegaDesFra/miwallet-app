@@ -24,10 +24,16 @@
   <ion-item>
     <ion-label position="stacked">Categoria</ion-label> 
     <ion-select interface="popover" placeholder="Selecione una opción" (ionChange)="handleChange($event)">
-      <ion-select-option color="green" value="{{folder.id}}" *ngFor="let folder of folders$ | async">{{folder.name}}</ion-select-option>
+      <div *ngFor="let folder of folders$ | async">
+        <ion-select-option color="green" value="{{folder.id}}"  *ngIf="folder.id != '0'">{{folder.name}}</ion-select-option>
+      </div>
+      
     </ion-select>
   </ion-item>
   <br>
+  <ion-item>
+    <input type="file" />
+  </ion-item>
   <ion-button expand="block" color="green" (click)="save()">Guardar</ion-button>
 </ion-content>
 

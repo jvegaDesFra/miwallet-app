@@ -13,8 +13,10 @@ export class FoldersQuery extends QueryEntity<FoldersState> {
     super(store);
   }
 
-  getCountDocuments(){
-    this.store.getValue()
+  getNameFolder(idFolder){
+    let data = this.selectAll({filterBy: folder => folder.id == idFolder});
+    console.log(data);
+    return data;
   }
 
 }

@@ -9,26 +9,30 @@ import { DocumentState, DocumentStore } from '../state/documents.store';
 })
 export class DocumentsQuery extends QueryEntity<DocumentState> {
   selectVisibilityFilter$ = this.select(state => state.idFolder);
-  
+
   getDocuments$: Observable<Documentos[]> = this.selectAll();
-  getDocs$ = combineLatest(this.selectVisibilityFilter$ ,this.selectAll(),this.getDocumentsByFolder2);
+  getDocs$ = combineLatest(this.selectVisibilityFilter$, this.selectAll(), this.getDocumentsByFolder2);
 
   constructor(protected docu: DocumentStore) {
     super(docu);
   }
 
-  getDocumentsByFolder2(idFolder, documents):Documentos[]{
-    console.log("getDocumentsByFolder2", idFolder,documents );
+  getDocumentsByFolder2(idFolder, documents): Documentos[] {
+    console.log(documents);
     
-    if(idFolder!=""){
-      return documents.filter(d=>d.idFolder == idFolder);
-    } else {
-      return documents;
+    if (idFolder != "0") {
+      return documents.filter(d => d.idFolder == idFolder);
     }
- 
+
+    return documents;
+
+
   }
 
-  getDocumentsByFolder (idFolder){
-    return this.selectAll({filterBy: (doc=> doc.idFolder == idFolder)});
+  getDocumentsByFolder(idFolder) {
+    if (idFolder == '0')
+      return this.selectAll();
+
+    return this.selectAll({ filterBy: (doc => doc.idFolder == idFolder) });
   }
 }

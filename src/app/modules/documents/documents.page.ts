@@ -4,7 +4,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { Documentos } from '../../akita/models/documents.model';
 import { DocumentsQuery } from '../../akita/query/documents.query';
 import { DocumentService } from '../../akita/service/documents.service';
-import { ModalController, NavController } from '@ionic/angular';
+import { MenuController, ModalController, NavController } from '@ionic/angular';
 import { DocumentNewComponent } from './components/document-new/document-new.component'
 import { first } from 'rxjs/operators';
 
@@ -21,22 +21,16 @@ export class DocumentsPage implements OnInit {
     private documentQuery: DocumentsQuery,
     private auth: AuthenticationService,
     private navController: NavController,
-    private modalCtrl: ModalController) { }
+    private modalCtrl: ModalController,
+    private menuController: MenuController) { }
 
   ngOnInit() {
     
     console.log( this.documentos$ );
     
-
-
-    setTimeout(() => {
-      this.loaded = true;
-      this.documentQuery.getDocuments$.subscribe(data=>{
-        this.documentos$ = of(data);
-        this.lsData = data;
-        this.lsFilter = data;
-      });
-    }, 2000);
+    this.loaded = true;
+    this.documentos$ = this.documentQuery.getDocs$;
+    this.menuController.enable(true);
 
    // this.openModal();
   }

@@ -1,7 +1,7 @@
 <ion-item-sliding>
-  <ion-item lines="none" detail="true" >
+  <ion-item lines="none" detail="true" (click)="setFolder()">
     <ion-icon name="folder" size="large" slot="start" [ngStyle]="{'color':folder.color}"></ion-icon>              
-    <ion-label>{{ folder.name }}</ion-label>
+    <ion-label>{{ folder.name }} ({{countFiles}})</ion-label>
   </ion-item>
 
   <ion-item-options side="end">

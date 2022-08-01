@@ -6,9 +6,9 @@ export type Folders = {
   color?: string;
 };
 
-export function create(name: string, color: string) {
+export function create(name: string, color: string, id: string) {
   return {
-    id: guid(),
+    id: id == "" ? guid(): id,
     name,
     color: color
   } as Folders;

@@ -26,7 +26,9 @@ export class AppComponent {
   constructor(private service : FoldersService,
     private query: FoldersQuery,
     private modalCtrl: ModalController,
-    public menuCtrl: MenuController) {}
+    public menuCtrl: MenuController) {
+      this.menuCtrl.enable(false);
+    }
 
   trackByFn(index, param) {
     return param.id;
@@ -37,9 +39,11 @@ export class AppComponent {
   ngOnInit() {
     persistState();
     this.folders$ = this.query.getFolders$;  
-    this.menuCtrl.enable(true)
+   // this.menuCtrl.enable(true)
   }
-
+  ionViewWillEnter() {
+    this.menuCtrl.enable(false);
+   }
   async openModal() {
     const modal = await this.modalCtrl.create({
       component: FolderNewComponent,

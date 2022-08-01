@@ -156,7 +156,7 @@ export class FolderNewComponent implements OnInit {
     console.log(this.selectedColor);
     console.log(this.nombre);
 
-    this.service.add(this.nombre, this.selectedColor ? this.selectedColor.hexa : "");
+    this.service.add(this.nombre, this.selectedColor ? this.selectedColor.hexa : "", "");
     this.CloseModal(null);
     
   }

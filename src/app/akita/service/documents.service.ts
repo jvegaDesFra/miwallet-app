@@ -26,6 +26,11 @@ export class DocumentService {
     this.documentStore.update(id, { completed });
   }
 
+  updateFolder(idFolder){
+    this.documentStore.update({
+      idFolder
+    })
+  }
   //setName(name: string) {
   //  this.documentStore.set(name);
   //}

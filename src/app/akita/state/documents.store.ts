@@ -3,11 +3,13 @@ import { EntityState, EntityStore, Store, StoreConfig } from '@datorama/akita';
 import { Documentos } from '../models/documents.model';
  
 export interface DocumentState extends EntityState<Documentos, string> {
- documents: Array<Documentos>
+ documents: Array<Documentos>,
+ idFolder: string
 }
  
 export function createInitialName(): DocumentState {
   return {
+    idFolder: "",
     documents: []
   };
 }

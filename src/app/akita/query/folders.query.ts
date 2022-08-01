@@ -13,4 +13,8 @@ export class FoldersQuery extends QueryEntity<FoldersState> {
     super(store);
   }
 
+  getCountDocuments(){
+    this.store.getValue()
+  }
+
 }

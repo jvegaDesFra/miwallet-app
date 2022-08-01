@@ -32,7 +32,7 @@
   </ion-header>
   <br>
   <br>
-  <app-documents [documents]="lsFilter"></app-documents>
+  <app-documents [documents]="documentos$ | async"></app-documents>
 
   <div *ngIf="!loaded">
     <ion-list>
@@ -78,7 +78,8 @@
   </ion-list>-->
 
   <div id="container">
-    <div *ngIf="lsFilter.length == 0 && loaded">
+    {{documentos$.length | async}}
+    <div *ngIf="!(documentos$ | async).length  && loaded">
       <h3>No se encontraron registros</h3>
     </div>
   

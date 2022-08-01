@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
+import { MenuController, ModalController, NavController } from '@ionic/angular';
 import { first } from 'rxjs/operators';
 import { user, userRequest } from '../akita/models/user.model';
 import { AuthenticationService } from '../services/authentication.service';
 import { InterfazService } from '../services/interfaz.service';
 
 import { RegisterPage } from "../register/register.page";
+import { FoldersService } from '../akita/service/folders.service';
 
 @Component({
   selector: 'app-login',
@@ -20,9 +21,17 @@ export class LoginPage implements OnInit {
   constructor(private interfazService: InterfazService,
     private authService: AuthenticationService,
     private navController: NavController,
-    private modalController: ModalController ) { }
+    private modalController: ModalController ,
+    private folderService : FoldersService,
+    private menuController: MenuController) { 
+   
+    }
 
   ngOnInit() {
+    this.menuController.enable(false);
+  }
+  ionViewWillEnter() {
+   //this.menuController.enable(false);
   }
   get validForm() {
     return (this.request.email != "" && this.request.password != "");
@@ -43,6 +52,7 @@ export class LoginPage implements OnInit {
                   this.interfazService.presentToast("Usuarioy contraseña incorrecta", "error")
                   return;
                 }
+                this.folderService.add("Todos","", "0")
                 this.navController.navigateRoot("/documents")  
             },
             error: error => {              

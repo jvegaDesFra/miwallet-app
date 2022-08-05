@@ -1,6 +1,6 @@
 <ion-item lines="full" >
   <ion-label>{{document.title}}</ion-label>
   <ion-icon class="clickeable" name="eye-outline" slot="end"></ion-icon>
-  <ion-icon class="clickeable" name="mail-outline" slot="end"></ion-icon>
+  <ion-icon class="clickeable" (click)="openFile('IMG_20220707_192256.jpg')" name="mail-outline" slot="end"></ion-icon>
   <ion-icon class="clickeable" (click)="delete(document.id)" name="trash-outline" slot="end"></ion-icon>
 </ion-item>

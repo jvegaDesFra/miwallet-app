@@ -36,6 +36,8 @@ export class DocumentsPage implements OnInit {
     this.documentos$ = this.documentQuery.getDocs$;
     this.menuController.enable(true);
     this.idFolder$ = this.documentQuery.selectVisibilityFilter$;
+    console.log(this.idFolder$ );
+    
     this.documentQuery.selectVisibilityFilter$.subscribe(idFolder=>{
       console.log(idFolder);
       this.folderQuery.getNameFolder(idFolder).subscribe(folder=>{
@@ -45,7 +47,7 @@ export class DocumentsPage implements OnInit {
     })
    // 
 
-   // this.openModal();
+   this.openModal();
   }
 
  

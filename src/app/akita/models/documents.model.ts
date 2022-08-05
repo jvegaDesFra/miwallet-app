@@ -8,12 +8,19 @@ export type Documentos = {
   idFolder: string
 };
 
-export function createDocument(title: string, idFolder: string) {
+export function createDocument(title: string, idFolder: string, file: string) {
   return {
     id: guid(),
     title,
-    file: '',
+    file: file,
     completed: false,
     idFolder: idFolder
   } as Documentos;
+}
+
+export class file {
+  type?:string;
+  name?:string;
+  size?: number;
+  blob?: any;
 }

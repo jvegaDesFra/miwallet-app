@@ -24,19 +24,41 @@
   <ion-item>
     <ion-label position="stacked">Categoria</ion-label> 
     <ion-select interface="popover" placeholder="Selecione una opción" (ionChange)="handleChange($event)">
-      <div *ngFor="let folder of folders$ | async">
+      <div *ngFor="let folder of folders$ | async; let i = index">
         <ion-select-option color="green" value="{{folder.id}}"  *ngIf="folder.id != '0'">{{folder.name}}</ion-select-option>
       </div>
       
     </ion-select>
   </ion-item>
-  <br>
-  <ion-item>
-    <input type="file" />
+  <br>  <br>
+  <ion-list-header>
+    <ion-label>Subir archivo</ion-label>
+  </ion-list-header>
+  
+  <ion-item *ngIf="selectedFile">
+    
+    <ion-avatar slot="start">
+      <ion-icon name="image-outline" size="large" *ngIf="selectedFile.type.indexOf('image/') >= 0"></ion-icon>
+      <ion-icon name="document-text-outline" size="large" *ngIf="selectedFile.type.indexOf('image/') < 0"></ion-icon>
+    </ion-avatar>
+    <ion-label>{{selectedFile.name}}</ion-label>
+    <ion-icon name="trash-outline" (click)="deleteFile()"></ion-icon>
   </ion-item>
-  <ion-button expand="block" color="green" (click)="save()">Guardar</ion-button>
+  <br>  <br>
+  <ion-item lines="none" *ngIf="!selectedFile">
+    <ion-button color="light" size="default" style="margin: auto;" (click)="addFile()">
+      <ion-icon name="cloud-upload-outline"></ion-icon>
+      Seleccionar archivo
+    </ion-button>
+   
+   
+    <input hidden type="file" #filepicker (change)="fileSelected($event)" accept="application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.slideshow,application/vnd.openxmlformats-officedocument.presentationml.presentation,image/*"/>
+  </ion-item>
+
+   
+  
 </ion-content>
 
 <ion-footer>
- 
+  <ion-button expand="block" color="green" (click)="save()">Guardar</ion-button>
 </ion-footer>

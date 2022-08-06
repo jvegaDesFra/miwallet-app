@@ -4,7 +4,7 @@ import { Documentos } from '../../../../akita/models/documents.model';
 import { isPlatform } from '@ionic/angular';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 const APP_DIRECTORY = Directory.Documents;
-
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 @Component({
   selector: 'app-document',
   templateUrl: './document.component.html',
@@ -12,7 +12,7 @@ const APP_DIRECTORY = Directory.Documents;
 })
 export class DocumentComponent implements OnInit {
   @Input() document: Documentos;
-  constructor(private documentsService : DocumentService) { }
+  constructor(private documentsService : DocumentService, private fileOpener: FileOpener) { }
 
   ngOnInit() {}
   delete(id){
@@ -40,7 +40,14 @@ export class DocumentComponent implements OnInit {
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
   }
-  async openFile(name) {
+
+
+  openFile(){
+    this.fileOpener.open(this.document.filePath, this.document.file.type)
+  .then(() => console.log('File is opened'))
+  .catch(e => console.log('Error opening file', e));
+  }
+  async openFile2(name) {
    // console.log(isPlatform('android'));
     
     //if (isPlatform('hybrid')) {

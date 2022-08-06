@@ -1,6 +1,10 @@
-<ion-item lines="full" >
+<ion-item lines="full" [ngStyle]="{'--background': document.folderColor, '--color': '#fff'}">
+  <ion-avatar slot="start">
+    <ion-icon name="image-outline" size="large" *ngIf="document.file.type.indexOf('image/') >= 0"></ion-icon>
+    <ion-icon name="document-text-outline" size="large" *ngIf="document.file.type.indexOf('image/') < 0"></ion-icon>
+  </ion-avatar>
   <ion-label>{{document.title}}</ion-label>
-  <ion-icon class="clickeable" name="eye-outline" slot="end"></ion-icon>
-  <ion-icon class="clickeable" (click)="openFile('IMG_20220707_192256.jpg')" name="mail-outline" slot="end"></ion-icon>
+  <ion-icon class="clickeable" (click)="openFile()" name="eye-outline" slot="end"></ion-icon>
+  <ion-icon class="clickeable"  name="mail-outline" slot="end"></ion-icon>
   <ion-icon class="clickeable" (click)="delete(document.id)" name="trash-outline" slot="end"></ion-icon>
 </ion-item>

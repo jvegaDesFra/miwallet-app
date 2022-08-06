@@ -52,7 +52,7 @@ export class LoginPage implements OnInit {
                   this.interfazService.presentToast("Usuarioy contraseña incorrecta", "error")
                   return;
                 }
-                this.folderService.add("Todos","", "0")
+                this.folderService.add("Inicio","", "0")
                 this.navController.navigateRoot("/documents")  
             },
             error: error => {              

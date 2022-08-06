@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createDocument, Documentos } from '../models/documents.model';
+import { createDocument, Documentos, file } from '../models/documents.model';
 import { DocumentStore } from '../state/documents.store';
 
 @Injectable({
@@ -11,8 +11,8 @@ export class DocumentService {
   }
 
 
-  add(title: string, idFolder: string, fileurl: string) {
-    const todo = createDocument(title, idFolder, fileurl);
+  add(title: string, idFolder: string, fileurl: file, filePath: string, folderColor: string) {
+    const todo = createDocument(title, idFolder, fileurl, filePath, folderColor);
     console.log(todo);
     
     this.documentStore.add(todo);

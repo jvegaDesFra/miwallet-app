@@ -9,7 +9,7 @@ export interface DocumentState extends EntityState<Documentos, string> {
  
 export function createInitialName(): DocumentState {
   return {
-    idFolder: "",
+    idFolder: "0",
     documents: []
   };
 }

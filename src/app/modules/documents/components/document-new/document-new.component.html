@@ -25,7 +25,7 @@
     <ion-label position="stacked">Categoria</ion-label> 
     <ion-select interface="popover" placeholder="Selecione una opción" (ionChange)="handleChange($event)">
       <div *ngFor="let folder of folders$ | async; let i = index">
-        <ion-select-option color="green" value="{{folder.id}}"  *ngIf="folder.id != '0'">{{folder.name}}</ion-select-option>
+        <ion-select-option color="green"  [value]="folder"  *ngIf="folder.id != '0'">{{folder.name}}</ion-select-option>
       </div>
       
     </ion-select>

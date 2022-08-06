@@ -57,9 +57,11 @@ export class DocumentNewComponent implements OnInit {
   
     this.modalController.dismiss(return_);
   }
-  currentFolder;
+  currentFolder = undefined;
   nombre:string = "";
   handleChange(ev) {
+    console.log(ev.target);
+    
     this.currentFolder = ev.target.value;
 
     console.log(this.currentFolder);
@@ -75,7 +77,7 @@ export class DocumentNewComponent implements OnInit {
       }
     }).then(result=>{
       console.log(result);
-      this.documentsService.add(this.nombre, this.currentFolder, result);
+      this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color);
       this.CloseModal(null);
     });
   

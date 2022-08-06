@@ -6,6 +6,9 @@ import { persistState} from '@datorama/akita'
 import { Observable } from 'rxjs';
 import { ModalController, MenuController  } from '@ionic/angular';
 import { FolderNewComponent } from './modules/folders/components/folder-new/folder-new.component';
+import { StatusBar, Style } from '@capacitor/status-bar';
+
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -28,6 +31,8 @@ export class AppComponent {
     private modalCtrl: ModalController,
     public menuCtrl: MenuController) {
       this.menuCtrl.enable(false);
+      StatusBar.setStyle({ style: Style.Light });
+      StatusBar.setBackgroundColor({ color: "#ffffff" })
     }
 
   trackByFn(index, param) {

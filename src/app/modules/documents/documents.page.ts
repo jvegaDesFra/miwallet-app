@@ -40,14 +40,14 @@ export class DocumentsPage implements OnInit {
     
     this.documentQuery.selectVisibilityFilter$.subscribe(idFolder=>{
       console.log(idFolder);
-      this.folderQuery.getNameFolder(idFolder).subscribe(folder=>{
+      this.folderQuery.getNameFolder(idFolder || "0").subscribe(folder=>{
         console.log(folder);
         this.nameFolder = folder.shift().name;
       })
     })
    // 
 
-   this.openModal();
+  // this.openModal();
   }
 
  

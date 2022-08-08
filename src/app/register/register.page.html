@@ -20,7 +20,7 @@
     <div  class="ion-padding">
       <ion-item>
         <ion-label position="stacked">NOMBRE Y APELLIDO COMPLETO*</ion-label>
-        <ion-input name="name" [(ngModel)]="data.name" required autocomplete="off"></ion-input>
+        <ion-input type="text" name="name" [(ngModel)]="data.name" required autocomplete="off"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">CORREO*</ion-label>
@@ -33,7 +33,7 @@
       </ion-item>
       <ion-item>
         <ion-label position="stacked">CONFIRMAR CONTRASEÑA*</ion-label>
-        <ion-input type="password" name="password" [(ngModel)]="data.password" required></ion-input>
+        <ion-input type="password" name="passwordConfirm" [(ngModel)]="data.passwordConfirm" required></ion-input>
       </ion-item>
       <ion-item lines="none">
         <ion-checkbox color="green" slot="start" checked="false"></ion-checkbox>

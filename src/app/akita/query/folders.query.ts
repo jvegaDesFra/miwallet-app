@@ -13,10 +13,9 @@ export class FoldersQuery extends QueryEntity<FoldersState> {
     super(store);
   }
 
-  getNameFolder(idFolder){
-    let data = this.selectAll({filterBy: folder => folder.id == idFolder});
-    console.log(data);
+  getNameFolder(request){
+   // alert(request)
+    let data = this.selectAll({filterBy: folder => folder.id == request});
     return data;
   }
-
 }

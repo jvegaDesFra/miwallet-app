@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createDocument, Documentos, file } from '../models/documents.model';
+import { DocumentsQuery } from '../query/documents.query';
 import { DocumentStore } from '../state/documents.store';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { DocumentStore } from '../state/documents.store';
 })
 export class DocumentService {
 
-  constructor(private documentStore: DocumentStore) {
+  constructor(private documentStore: DocumentStore, private documentQuery: DocumentsQuery) {
   }
 
 
@@ -16,6 +17,15 @@ export class DocumentService {
     console.log(todo);
     
     this.documentStore.add(todo);
+  }
+
+  deleteByFolder(idFolder:string){
+    console.log("log folder ", idFolder);
+   
+    
+    //this.documentStore.getValue().documents.filter(f=>f.idFolder == idFolder).forEach(data=>{
+    //  this.documentStore.remove(data.id);
+    //})
   }
 
   delete(id: string) {
@@ -29,6 +39,11 @@ export class DocumentService {
   updateFolder(idFolder){
     this.documentStore.update({
       idFolder
+    })
+  }
+  searchDocument(text){
+    this.documentStore.update({
+      text
     })
   }
   //setName(name: string) {

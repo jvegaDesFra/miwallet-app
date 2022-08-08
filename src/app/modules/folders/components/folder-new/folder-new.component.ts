@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { UIService } from '../../../../services/ui.service';
 import { Folders } from '../../../../akita/models/folders.model';
 import { FoldersService } from '../../../../akita/service/folders.service';
 
@@ -146,18 +147,24 @@ export class FolderNewComponent implements OnInit {
     }
   ];
   constructor(private modalController: ModalController,
-    private service : FoldersService) { }
+    private service : FoldersService,
+    private ui: UIService) { }
 
   
   ngOnInit() {
- 
+   // this.ui.presentToast("Se ha guardado la categoria", "success")
   }
   save(){
     console.log(this.selectedColor);
     console.log(this.nombre);
-
-    this.service.add(this.nombre, this.selectedColor ? this.selectedColor.hexa : "", "");
-    this.CloseModal(null);
+    this.ui.loader("").then(loader=>{
+      loader.present();
+      this.service.add(this.nombre, this.selectedColor ? this.selectedColor.hexa : "", "");
+      loader.dismiss();
+      this.ui.presentToast("Se ha guardado la categoria", "green", 'checkmark-circle');
+      this.CloseModal(null);
+    })
+    
     
   }
   selectedColor;

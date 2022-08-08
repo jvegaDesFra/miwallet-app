@@ -8,8 +8,9 @@ import { MenuController, ModalController, NavController } from '@ionic/angular';
 import { DocumentNewComponent } from './components/document-new/document-new.component'
 import { first } from 'rxjs/operators';
 import { FoldersQuery } from 'src/app/akita/query/folders.query';
+import { UIService } from 'src/app/services/ui.service';
 
-  @Component({
+@Component({
   selector: 'page-documents',
   templateUrl: './documents.page.html',
   styleUrls: ['./documents.page.scss'],
@@ -20,43 +21,44 @@ export class DocumentsPage implements OnInit {
   wordToSearch = "";
   nameFolder = "";
   idFolder$;
-  constructor(    private documentsService : DocumentService,
+  constructor(private documentsService: DocumentService,
     private documentQuery: DocumentsQuery,
     private auth: AuthenticationService,
     private navController: NavController,
     private modalCtrl: ModalController,
     private menuController: MenuController,
-    private folderQuery: FoldersQuery) { }
+    private folderQuery: FoldersQuery,
+    private ui: UIService) { }
 
   ngOnInit() {
-    
-    console.log( this.documentos$ );
-    
+    this.documentsService.searchDocument("");
+    console.log(this.documentos$);
+
     this.loaded = true;
     this.documentos$ = this.documentQuery.getDocs$;
     this.menuController.enable(true);
     this.idFolder$ = this.documentQuery.selectVisibilityFilter$;
-    console.log(this.idFolder$ );
-    
-    this.documentQuery.selectVisibilityFilter$.subscribe(idFolder=>{
+    console.log(this.idFolder$);
+
+    this.documentQuery.selectVisibilityFilter$.subscribe(idFolder => {
       console.log(idFolder);
-      this.folderQuery.getNameFolder(idFolder || "0").subscribe(folder=>{
+      this.folderQuery.getNameFolder(idFolder.idFolder || "0").subscribe(folder => {
         console.log(folder);
-        this.nameFolder = folder.shift().name;
+        this.nameFolder = folder.length ? folder.shift().name : "Inicio";
       })
     })
-   // 
-
-  // this.openModal();
+    // 
+    
+    // this.openModal();
+  }
+  
+  delete(id) {
+    this.ui.presentAlertConfirm("¿Desea eliminar el archivo?", "", 
+    (ok) => this.documentsService.delete(id), 
+    (error) => console.log(error))
   }
 
- 
-
-  delete(id){
-    this.documentsService.delete(id);
-  }
-
-  logout(){
+  logout() {
     this.auth.logout();
     this.navController.navigateRoot("/login")
   }
@@ -74,7 +76,7 @@ export class DocumentsPage implements OnInit {
 
     if (role === 'confirm') {
       console.log(role);
-      
+
     }
   }
   lsFilter = [];
@@ -84,7 +86,8 @@ export class DocumentsPage implements OnInit {
 
     //this.lsPostFilter = this.lsPosts;
     const searchTerm = evt.srcElement.value;
-    
+    this.documentsService.searchDocument(searchTerm);
+    return;
     //  console.log(this.wordToSearch)
     if (!searchTerm) {
       this.lsFilter = this.lsData;
@@ -95,15 +98,13 @@ export class DocumentsPage implements OnInit {
       //   this.lsFilter = result;
       //   this.countReg = this.lsfFilter.length;
       // })
-       this.lsFilter = this.lsData.filter(currentGoal => {
-          console.log(currentGoal);
-          
-         if (currentGoal.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
-           return true;
-         }
-         return false;
-      
-       });
+      this.lsFilter = this.lsData.filter(currentGoal => {
+        if (currentGoal.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+          return true;
+        }
+        return false;
+
+      });
 
     }
   }

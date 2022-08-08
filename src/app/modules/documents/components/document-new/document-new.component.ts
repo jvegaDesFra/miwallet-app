@@ -6,7 +6,8 @@ import { Folders } from '../../../../akita/models/folders.model';
 import { DocumentService } from '../../../../akita/service/documents.service';
 import write_blob from 'capacitor-blob-writer';
 import { Filesystem, Directory, FilesystemDirectory, FilesystemEncoding } from '@capacitor/filesystem';
-import { file } from 'src/app/akita/models/documents.model';
+import { file } from '../../../../akita/models/documents.model';
+import { UIService } from '../../../../services/ui.service';
 
 const APP_DIRECTORY = Directory.Documents;
 @Component({
@@ -20,7 +21,8 @@ export class DocumentNewComponent implements OnInit {
   @ViewChild('filepicker') uploader: ElementRef;
   constructor(private modalController: ModalController,
     private query: FoldersQuery,
-    private documentsService : DocumentService) { }
+    private documentsService : DocumentService,
+    private ui: UIService) { }
 
   ngOnInit() {
     this.folders$ = this.query.getFolders$; 
@@ -68,18 +70,24 @@ export class DocumentNewComponent implements OnInit {
     
   }
   save(){
-    write_blob({
-      directory: APP_DIRECTORY,
-      path: `${this.selectedFile.name}`,
-      blob: this.selectedFile.blob,
-      on_fallback(error) {
-        console.error('error: ', error);
-      }
-    }).then(result=>{
-      console.log(result);
-      this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color);
-      this.CloseModal(null);
-    });
+    this.ui.loader("").then(loader=>{
+      loader.present();
+      write_blob({
+        directory: APP_DIRECTORY,
+        path: `${this.selectedFile.name}`,
+        blob: this.selectedFile.blob,
+        on_fallback(error) {
+          console.error('error: ', error);
+        }
+      }).then(result=>{
+        console.log(result);
+        this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color);
+        loader.dismiss();
+        this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
+        this.CloseModal(null);
+      });
+    })
+   
   
   }
   compareWith(o1, o2) {

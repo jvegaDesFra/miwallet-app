@@ -5,6 +5,7 @@ import { isPlatform } from '@ionic/angular';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 const APP_DIRECTORY = Directory.Documents;
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
+import { UIService } from '../../../../services/ui.service';
 @Component({
   selector: 'app-document',
   templateUrl: './document.component.html',
@@ -12,12 +13,16 @@ import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 })
 export class DocumentComponent implements OnInit {
   @Input() document: Documentos;
-  constructor(private documentsService : DocumentService, private fileOpener: FileOpener) { }
+  constructor(private documentsService : DocumentService, private fileOpener: FileOpener, private ui: UIService) { }
 
   ngOnInit() {}
+
   delete(id){
-    this.documentsService.delete(id);
+    this.ui.presentAlertConfirm("","¿Desea eliminar el archivo " + this.document.title + "?",  
+    (ok) => this.documentsService.delete(id), 
+    (error) => console.log(error))
   }
+  
   open(url){
     window.open(url,"_system");
   }

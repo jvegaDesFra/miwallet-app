@@ -4,13 +4,15 @@ import { Documentos } from '../models/documents.model';
  
 export interface DocumentState extends EntityState<Documentos, string> {
  documents: Array<Documentos>,
- idFolder: string
+ idFolder: string,
+ text:string
 }
  
 export function createInitialName(): DocumentState {
   return {
     idFolder: "0",
-    documents: []
+    documents: [],
+    text: ""
   };
 }
  

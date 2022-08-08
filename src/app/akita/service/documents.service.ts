@@ -19,15 +19,6 @@ export class DocumentService {
     this.documentStore.add(todo);
   }
 
-  deleteByFolder(idFolder:string){
-    console.log("log folder ", idFolder);
-   
-    
-    //this.documentStore.getValue().documents.filter(f=>f.idFolder == idFolder).forEach(data=>{
-    //  this.documentStore.remove(data.id);
-    //})
-  }
-
   delete(id: string) {
     this.documentStore.remove(id);
   }

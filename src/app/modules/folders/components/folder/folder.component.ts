@@ -44,7 +44,7 @@ export class FolderComponent implements OnInit {
     ;
   }
   setFolder(){
-      alert(this.folder.id)
+      //alert(this.folder.id)
       this.documentService.updateFolder(this.folder.id);
       this.menuController.close()
    // this.documentQuery.setDocumentosByFolder(this.folder.id);

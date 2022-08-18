@@ -1,3 +1,31 @@
-<p>
-  document-send works!
-</p>
+<ion-header   class="ion-no-border">
+  <ion-toolbar>
+   
+    <ion-title>Enviar documento</ion-title>
+    <ion-buttons slot="end">
+      <ion-button title="Cerrar" (click)="CloseModal('close')">
+        <ion-icon color="green" size="large" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-header collapse="condense" class="ion-no-border">
+    <ion-toolbar>
+      <ion-title size="large">Enviar documento</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <br><br>
+  <ion-list-header>
+    <ion-label>Escriba el correo a donde se enviará el documento</ion-label>
+  </ion-list-header>
+  <ion-item>
+   <ion-label position="stacked"></ion-label> 
+    <ion-input [(ngModel)]="email" type="email" placeholder="Correo electronico"></ion-input>
+  </ion-item><br>
+  <br>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" color="green" (click)="send()">Enviar</ion-button>
+</ion-footer>

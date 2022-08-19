@@ -1,12 +1,10 @@
 export class Environments {
-    public static ApiEndPoint = "http://localhost/WSApiRestaurants/";
-    public static ApiEndPointCore = "https://v-pos.azurewebsites.net";
     
-    public static islocal = true;
+    public static islocal = false;
     public static enableHelp = true;
     
-    public static local = "http://192.168.1.203/API";
-    public static production = "https://v-pos.azurewebsites.net";  
+    public static local = "https://192.168.1.193/wallet.mifastpass.com.mx/app";
+    public static production = "https://wallet.mifastpass.com.mx/app";  
     
   
     public static ENDPOINT = Environments.islocal

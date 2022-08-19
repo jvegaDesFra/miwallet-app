@@ -1,11 +1,12 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
   
-    <ion-menu contentId="main-content" >
+    <ion-menu contentId="main-content"  (ionDidOpen)="GetInfo()">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>Bienvenido</ion-list-header>
-          <ion-note>jose.juan.vega@outlook.com</ion-note>
+          <ion-list-header><h4>Bienvenido</h4> </ion-list-header>
+          <ion-list-header>{{user.name}}</ion-list-header>
+          <ion-note>{{user.email}}</ion-note>
           <br><br>
           <ion-button color="green" expand="block" (click)="openModal()">Nueva categoria</ion-button>
           <!--<ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">

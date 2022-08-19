@@ -13,7 +13,7 @@ export class FoldersService {
 
   add(title: string, color: string, id: string) {
     const add = create(title, color, id);
-    console.log(add);
+    //console.log(add);
     
     this.sStore.add(add);
   }

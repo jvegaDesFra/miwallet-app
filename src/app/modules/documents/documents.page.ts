@@ -32,18 +32,18 @@ export class DocumentsPage implements OnInit {
 
   ngOnInit() {
     this.documentsService.searchDocument("");
-    console.log(this.documentos$);
+    //console.log(this.documentos$);
 
     this.loaded = true;
     this.documentos$ = this.documentQuery.getDocs$;
     this.menuController.enable(true);
     this.idFolder$ = this.documentQuery.selectVisibilityFilter$;
-    console.log(this.idFolder$);
+    //console.log(this.idFolder$);
 
     this.documentQuery.selectVisibilityFilter$.subscribe(idFolder => {
-      console.log(idFolder);
+      //console.log(idFolder);
       this.folderQuery.getNameFolder(idFolder.idFolder || "0").subscribe(folder => {
-        console.log(folder);
+        //console.log(folder);
         this.nameFolder = folder.length ? folder.shift().name : "Inicio";
       })
     })
@@ -75,7 +75,7 @@ export class DocumentsPage implements OnInit {
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'confirm') {
-      console.log(role);
+      //console.log(role);
 
     }
   }
@@ -88,13 +88,13 @@ export class DocumentsPage implements OnInit {
     const searchTerm = evt.srcElement.value;
     this.documentsService.searchDocument(searchTerm);
     return;
-    //  console.log(this.wordToSearch)
+    //  //console.log(this.wordToSearch)
     if (!searchTerm) {
       this.lsFilter = this.lsData;
     } else {
-      console.log(searchTerm, this.lsFilter)
+      //console.log(searchTerm, this.lsFilter)
       // this.postService.Search(searchTerm).then(result => {
-      //   console.log(searchTerm);
+      //   //console.log(searchTerm);
       //   this.lsFilter = result;
       //   this.countReg = this.lsfFilter.length;
       // })

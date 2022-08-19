@@ -15,7 +15,7 @@ export class DocumentSendComponent implements OnInit {
     private ui: UIService) { }
   
   ngOnInit() {
-    console.log(this.document);
+    //console.log(this.document);
   }
   send(){
     this.ui.presentToast("Documento enviado por correo", "green", "mail")

@@ -2,7 +2,7 @@ export class user{
     id?: number;
     name?: string;
     lastname?: string;
-    correo?: string;
+    email?: string;
 }
 
 export class userRequest {

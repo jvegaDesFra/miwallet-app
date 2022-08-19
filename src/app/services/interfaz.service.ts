@@ -15,7 +15,7 @@ export class InterfazService {
   loading:any;
 
  GetCustomClassType(type:string){
-   console.log(type);   
+   //console.log(type);   
    return type.toLocaleLowerCase() == "error" ? "custom-class-toast-error" : "custom-class-toast-ok";
  }
  loader(message:string){
@@ -39,7 +39,7 @@ export class InterfazService {
  //       message: message,        
  //       //duration: 2000
  //     }).then((res) => {
- //       //console.log(res);       
+ //       ////console.log(res);       
  //       res.present();
  //       resolve(res);
  //     });
@@ -49,22 +49,22 @@ export class InterfazService {
 
  // dismissLoading(){
  //   this.loadingController.getTop().then(hasloading => {
- //     console.log(hasloading);
+ //     //console.log(hasloading);
  //     
  //     if (hasloading) {
  //     this.loadingController.dismiss();
  //      }
  // })
  //   //this.loadingController.dismiss().then((res)=>{
- //   //  console.log("loading dismissed", res)
+ //   //  //console.log("loading dismissed", res)
  //   //}).catch((error)=>{
- //   //  console.log("error", error);
+ //   //  //console.log("error", error);
  //   //  
  //   //})
  // }
 
   async presentToast(message:string,color:string = "", duration:number = 4000) {
-    console.log('toast');
+    //console.log('toast');
     
     const toast = await this.toastController.create( {
       message: message,      

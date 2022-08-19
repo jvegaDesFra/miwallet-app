@@ -20,7 +20,7 @@ export class RegisterPage implements OnInit {
    // this.interfazService.dismissLoading();
   }
   Save(form) {
-    console.log(this.data);
+    //console.log(this.data);
     return
     this.interfazService.loader("Creando Cuenta").then(loader => {
       // this.loading =loader;

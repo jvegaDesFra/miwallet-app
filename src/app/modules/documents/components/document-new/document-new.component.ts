@@ -26,7 +26,7 @@ export class DocumentNewComponent implements OnInit {
 
   ngOnInit() {
     this.folders$ = this.query.getFolders$; 
-    console.log("APP_DIRECTORY", APP_DIRECTORY);
+    //console.log("APP_DIRECTORY", APP_DIRECTORY);
 
  //  this.loadDocumentos();
   //this.fileRead();
@@ -37,12 +37,12 @@ export class DocumentNewComponent implements OnInit {
       path: ""
     });
     folderContent.files.map(file => {
-     console.log(file);
+     //console.log(file);
      Filesystem.getUri({
       directory: APP_DIRECTORY,
       path: file
      }).then(pathFile => {
-        console.log(pathFile);
+        //console.log(pathFile);
         
      })
     });
@@ -53,7 +53,7 @@ export class DocumentNewComponent implements OnInit {
       directory: FilesystemDirectory.Documents,
       encoding: FilesystemEncoding.UTF8
     });
-    console.log("Read file", contents);
+    //console.log("Read file", contents);
   }
   CloseModal(return_) {
   
@@ -62,11 +62,11 @@ export class DocumentNewComponent implements OnInit {
   currentFolder = undefined;
   nombre:string = "";
   handleChange(ev) {
-    console.log(ev.target);
+    //console.log(ev.target);
     
     this.currentFolder = ev.target.value;
 
-    console.log(this.currentFolder);
+    //console.log(this.currentFolder);
     
   }
   save(){
@@ -80,7 +80,7 @@ export class DocumentNewComponent implements OnInit {
           console.error('error: ', error);
         }
       }).then(result=>{
-        console.log(result);
+        //console.log(result);
         this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color);
         loader.dismiss();
         this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
@@ -100,7 +100,7 @@ export class DocumentNewComponent implements OnInit {
   }
   async fileSelected($event) {
     const selected = $event.target.files[0];
-    console.log(selected);
+    //console.log(selected);
     this.selectedFile = {
       type: selected.type,
       name : selected.name,
@@ -120,7 +120,7 @@ export class DocumentNewComponent implements OnInit {
         console.error('error: ', error);
       }
     }).then(result=>{
-      console.log(result);
+      //console.log(result);
       
     });
  

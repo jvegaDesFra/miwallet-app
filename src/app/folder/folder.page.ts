@@ -20,7 +20,7 @@ export class FolderPage implements OnInit {
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.documentos$ = this.documentQuery.getDocuments$;
-    console.log( this.documentos$ );
+    //console.log( this.documentos$ );
     
 
     this.documentsService.add("ejemplo")

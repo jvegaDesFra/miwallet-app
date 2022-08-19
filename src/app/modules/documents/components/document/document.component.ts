@@ -38,7 +38,7 @@ export class DocumentComponent implements OnInit {
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'confirm') {
-      console.log(role);
+      //console.log(role);
 
     }
   }
@@ -72,7 +72,7 @@ export class DocumentComponent implements OnInit {
       .catch(e => console.log('Error opening file', e));
   }
   async openFile2(name) {
-    // console.log(isPlatform('android'));
+    // //console.log(isPlatform('android'));
 
     //if (isPlatform('hybrid')) {
     //  // Get the URI and use our Cordova plugin for preview
@@ -82,7 +82,7 @@ export class DocumentComponent implements OnInit {
     //  });
     //
     //  //this.previewAnyFile.preview(file_uri.uri)
-    //  //  .then((res: any) => console.log(res))
+    //  //  .then((res: any) => //console.log(res))
     //  //  .catch((error: any) => console.error(error));
     //} else {
     // Browser fallback to download the file

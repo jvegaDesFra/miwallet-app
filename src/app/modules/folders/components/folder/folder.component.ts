@@ -24,7 +24,7 @@ export class FolderComponent implements OnInit {
     this.documentQuery.getDocumentsByFolder(this.folder.id).subscribe(data=>{
       this.countFiles = data.length
     });
-    console.log(this.countFiles );
+    //console.log(this.countFiles );
     
   }
   deleted(id){
@@ -33,7 +33,7 @@ export class FolderComponent implements OnInit {
  
       
       let otros = this.documentQuery.getDocumentsByFolderObject(id);
-      console.log(otros);
+      //console.log(otros);
       otros.forEach(item=>{
         this.documentService.delete(item.id);
       })      

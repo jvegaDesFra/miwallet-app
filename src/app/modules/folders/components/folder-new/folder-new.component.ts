@@ -3,6 +3,9 @@ import { ModalController } from '@ionic/angular';
 import { UIService } from '../../../../services/ui.service';
 import { Folders } from '../../../../akita/models/folders.model';
 import { FoldersService } from '../../../../akita/service/folders.service';
+import { CategoriesServices } from '../../categories.services';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-folder-new',
@@ -148,21 +151,40 @@ export class FolderNewComponent implements OnInit {
   ];
   constructor(private modalController: ModalController,
     private service : FoldersService,
-    private ui: UIService) { }
+    private ui: UIService,
+    private catService: CategoriesServices,
+    private authService: AuthenticationService) { }
 
   
   ngOnInit() {
    // this.ui.presentToast("Se ha guardado la categoria", "success")
   }
   save(){
-    console.log(this.selectedColor);
-    console.log(this.nombre);
+    //console.log(this.selectedColor);
+    //console.log(this.nombre);
     this.ui.loader("").then(loader=>{
       loader.present();
-      this.service.add(this.nombre, this.selectedColor ? this.selectedColor.hexa : "", "");
-      loader.dismiss();
-      this.ui.presentToast("Se ha guardado la categoria", "green", 'checkmark-circle');
-      this.CloseModal(null);
+      let color = this.selectedColor ? this.selectedColor.hexa : "";
+ 
+
+
+      this.catService
+      .add(this.nombre, color, this.authService.currentOwnerValue.id)
+      .pipe(first())
+      .subscribe({
+        next: (res) => {   
+          //console.log(res);
+          this.service.add(this.nombre,color , res.id);
+          loader.dismiss();
+          this.ui.presentToast("Se ha guardado la categoria", "green", 'checkmark-circle');
+          this.CloseModal(null);
+        },
+        error: (error) => {
+          
+        },
+      });
+
+      
     })
     
     

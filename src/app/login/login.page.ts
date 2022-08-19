@@ -16,7 +16,7 @@ import { FoldersService } from '../akita/service/folders.service';
 export class LoginPage implements OnInit {
   request : userRequest = {
     email: "jose.juan.vega@outlook.com",
-    password: "1234"
+    password: "1234567890"
   }
   constructor(private interfazService: InterfazService,
     private authService: AuthenticationService,
@@ -44,19 +44,19 @@ export class LoginPage implements OnInit {
         .pipe(first())
         .subscribe({
             next: (userInfo) => {
-                console.log(userInfo);
+                //console.log(userInfo);
                 
                 loader.dismiss();
                
                 if(userInfo == null){
-                  this.interfazService.presentToast("Usuarioy contraseña incorrecta", "error")
+                  this.interfazService.presentToast("Usuario / contraseña incorrecta", "error")
                   return;
                 }
-                this.folderService.add("Inicio","", "0")
+                //this.folderService.add("Inicio","", "0")
                 this.navController.navigateRoot("/documents")  
             },
             error: error => {              
-                console.log(error);
+                //console.log(error);
                 loader.dismiss();
                 this.interfazService.presentToast(error.error.message, "error")
             }
@@ -74,7 +74,7 @@ export class LoginPage implements OnInit {
   
       modal.onDidDismiss().then(data => {
         if (data.data != "close" && data.role == undefined) {
-          console.log(data)
+          //console.log(data)
           //this.OpenActivation(data.data.email);
         }
   

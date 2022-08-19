@@ -21,7 +21,7 @@ export class UIService {
   loading: any;
 
   GetCustomClassType(type: string) {
-    console.log(type);
+    //console.log(type);
     return type.toLocaleLowerCase() == "error" ? "custom-class-toast-error" : "custom-class-toast-ok";
   }
   loader(message: string) {
@@ -35,7 +35,7 @@ export class UIService {
 
 
   async presentToast(message: string, color: string = "", icon: string = "", position: any = 'bottom', duration: number = 4000) {
-    console.log('toast');
+    //console.log('toast');
 
     const toast = await this.toastController.create({
       message: message,

@@ -7,6 +7,9 @@ import { Observable } from 'rxjs';
 import { ModalController, MenuController  } from '@ionic/angular';
 import { FolderNewComponent } from './modules/folders/components/folder-new/folder-new.component';
 import { StatusBar, Style } from '@capacitor/status-bar';
+import { AuthenticationService } from './services/authentication.service';
+import { CategoriesServices } from './modules/folders/categories.services';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -25,24 +28,53 @@ export class AppComponent {
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
+  user = {
+    name: "",
+    email: ""
+  }
   folders$: Observable<Folders[]>;
   constructor(private service : FoldersService,
     private query: FoldersQuery,
     private modalCtrl: ModalController,
-    public menuCtrl: MenuController) {
+    public menuCtrl: MenuController,
+    private authService: AuthenticationService,
+    private catService: CategoriesServices,) {
+      
       this.menuCtrl.enable(false);
       StatusBar.setStyle({ style: Style.Light });
       StatusBar.setBackgroundColor({ color: "#ffffff" })
+      
     }
 
   trackByFn(index, param) {
     return param.id;
   }
-
+  
+  GetInfo(){
+    if(this.authService.currentOwnerValue){
+      this.user.name = this.authService.currentOwnerValue.name;
+      this.user.email = this.authService.currentOwnerValue.email;
+      this.catService
+      .getCAtegories(this.authService.currentOwnerValue.id)
+      .pipe(first())
+      .subscribe({
+        next: (res) => {   
+          //console.log(res);
+          res.forEach(element => {
+            this.service.add(element.categoria, element.color , element.id);
+          });
+          
+        },
+        error: (error) => {
+          
+        },
+      });
+    }
+  }
   
 
   ngOnInit() {
-    persistState();
+    //persistState();
     this.folders$ = this.query.getFolders$;  
    // this.menuCtrl.enable(true)
   }
@@ -61,7 +93,7 @@ export class AppComponent {
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'confirm') {
-      console.log(role);
+      //console.log(role);
       
     }
   }

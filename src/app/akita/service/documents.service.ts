@@ -14,7 +14,7 @@ export class DocumentService {
 
   add(title: string, idFolder: string, fileurl: file, filePath: string, folderColor: string) {
     const todo = createDocument(title, idFolder, fileurl, filePath, folderColor);
-    console.log(todo);
+    //console.log(todo);
     
     this.documentStore.add(todo);
   }

@@ -44,7 +44,7 @@ export class DocumentsPage implements OnInit {
       //console.log(idFolder);
       this.folderQuery.getNameFolder(idFolder.idFolder || "0").subscribe(folder => {
         //console.log(folder);
-        this.nameFolder = folder.length ? folder.shift().name : "Inicio";
+        this.nameFolder = folder.length ? folder.shift().name : "Todos";
       })
     })
     // 

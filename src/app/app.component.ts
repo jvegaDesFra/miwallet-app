@@ -43,7 +43,7 @@ export class AppComponent {
       this.menuCtrl.enable(false);
       StatusBar.setStyle({ style: Style.Light });
       StatusBar.setBackgroundColor({ color: "#ffffff" })
-      
+      this.GetInfo();
     }
 
   trackByFn(index, param) {
@@ -54,7 +54,9 @@ export class AppComponent {
     if(this.authService.currentOwnerValue){
       this.user.name = this.authService.currentOwnerValue.name;
       this.user.email = this.authService.currentOwnerValue.email;
-      this.catService
+      
+    }
+    this.catService
       .getCAtegories(this.authService.currentOwnerValue.id)
       .pipe(first())
       .subscribe({
@@ -69,7 +71,6 @@ export class AppComponent {
           
         },
       });
-    }
   }
   
 

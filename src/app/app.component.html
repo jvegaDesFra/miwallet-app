@@ -8,13 +8,14 @@
           <ion-list-header>{{user.name}}</ion-list-header>
           <ion-note>{{user.email}}</ion-note>
           <br><br>
-          <ion-button color="green" expand="block" (click)="openModal()">Nueva categoria</ion-button>
+         
           <!--<ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
-          </ion-menu-toggle>--><br>
+          </ion-menu-toggle>-->
+          <br>
           <app-folders [folders]="folders$ | async"></app-folders>
           <!--<ion-menu-toggle auto-hide="false" *ngFor="let folder of folders$ | async; trackBy: trackByFn">
             <ion-item lines="none" detail="true" >
@@ -27,6 +28,9 @@
 
        
       </ion-content>
+      <ion-footer>
+        <ion-button color="green" expand="block" (click)="openModal()">Nueva categoria</ion-button>
+      </ion-footer>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>

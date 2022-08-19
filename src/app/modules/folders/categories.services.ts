@@ -36,4 +36,19 @@ export class CategoriesServices {
         })
       );
   }
+  delete(id_categoria, id_usuario) {
+    const body = new HttpParams()
+            .set('categoria',id_categoria)
+          
+            .set('id_usuario',id_usuario )   
+    return this.http
+      .post<any>(`${Environments.API_ENDPOINT}/categories/delete.php`, body)
+      .pipe(
+        map((result) => {
+          //console.log(result);
+          
+          return result;
+        })
+      );
+  }
 }

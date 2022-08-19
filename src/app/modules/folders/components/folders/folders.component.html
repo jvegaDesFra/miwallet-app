@@ -1,4 +1,8 @@
 <!--<ion-menu-toggle auto-hide="false" >
 </ion-menu-toggle>-->
+<ion-item lines="none" detail="true" (click)="setFolder()">          
+  <ion-icon name="folder" [ngStyle]="{'color':'#000'}" size="large" slot="start"></ion-icon>              
+  <ion-label>Todos</ion-label>
+</ion-item>
   <app-folder [folder]="folder" *ngFor="let folder of folders"></app-folder>
  

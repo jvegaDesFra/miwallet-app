@@ -8,6 +8,9 @@ import write_blob from 'capacitor-blob-writer';
 import { Filesystem, Directory, FilesystemDirectory, FilesystemEncoding } from '@capacitor/filesystem';
 import { file } from '../../../../akita/models/documents.model';
 import { UIService } from '../../../../services/ui.service';
+import { AuthenticationService } from '../../../../services/authentication.service';
+import { CertificadoService } from '../../documents.service';
+import { first } from 'rxjs/operators';
 
 const APP_DIRECTORY = Directory.Documents;
 @Component({
@@ -22,7 +25,10 @@ export class DocumentNewComponent implements OnInit {
   constructor(private modalController: ModalController,
     private query: FoldersQuery,
     private documentsService : DocumentService,
-    private ui: UIService) { }
+    private ui: UIService,
+    private auth: AuthenticationService,
+    private certService : CertificadoService
+    ) { }
 
   ngOnInit() {
     this.folders$ = this.query.getFolders$; 
@@ -70,22 +76,35 @@ export class DocumentNewComponent implements OnInit {
     
   }
   save(){
+
+
     this.ui.loader("").then(loader=>{
       loader.present();
-      write_blob({
-        directory: APP_DIRECTORY,
-        path: `${this.selectedFile.name}`,
-        blob: this.selectedFile.blob,
-        on_fallback(error) {
-          console.error('error: ', error);
-        }
-      }).then(result=>{
-        //console.log(result);
-        this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color);
-        loader.dismiss();
-        this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
-        this.CloseModal(null);
-      });
+      this.certService.add(this.nombre, this.currentFolder.id, this.auth.currentOwnerValue.id, this.selectedFile.blob)
+      .pipe(first())
+        .subscribe({
+          next: (res) => {   
+            console.log(res);
+            write_blob({
+              directory: APP_DIRECTORY,
+              path: `${this.selectedFile.name}`,
+              blob: this.selectedFile.blob,
+              on_fallback(error) {
+                console.error('error: ', error);
+              }
+            }).then(result=>{
+              //console.log(result);
+              this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "");
+              loader.dismiss();
+              this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
+              this.CloseModal(null);
+            });
+          },
+          error: (error) => {
+            
+          },
+        });
+     
     })
    
   

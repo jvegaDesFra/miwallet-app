@@ -9,9 +9,9 @@ export type Documentos = {
   filePath: string;
 };
 
-export function createDocument(title: string, idFolder: string, file: file, filePath: string, folderColor: string) {
+export function createDocument(title: string, idFolder: string, file: file, filePath: string, folderColor: string, id: string) {
   return {
-    id: guid(),
+    id: id == "" ? guid() : id,
     title,
     file: file,
     filePath: filePath,

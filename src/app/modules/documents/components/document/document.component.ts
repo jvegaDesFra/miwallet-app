@@ -69,7 +69,10 @@ export class DocumentComponent implements OnInit {
   openFile() {
     this.fileOpener.open(this.document.filePath, this.document.file.type)
       .then(() => console.log('File is opened'))
-      .catch(e => console.log('Error opening file', e));
+      .catch(e => {
+        this.ui.presentToast("No se encuentra el archivo en el dispositivo","warning", "alert-circle")
+        console.log('Error opening file', e)
+      });
   }
   async openFile2(name) {
     // //console.log(isPlatform('android'));

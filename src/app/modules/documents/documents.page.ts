@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { AuthenticationService } from '../../services/authentication.service';
-import { Documentos } from '../../akita/models/documents.model';
+import { Documentos, file } from '../../akita/models/documents.model';
 import { DocumentsQuery } from '../../akita/query/documents.query';
 import { DocumentService } from '../../akita/service/documents.service';
-import { MenuController, ModalController, NavController } from '@ionic/angular';
+import { MenuController, ModalController, NavController, Platform } from '@ionic/angular';
 import { DocumentNewComponent } from './components/document-new/document-new.component'
 import { first } from 'rxjs/operators';
-import { FoldersQuery } from 'src/app/akita/query/folders.query';
-import { UIService } from 'src/app/services/ui.service';
+import { FoldersQuery } from '../../akita/query/folders.query';
+import { UIService } from '../../services/ui.service';
+import { CertificadoService } from './documents.service';
 
 @Component({
   selector: 'page-documents',
@@ -28,9 +29,73 @@ export class DocumentsPage implements OnInit {
     private modalCtrl: ModalController,
     private menuController: MenuController,
     private folderQuery: FoldersQuery,
-    private ui: UIService) { }
+    private ui: UIService,
+    private certService: CertificadoService,
+    private platform: Platform) { }
 
+  route: string = "";
+  routeAndroid: string = "file:///storage/emulated/0/Documents/";
+  routeIos: string = "file:///storage/emulated/0/Documents/";
+  getType(filename: string) {
+    let ext = filename.substring(filename.lastIndexOf('.') + 1);
+    let result = "";
+    switch (ext) {
+      case "png":
+        result = "image/png";
+        break;
+      case "gif":
+        result = "image/gif";
+        break;
+      case "jpg":
+        result = "image/jpeg";
+        break;
+      case "pdf":
+        result = "application/pdf";
+        break;
+      case "xlsx":
+        result = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        break;
+      case "pptx":
+        result = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        break;
+      case "docx":
+        result = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        break;
+      default:
+        break;
+    }
+
+    return result;
+  }
   ngOnInit() {
+    if (this.platform.is("hybrid")) {
+      this.route = this.platform.is("android") ? this.routeAndroid : this.routeIos;
+    }
+    this.certService
+      .getDocuments(this.auth.currentOwnerValue.id)
+      .pipe(first())
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          res.forEach(element => {
+            let type = this.getType(element.filename);
+          
+            
+            let file: file = {
+              blob: undefined,
+              name: element.title,
+              size: 0,
+              type: type
+            }
+            this.documentsService.add(element.title, element.id, file, this.route + element.filename, element.color, element.id_document);
+
+          });
+
+        },
+        error: (error) => {
+
+        },
+      });
     this.documentsService.searchDocument("");
     //console.log(this.documentos$);
 
@@ -48,14 +113,14 @@ export class DocumentsPage implements OnInit {
       })
     })
     // 
-    
-    // this.openModal();
+
+    //  this.openModal();
   }
-  
+
   delete(id) {
-    this.ui.presentAlertConfirm("¿Desea eliminar el archivo?", "", 
-    (ok) => this.documentsService.delete(id), 
-    (error) => console.log(error))
+    this.ui.presentAlertConfirm("¿Desea eliminar el archivo?", "",
+      (ok) => this.documentsService.delete(id),
+      (error) => console.log(error))
   }
 
   logout() {

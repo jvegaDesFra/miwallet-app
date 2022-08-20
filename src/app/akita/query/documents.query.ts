@@ -20,7 +20,7 @@ export class DocumentsQuery extends QueryEntity<DocumentState> {
 
   getDocumentsByFolder2(filters, documents): Documentos[] {
     if(filters.text != ""){
-      return documents.filter(d=> d.title.indexOf(filters.text)  > -1 )
+      return documents.filter(d=> d.title.toLowerCase().indexOf(filters.text.toLowerCase())  > -1 )
     }    
     if (filters.idFolder != "0") {
       return documents.filter(d => d.idFolder == filters.idFolder);

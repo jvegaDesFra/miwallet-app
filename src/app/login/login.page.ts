@@ -7,6 +7,7 @@ import { InterfazService } from '../services/interfaz.service';
 
 import { RegisterPage } from "../register/register.page";
 import { FoldersService } from '../akita/service/folders.service';
+import { CategoriesServices } from '../modules/folders/categories.services';
 
 @Component({
   selector: 'app-login',
@@ -14,16 +15,22 @@ import { FoldersService } from '../akita/service/folders.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  //request : userRequest = {
+  //  email: "jose.juan.vega@outlook.com",
+  //  password: "1234567890"
+  //}
   request : userRequest = {
-    email: "jose.juan.vega@outlook.com",
-    password: "1234567890"
+    email: "",
+    password: ""
   }
   constructor(private interfazService: InterfazService,
     private authService: AuthenticationService,
     private navController: NavController,
     private modalController: ModalController ,
     private folderService : FoldersService,
-    private menuController: MenuController) { 
+    private menuController: MenuController,
+    private catService: CategoriesServices,
+    ) { 
    
     }
 
@@ -52,6 +59,21 @@ export class LoginPage implements OnInit {
                   this.interfazService.presentToast("Usuario / contraseña incorrecta", "error")
                   return;
                 }
+                this.catService
+                .getCAtegories(this.authService.currentOwnerValue.id)
+                .pipe(first())
+                .subscribe({
+                  next: (res) => {   
+                    //console.log(res);
+                    res.forEach(element => {
+                      this.folderService.add(element.categoria, element.color , element.id);
+                    });
+                    
+                  },
+                  error: (error) => {
+                    
+                  },
+                });
                 //this.folderService.add("Inicio","", "0")
                 this.navController.navigateRoot("/documents")  
             },

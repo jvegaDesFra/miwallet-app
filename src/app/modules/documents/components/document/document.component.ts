@@ -7,6 +7,8 @@ const APP_DIRECTORY = Directory.Documents;
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { UIService } from '../../../../services/ui.service';
 import { DocumentSendComponent } from '../document-send/document-send.component';
+import { CertificadoService } from '../../documents.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-document',
@@ -15,15 +17,38 @@ import { DocumentSendComponent } from '../document-send/document-send.component'
 })
 export class DocumentComponent implements OnInit {
   @Input() document: Documentos;
-  constructor(private documentsService: DocumentService, private fileOpener: FileOpener, private ui: UIService, private modalCtrl: ModalController) { }
+  constructor(private certService: CertificadoService,
+    private documentsService: DocumentService, private fileOpener: FileOpener, private ui: UIService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
-   
+
   }
 
   delete(id) {
+
     this.ui.presentAlertConfirm("", "¿Desea eliminar el archivo " + this.document.title + "?",
-      (ok) => this.documentsService.delete(id),
+      (ok) => {
+        this.ui.loader("").then(loader=>{
+          loader.present();
+          this.certService
+          .delete(id)
+          .pipe(first())
+          .subscribe({
+            next: (res) => {
+              //console.log(res);
+             // if (res.result) {
+                this.documentsService.delete(id);
+             // }
+              loader.dismiss();
+            },
+            error: (error) => {
+              loader.dismiss();
+            },
+          });
+        })
+        
+
+      },
       (error) => console.log(error))
   }
   async openSend() {
@@ -70,7 +95,7 @@ export class DocumentComponent implements OnInit {
     this.fileOpener.open(this.document.filePath, this.document.file.type)
       .then(() => console.log('File is opened'))
       .catch(e => {
-        this.ui.presentToast("No se encuentra el archivo en el dispositivo","warning", "alert-circle")
+        this.ui.presentToast("No se encuentra el archivo en el dispositivo", "warning", "alert-circle")
         console.log('Error opening file', e)
       });
   }

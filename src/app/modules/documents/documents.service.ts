@@ -45,4 +45,17 @@ export class CertificadoService {
         })
       );
   }
+  delete(id_documento) {
+    const body = new HttpParams()
+            .set('id',id_documento)
+    return this.http
+      .post<any>(`${Environments.API_ENDPOINT}/documents/delete.php`, body)
+      .pipe(
+        map((result) => {
+          //console.log(result);
+          
+          return result;
+        })
+      );
+  }
 }

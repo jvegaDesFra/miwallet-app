@@ -43,7 +43,7 @@ export class AppComponent {
       this.menuCtrl.enable(false);
       StatusBar.setStyle({ style: Style.Light });
       StatusBar.setBackgroundColor({ color: "#ffffff" })
-      this.GetInfo();
+      //this.GetInfo();
     }
 
   trackByFn(index, param) {

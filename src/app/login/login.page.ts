@@ -36,7 +36,7 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.menuController.enable(false);
-    this.OpenRegisterPage();
+   // this.OpenRegisterPage();
   }
   ionViewWillEnter() {
    //this.menuController.enable(false);

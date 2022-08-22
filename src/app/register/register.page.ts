@@ -4,6 +4,7 @@ import { first } from 'rxjs/operators';
 import { userRegister } from '../akita/models/user.model';
 import { AuthenticationService } from '../services/authentication.service';
 import { InterfazService } from '../services/interfaz.service';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 @Component({
   selector: 'app-register',
@@ -25,9 +26,14 @@ export class RegisterPage implements OnInit {
   };
   constructor(private modalController: ModalController,
     private interfazService: InterfazService,
-    private auth: AuthenticationService) { }
+    private auth: AuthenticationService,
+    private iab: InAppBrowser) { }
 
   ngOnInit() {
+   // this.openPDF();
+  }
+  public openPDF() {
+    this.iab.create('https://wallet.mifastpass.com.mx/AVISO-DE-PRIVACIDAD_FAST_PASS_2022.pdf', '_system', 'location=yes');
   }
   CloseModal(return_) {
     this.modalController.dismiss(return_);

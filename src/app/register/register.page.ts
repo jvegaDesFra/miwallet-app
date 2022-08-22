@@ -52,7 +52,9 @@ export class RegisterPage implements OnInit {
     return this.data.passwordConfirm != "" && this.data.passwordConfirm != this.data.password;
   }
   Save(form) {
-
+    if(this.validaEmail && this.validaPassword && this.validaNombre && this.validaPassword2){
+      return;
+    }
 
     //console.log(this.data);
     // return

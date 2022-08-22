@@ -22,10 +22,12 @@
               <ion-label position="stacked">Correo electronico</ion-label>
               <ion-input [(ngModel)]="request.email" type="email" name="username" required></ion-input>
             </ion-item>
+            <small style="color:red; margin-left: 20px;" *ngIf="validaEmail"> <ion-icon name="close"></ion-icon> Correo no valido</small>
             <ion-item>
               <ion-label position="stacked">Contraseña</ion-label>
               <ion-input [(ngModel)]="request.password" type="password" name="password" required></ion-input>
             </ion-item>
+            <small style="color:red; margin-left: 20px;" *ngIf="validaPassword"> <ion-icon name="close"></ion-icon> Contraseña minima de 8 caracteres</small>
           </div>
     
           <div padding>

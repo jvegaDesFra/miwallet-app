@@ -15,14 +15,14 @@ import { CategoriesServices } from '../modules/folders/categories.services';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  request : userRequest = {
-    email: "jose.juan.vega@outlook.com",
-    password: "1234567"
-  }
- //request : userRequest = {
- //  email: "",
- //  password: ""
- //}
+ // request : userRequest = {
+ //   email: "jose.juan.vega@outlook.com",
+ //   password: "1234567890"
+ // }
+ request : userRequest = {
+   email: "",
+   password: ""
+ }
   constructor(private interfazService: InterfazService,
     private authService: AuthenticationService,
     private navController: NavController,
@@ -44,8 +44,16 @@ export class LoginPage implements OnInit {
   get validForm() {
     return (this.request.email != "" && this.request.password != "");
   }
-
+  get validaEmail(){
+    return this.request.email != "" && !(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).test(this.request.email)
+  }
+  get validaPassword(){
+    return this.request.password != "" && this.request.password.length < 8;
+  }
   async submitForm(form) {   
+    if(this.validaEmail && this.validaPassword ){
+      return;
+    }
     this.interfazService.loader("Procesando").then(loader => {
       loader.present();  
       this.authService.authenticate(this.request)

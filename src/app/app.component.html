@@ -5,15 +5,12 @@
       <ion-header>
         <ion-toolbar>
            <ion-list-header><h4>Bienvenido</h4> </ion-list-header>
+           <ion-list-header>{{user.name}}</ion-list-header>
+          <ion-note>{{user.email}}</ion-note>
         </ion-toolbar>
       </ion-header>
       <ion-content>
         <ion-list id="inbox-list">
-         
-          <ion-list-header>{{user.name}}</ion-list-header>
-          <ion-note>{{user.email}}</ion-note>
-          <br><br>
-         
           <!--<ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>

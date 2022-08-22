@@ -123,6 +123,9 @@ ion-button{
 }
 
 ion-toolbar {
-  --background: #fff;
-  --border-color: #fff;
+  ion-footer{
+    --background: #fff;
+    --border-color: #fff;
+  }
+
 }

@@ -5,11 +5,12 @@
       <ion-header>
         <ion-toolbar>
            <ion-list-header><h4>Bienvenido</h4> </ion-list-header>
-           <ion-list-header>{{user.name}}</ion-list-header>
-          <ion-note>{{user.email}}</ion-note>
+          
         </ion-toolbar>
       </ion-header>
       <ion-content>
+        <ion-list-header>{{user.name}}</ion-list-header>
+        <ion-note>{{user.email}}</ion-note>
         <ion-list id="inbox-list">
           <!--<ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
@@ -17,7 +18,7 @@
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>-->
-          <br>
+          
           <app-folders [folders]="folders$ | async"></app-folders>
           <!--<ion-menu-toggle auto-hide="false" *ngFor="let folder of folders$ | async; trackBy: trackByFn">
             <ion-item lines="none" detail="true" >

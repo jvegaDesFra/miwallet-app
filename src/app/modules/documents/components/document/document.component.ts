@@ -24,29 +24,37 @@ export class DocumentComponent implements OnInit {
 
   }
 
-  delete(id) {
+  async delete(document) {
+    console.log(document);
+    // return;
 
     this.ui.presentAlertConfirm("", "¿Desea eliminar el archivo " + this.document.title + "?",
       (ok) => {
-        this.ui.loader("").then(loader=>{
+        this.ui.loader("").then(loader => {
           loader.present();
           this.certService
-          .delete(id)
-          .pipe(first())
-          .subscribe({
-            next: (res) => {
-              //console.log(res);
-             // if (res.result) {
-                this.documentsService.delete(id);
-             // }
-              loader.dismiss();
-            },
-            error: (error) => {
-              loader.dismiss();
-            },
-          });
+            .delete(document.id)
+            .pipe(first())
+            .subscribe({
+              next: async (res) => {
+                //console.log(res);
+                // if (res.result) {
+                const folderContent = await Filesystem.deleteFile({
+                  path: document.file.name,
+                  directory: APP_DIRECTORY
+                })
+                console.log("DELETED ", folderContent);
+                
+                this.documentsService.delete(document.id);
+                // }
+                loader.dismiss();
+              },
+              error: (error) => {
+                loader.dismiss();
+              },
+            });
         })
-        
+
 
       },
       (error) => console.log(error))

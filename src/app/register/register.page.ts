@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { first } from 'rxjs/operators';
 import { userRegister } from '../akita/models/user.model';
+import { AuthenticationService } from '../services/authentication.service';
 import { InterfazService } from '../services/interfaz.service';
 
 @Component({
@@ -9,27 +11,74 @@ import { InterfazService } from '../services/interfaz.service';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  data :userRegister = {};
+  //data: userRegister = {
+  //  email: "jose.juan.vega@outlook.com",
+  //  name: "jose vega",
+  //  password: "1234567",
+  //  passwordConfirm: "1234567"
+  //};
+  data: userRegister = {
+    email: "",
+    name: "",
+    password: "",
+    passwordConfirm: ""
+  };
   constructor(private modalController: ModalController,
-    private interfazService: InterfazService) { }
+    private interfazService: InterfazService,
+    private auth: AuthenticationService) { }
 
   ngOnInit() {
   }
   CloseModal(return_) {
     this.modalController.dismiss(return_);
-   // this.interfazService.dismissLoading();
+    // this.interfazService.dismissLoading();
+  }
+  get validaNombre(){
+    return this.data.name != "" && !(/^[ÁÉÍÓÚA-Z][a-záéíóú]+(\s+[ÁÉÍÓÚA-Z]?[a-záéíóú]+)*$/).test(this.data.name)
+  }
+  get validaEmail(){
+    return this.data.email != "" && !(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).test(this.data.email)
+  }
+  get validaPassword(){
+    return this.data.password != "" && this.data.password.length < 8;
+  }
+  get validaPassword2(){
+    return this.data.passwordConfirm != "" && this.data.passwordConfirm != this.data.password;
   }
   Save(form) {
+
+
     //console.log(this.data);
-    return
+    // return
     this.interfazService.loader("Creando Cuenta").then(loader => {
-      // this.loading =loader;
       loader.present();
-      this.interfazService.presentToast("Correo registrado, active su cuenta para continuar", "dark");
-      loader.dismiss();
-      
-      
-    });  
+      this.auth.register(this.data)
+        .pipe(first())
+        .subscribe({
+          next: (userInfo) => {
+            console.log(userInfo);
+            loader.dismiss();
+            if (userInfo.result) {
+              this.interfazService.presentToast("Correo registrado, active su cuenta para continuar", "dark");
+              this.CloseModal(null);
+            } else {
+              this.interfazService.presentToast(userInfo.message, "warning");
+
+            }
+
+          },
+          error: error => {
+            //console.log(error);
+
+            loader.dismiss();
+          }
+        });
+      // this.loading =loader;
+
+
+
+
+    });
   }
 
 }

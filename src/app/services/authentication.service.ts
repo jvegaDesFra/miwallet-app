@@ -29,34 +29,50 @@ export class AuthenticationService {
 
 
 
+    register(data) {
+        const body = new HttpParams()
+            .set('email', data.email)
+            .set('nombre', data.name)
+            .set('password1', data.password)
+            .set('password2', data.password)
+        return this.http.post<any>(`${Environments.API_ENDPOINT}/register.php`, body).pipe(
+            map((userInfo) => {
+                //console.log(userInfo);
 
+                return userInfo;
+            })
+        )
+    }
     authenticate(data: any) {
         const body = new HttpParams()
-            .set('email',data.email)
-            .set('pasw', data.password)    
-         return this.http.post<any>(`${Environments.API_ENDPOINT}/login.php`, body).pipe(
-             map((userInfo) => {
-                 //console.log(userInfo);
-                 localStorage.setItem("currentOwner", JSON.stringify(userInfo)); 
-                 this.currentOwnerSubject.next(userInfo);
-                 return userInfo;
-             })
-         )
+            .set('email', data.email)
+            .set('pasw', data.password)
+        return this.http.post<any>(`${Environments.API_ENDPOINT}/login.php`, body).pipe(
+            map((userInfo) => {
+                //console.log(userInfo);
 
-       // if (data.email == "jose.juan.vega@outlook.com" && data.password == "1234") {
-       //     let user: user = {
-       //         correo: "jose.juan.vega@outlook.com",
-       //         id: 1,
-       //         lastname: "vega",
-       //         name: "jose"
-       //     }
-       //     localStorage.setItem("currentOwner", JSON.stringify(user)); 
-       //     this.currentOwnerSubject.next(user);
-       //     return of(user)
-       // } else {
-       //     
-       //     return of(null)
-       // }
+                localStorage.setItem("currentOwner", JSON.stringify(userInfo));
+                this.currentOwnerSubject.next(userInfo);
+                return userInfo;
+
+
+            })
+        )
+
+        // if (data.email == "jose.juan.vega@outlook.com" && data.password == "1234") {
+        //     let user: user = {
+        //         correo: "jose.juan.vega@outlook.com",
+        //         id: 1,
+        //         lastname: "vega",
+        //         name: "jose"
+        //     }
+        //     localStorage.setItem("currentOwner", JSON.stringify(user)); 
+        //     this.currentOwnerSubject.next(user);
+        //     return of(user)
+        // } else {
+        //     
+        //     return of(null)
+        // }
     }//
 
 

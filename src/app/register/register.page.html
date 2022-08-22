@@ -21,20 +21,24 @@
       <ion-item>
         <ion-label position="stacked">NOMBRE Y APELLIDO COMPLETO*</ion-label>
         <ion-input type="text" name="name" [(ngModel)]="data.name" required autocomplete="off"></ion-input>
+        
       </ion-item>
+      <small style="color:red; margin-left: 20px;" *ngIf="validaNombre"><ion-icon name="close"></ion-icon> Nombre no valido</small>
       <ion-item>
         <ion-label position="stacked">CORREO*</ion-label>
         <ion-input type="email" name="email" [(ngModel)]="data.email" required></ion-input>
       </ion-item>
-
+      <small style="color:red; margin-left: 20px;" *ngIf="validaEmail"> <ion-icon name="close"></ion-icon> Correo no valido</small>
       <ion-item>
         <ion-label position="stacked">CONTRASEÑA*</ion-label>
         <ion-input type="password" name="password" [(ngModel)]="data.password" required></ion-input>
       </ion-item>
+      <small style="color:red; margin-left: 20px;" *ngIf="validaPassword"> <ion-icon name="close"></ion-icon> Contraseña minima de 8 caracteres</small>
       <ion-item>
         <ion-label position="stacked">CONFIRMAR CONTRASEÑA*</ion-label>
         <ion-input type="password" name="passwordConfirm" [(ngModel)]="data.passwordConfirm" required></ion-input>
       </ion-item>
+      <small style="color:red; margin-left: 20px;" *ngIf="validaPassword2"> <ion-icon name="close"></ion-icon> No coinididen las contraseñas</small>
       <ion-item lines="none">
         <ion-checkbox color="green" slot="start" checked="false"></ion-checkbox>
         <ion-label>Recibir información via correo</ion-label>

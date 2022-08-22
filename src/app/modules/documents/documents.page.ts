@@ -83,7 +83,7 @@ export class DocumentsPage implements OnInit {
             
             let file: file = {
               blob: undefined,
-              name: element.title,
+              name: element.filename,
               size: 0,
               type: type
             }

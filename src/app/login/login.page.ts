@@ -15,14 +15,14 @@ import { CategoriesServices } from '../modules/folders/categories.services';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  //request : userRequest = {
-  //  email: "jose.juan.vega@outlook.com",
-  //  password: "1234567890"
-  //}
   request : userRequest = {
-    email: "",
-    password: ""
+    email: "jose.juan.vega@outlook.com",
+    password: "1234567"
   }
+ //request : userRequest = {
+ //  email: "",
+ //  password: ""
+ //}
   constructor(private interfazService: InterfazService,
     private authService: AuthenticationService,
     private navController: NavController,
@@ -36,6 +36,7 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.menuController.enable(false);
+    this.OpenRegisterPage();
   }
   ionViewWillEnter() {
    //this.menuController.enable(false);
@@ -55,8 +56,8 @@ export class LoginPage implements OnInit {
                 
                 loader.dismiss();
                
-                if(userInfo == null){
-                  this.interfazService.presentToast("Usuario / contraseña incorrecta", "error")
+                if(userInfo.result == false){
+                  this.interfazService.presentToast(userInfo.message, "error")
                   return;
                 }
                 this.catService

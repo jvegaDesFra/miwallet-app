@@ -16,8 +16,7 @@
 
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar [(ngModel)]="wordToSearch" (ionInput)="filterList($event)" 
-      placeholder="Bùsqueda"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="wordToSearch" (ionInput)="filterList($event)" placeholder="Bùsqueda"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -28,7 +27,7 @@
 
     </ion-toolbar>
 
-   
+
   </ion-header>
   <br>
   <br>
@@ -78,15 +77,28 @@
   </ion-list>-->
 
   <div id="container">
-    {{documentos$.length | async}}
+   
     <div *ngIf="!(documentos$ | async).length  && loaded">
       <h3>No se encontraron registros</h3>
     </div>
-  
+
   </div>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <!--<ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="green" (click)="openModal()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
+  </ion-fab>-->
 </ion-content>
+<ion-footer [translucent]="true">
+  <ion-toolbar>
+    <ion-title> {{(documentos$ | async).length}} registros</ion-title>
+    
+    <ion-buttons slot="end" >
+      <ion-button color="green" (click)="openModal()">
+        <ion-icon slot="start" size="large" name="add-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+
+</ion-footer>

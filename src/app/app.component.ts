@@ -44,19 +44,22 @@ export class AppComponent {
       StatusBar.setStyle({ style: Style.Light });
       StatusBar.setBackgroundColor({ color: "#ffffff" })
       //
-      if(this.authService.currentOwnerValue){
-        this.user.name = this.authService.currentOwnerValue.name;
-        this.user.email = this.authService.currentOwnerValue.email;
-        this.GetInfo();
-        
-      }
+      console.log(this.authService.currentOwnerValue);
+      this.getInfoLogged();
+      
     }
 
   trackByFn(index, param) {
     return param.id;
   }
-  
-  GetInfo(){
+  getInfoLogged(){
+    if(this.authService.currentOwnerValue){
+      this.user.name = this.authService.currentOwnerValue.name;
+      this.user.email = this.authService.currentOwnerValue.email;
+      this.GetService();
+    }
+  }
+  GetService(){
     
     this.catService
       .getCAtegories(this.authService.currentOwnerValue.id)

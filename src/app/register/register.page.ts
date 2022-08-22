@@ -30,7 +30,7 @@ export class RegisterPage implements OnInit {
     private iab: InAppBrowser) { }
 
   ngOnInit() {
-   // this.openPDF();
+    // this.openPDF();
   }
   public openPDF() {
     this.iab.create('https://wallet.mifastpass.com.mx/AVISO-DE-PRIVACIDAD_FAST_PASS_2022.pdf', '_system', 'location=yes');
@@ -39,20 +39,20 @@ export class RegisterPage implements OnInit {
     this.modalController.dismiss(return_);
     // this.interfazService.dismissLoading();
   }
-  get validaNombre(){
+  get validaNombre() {
     return this.data.name != "" && !(/^[ÁÉÍÓÚA-Z][a-záéíóú]+(\s+[ÁÉÍÓÚA-Z]?[a-záéíóú]+)*$/).test(this.data.name)
   }
-  get validaEmail(){
+  get validaEmail() {
     return this.data.email != "" && !(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).test(this.data.email)
   }
-  get validaPassword(){
+  get validaPassword() {
     return this.data.password != "" && this.data.password.length < 8;
   }
-  get validaPassword2(){
+  get validaPassword2() {
     return this.data.passwordConfirm != "" && this.data.passwordConfirm != this.data.password;
   }
   Save(form) {
-    if(this.validaEmail && this.validaPassword && this.validaNombre && this.validaPassword2){
+    if (this.validaEmail && this.validaPassword && this.validaNombre && this.validaPassword2) {
       return;
     }
 

@@ -34,7 +34,7 @@ export class UIService {
   }
 
 
-  async presentToast(message: string, color: string = "", icon: string = "", position: any = 'bottom', duration: number = 4000) {
+  async presentToast(message: string, color: string = "", icon: string = "", position: any = 'bottom', duration: number = 3000) {
     //console.log('toast');
 
     const toast = await this.toastController.create({

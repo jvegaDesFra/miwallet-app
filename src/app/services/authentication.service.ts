@@ -28,6 +28,18 @@ export class AuthenticationService {
 
 
 
+    recover(data) {
+        const body = new HttpParams()
+            .set('correo', data)
+           
+        return this.http.post<any>(`${Environments.API_ENDPOINT}/recover.php`, body).pipe(
+            map((userInfo) => {
+                //console.log(userInfo);
+
+                return userInfo;
+            })
+        )
+    }
 
     register(data) {
         const body = new HttpParams()

@@ -9,6 +9,7 @@ import { UIService } from '../../../../services/ui.service';
 import { DocumentSendComponent } from '../document-send/document-send.component';
 import { CertificadoService } from '../../documents.service';
 import { first } from 'rxjs/operators';
+import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-document',
@@ -58,6 +59,15 @@ export class DocumentComponent implements OnInit {
 
       },
       (error) => console.log(error))
+  }
+
+  async share(document){
+    await Share.share({
+      title: "documento",
+      text: document.title,
+      url: document.filePath,
+     // dialogTitle: 'Share with buddies',
+    });
   }
   async openSend() {
     const modal = await this.modalCtrl.create({

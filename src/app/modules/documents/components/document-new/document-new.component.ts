@@ -12,7 +12,8 @@ import { AuthenticationService } from '../../../../services/authentication.servi
 import { CertificadoService } from '../../documents.service';
 import { first } from 'rxjs/operators';
 
-const APP_DIRECTORY = Directory.Documents;
+//const APP_DIRECTORY = Directory.Documents;
+const APP_DIRECTORY = Directory.Data;
 @Component({
   selector: 'app-document-new',
   templateUrl: './document-new.component.html',

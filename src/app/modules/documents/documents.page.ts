@@ -34,7 +34,7 @@ export class DocumentsPage implements OnInit {
     private platform: Platform) { }
 
   route: string = "";
-  routeAndroid: string = "file:///storage/emulated/0/Documents/";
+  routeAndroid: string = "file:///data/user/0/com.miwallet.fastpass/files/";//"file:///storage/emulated/0/Documents/";
   routeIos: string = "file:///storage/emulated/0/Documents/";
   getType(filename: string) {
     let ext = filename.substring(filename.lastIndexOf('.') + 1);

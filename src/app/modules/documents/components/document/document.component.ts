@@ -3,7 +3,8 @@ import { DocumentService } from '../../../../akita/service/documents.service';
 import { Documentos } from '../../../../akita/models/documents.model';
 import { isPlatform, ModalController } from '@ionic/angular';
 import { Directory, Filesystem } from '@capacitor/filesystem';
-const APP_DIRECTORY = Directory.Documents;
+//const APP_DIRECTORY = Directory.Documents;
+const APP_DIRECTORY = Directory.Data;
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { UIService } from '../../../../services/ui.service';
 import { DocumentSendComponent } from '../document-send/document-send.component';
@@ -40,11 +41,14 @@ export class DocumentComponent implements OnInit {
               next: async (res) => {
                 //console.log(res);
                 // if (res.result) {
-                const folderContent = await Filesystem.deleteFile({
+                Filesystem.deleteFile({
                   path: document.file.name,
                   directory: APP_DIRECTORY
+                }).then(result=>{
+                  console.log("DELETED ", result);
+                }).catch(error=>{
+                  console.log("Error ", error);
                 })
-                console.log("DELETED ", folderContent);
                 
                 this.documentsService.delete(document.id);
                 // }
@@ -62,11 +66,19 @@ export class DocumentComponent implements OnInit {
   }
 
   async share(document){
-    await Share.share({
+    console.log(document);
+    
+    Share.share({
       title: "documento",
       text: document.title,
       url: document.filePath,
      // dialogTitle: 'Share with buddies',
+    }).then(share=>{
+      console.log(share);
+      
+    }).catch(error=>{
+      console.log(error);
+      
     });
   }
   async openSend() {
@@ -110,6 +122,8 @@ export class DocumentComponent implements OnInit {
 
 
   openFile() {
+    console.log(this.document.filePath);
+    
     this.fileOpener.open(this.document.filePath, this.document.file.type)
       .then(() => console.log('File is opened'))
       .catch(e => {

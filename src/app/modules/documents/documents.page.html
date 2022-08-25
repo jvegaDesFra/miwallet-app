@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button color="green"></ion-menu-button>
@@ -29,8 +29,7 @@
 
 
   </ion-header>
-  <br>
-  <br>
+
   <app-documents [documents]="documentos$ | async"></app-documents>
 
   <div *ngIf="!loaded">

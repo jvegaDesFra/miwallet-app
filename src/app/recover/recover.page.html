@@ -27,9 +27,9 @@
   <br>
 </ion-content>
 
-<ion-footer>
+<ion-footer class="ion-no-border">
   <ion-toolbar>
-
+    <ion-button expand="block" color="green" (click)="send()" [disabled]="!validForm">Enviar</ion-button>
   </ion-toolbar>
-  <ion-button expand="block" color="green" (click)="send()" [disabled]="!validForm">Enviar</ion-button>
+  
 </ion-footer>

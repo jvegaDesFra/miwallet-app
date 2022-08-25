@@ -13,12 +13,12 @@ import { FoldersPageModule } from "./modules/folders/fodlers.module";
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
-//modals
+//modals { mode: 'ios', animated: true }
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [HttpClientModule, BrowserModule, IonicModule.forRoot({ mode: 'ios', animated: true }), AppRoutingModule, DocumentsPageModule, FoldersPageModule],
+  imports: [HttpClientModule, BrowserModule, IonicModule.forRoot(), AppRoutingModule, DocumentsPageModule, FoldersPageModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, FileOpener, InAppBrowser],
   bootstrap: [AppComponent],
 })

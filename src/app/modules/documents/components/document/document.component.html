@@ -1,10 +1,12 @@
-<ion-item lines="full" [ngStyle]="{'--background': document.folderColor, '--color': '#fff'}">
-  <ion-avatar slot="start">
+<ion-item lines="full" [ngStyle]="{'--background': document.folderColor, '--color': '#fff'}"   detail>
+ 
+  <ion-avatar slot="start" (click)="openFile()">
     <ion-icon name="image-outline" size="large" *ngIf="document.file.type.indexOf('image/') >= 0"></ion-icon>
     <ion-icon name="document-text-outline" size="large" *ngIf="document.file.type.indexOf('image/') < 0"></ion-icon>
   </ion-avatar>
-  <ion-label>{{document.title}}</ion-label>
-  <ion-icon class="clickeable" (click)="openFile()" name="eye-outline" slot="end"></ion-icon>
-  <ion-icon class="clickeable"  (click)="share(document)" name="share-social-outline" slot="end"></ion-icon>
-  <ion-icon class="clickeable" (click)="delete(document)" name="trash-outline" slot="end"></ion-icon>
+  <ion-label (click)="openFile()">{{document.title}}</ion-label>
+
+  <ion-icon class="clickeable" style="color:#fff"  name="cloud-done" slot="end"></ion-icon>
+  <ion-icon class="clickeable" style="color:#fff" (click)="share(document)" name="share-social-outline" slot="end"></ion-icon>
+  <ion-icon class="clickeable" style="color:#fff" (click)="delete(document)" name="trash-outline" slot="end"></ion-icon>
 </ion-item>

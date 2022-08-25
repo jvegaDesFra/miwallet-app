@@ -68,18 +68,27 @@ export class DocumentComponent implements OnInit {
   async share(document){
     console.log(document);
     
-    Share.share({
-      title: "documento",
-      text: document.title,
-      url: document.filePath,
-     // dialogTitle: 'Share with buddies',
-    }).then(share=>{
-      console.log(share);
-      
-    }).catch(error=>{
-      console.log(error);
-      
-    });
+
+    Filesystem.getUri({
+      directory: APP_DIRECTORY,
+      path: document.file.name,
+    }).then(url_=>{
+      console.log("----URI---", url_);
+      Share.share({
+        title: "documento",
+       // text: document.title,
+        url: url_.uri,
+        dialogTitle: 'Share with buddies',
+      }).then(share=>{
+        console.log(share);
+        
+      }).catch(error=>{
+        console.log(error);
+        
+      });
+    })
+
+    
   }
   async openSend() {
     const modal = await this.modalCtrl.create({
@@ -122,14 +131,21 @@ export class DocumentComponent implements OnInit {
 
 
   openFile() {
-    console.log(this.document.filePath);
+   // console.log(this.document.filePath);
     
-    this.fileOpener.open(this.document.filePath, this.document.file.type)
+    Filesystem.getUri({
+      directory: APP_DIRECTORY,
+      path: this.document.file.name,
+    }).then(url_=>{
+      console.log("----URI---", url_);
+      this.fileOpener.open(url_.uri, this.document.file.type)
       .then(() => console.log('File is opened'))
       .catch(e => {
         this.ui.presentToast("No se encuentra el archivo en el dispositivo", "warning", "alert-circle")
         console.log('Error opening file', e)
       });
+    })
+    
   }
   async openFile2(name) {
     // //console.log(isPlatform('android'));

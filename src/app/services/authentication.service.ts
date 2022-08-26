@@ -6,6 +6,9 @@ import { map } from "rxjs/operators";
 // { SubMenus, User, UserInfo } from "../_models/user";
 import { Environments } from "../../environments/env.constant";
 import { user } from "../akita/models/user.model";
+import { NavController } from "@ionic/angular";
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
+import { UIService } from "./ui.service";
 
 
 @Injectable({ providedIn: "root" })
@@ -14,7 +17,7 @@ export class AuthenticationService {
     public currentOwner: Observable<user>;
 
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private navController: NavController) {
         this.currentOwnerSubject = new BehaviorSubject<user>(
             JSON.parse(localStorage.getItem("currentOwner") || 'null')
         );
@@ -93,6 +96,10 @@ export class AuthenticationService {
         // remove user from local storage to log user out
         localStorage.removeItem("currentOwner");
         this.currentOwnerSubject.next({});
+        
+        this.navController.navigateRoot('/login')
+       // this.router.navigate(['/login']);
+       
     }
 
 }

@@ -9,6 +9,7 @@ import { RegisterPage } from "../register/register.page";
 import { FoldersService } from '../akita/service/folders.service';
 import { CategoriesServices } from '../modules/folders/categories.services';
 import { RecoverPage } from '../recover/recover.page';
+import { Device } from '@capacitor/device';
 
 @Component({
   selector: 'app-login',
@@ -37,6 +38,20 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.menuController.enable(false);
+
+   // Device.getInfo().then(info=>{
+   //   console.log(info);
+   //   
+   // })
+   // Device.getId().then(id=>{
+   //   console.log(id);
+   //   
+   // })
+//
+   // Device.getBatteryInfo().then(id=>{
+   //   console.log(id);
+   //   
+   // })
     // this.OpenRegisterPage();
     //this.OpenRecoverPage();
   }

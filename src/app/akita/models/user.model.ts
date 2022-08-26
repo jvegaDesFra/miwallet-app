@@ -3,6 +3,7 @@ export class user{
     name?: string;
     lastname?: string;
     email?: string;
+    token?: string;
 }
 
 export class userRequest {

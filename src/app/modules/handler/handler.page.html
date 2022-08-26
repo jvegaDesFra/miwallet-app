@@ -1,0 +1,48 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Configurando cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-header collapse="condense" class="ion-no-border">
+    <ion-toolbar>
+      <ion-title size="large">Configurando cuenta</ion-title>
+    </ion-toolbar>
+  </ion-header>
+ 
+
+  <h3 *ngIf="!data.folders && !data.documents">Estamos sincronizando tu informacion en este nuevo dispositivo</h3>
+  <h3 *ngIf="data.folders && data.documents">El dispositivo esta listo para usar</h3>
+  <br>
+  <br>
+  <ion-list-header>
+    <ion-icon size="large" name="checkbox" color="green" *ngIf="data.folders"></ion-icon>
+    <ion-label> <h1>{{data.folders ? 'Categorias sincronizadas' : 'Sincronizando categorias'}}</h1> </ion-label>
+  </ion-list-header>
+  <ion-progress-bar type="indeterminate" *ngIf="!data.folders"></ion-progress-bar>
+  <br><br><br>
+  <ion-list-header>
+    <ion-icon size="large" name="checkbox" color="green" *ngIf="data.documents"></ion-icon>
+    <ion-label> <h1>{{data.documents ? 'Documentos sincronizadas' : 'Sincronizando Documentos'}}</h1> </ion-label>
+  </ion-list-header>
+  <ion-progress-bar type="indeterminate" *ngIf="!data.documents"></ion-progress-bar>
+  <br><br><br>
+  
+  <br>
+  <!--<ion-list-header>
+    <ion-icon size="large" name="checkbox" color="green" *ngIf="data.permissions"></ion-icon>
+    <ion-label> <h1>{{data.permissions ? 'Permisos obtenidos' : 'Validando permisos'}}</h1> </ion-label>
+  </ion-list-header>
+  <ion-progress-bar type="indeterminate" *ngIf="!data.permissions"></ion-progress-bar>-->
+
+  <ion-button expand="block" color="green" (click)="entrar()" *ngIf="data.folders && data.documents">Entrar</ion-button>
+
+
+</ion-content>
+
+<ion-footer  class="ion-no-border">
+  <ion-toolbar>
+   
+  </ion-toolbar>
+
+</ion-footer>

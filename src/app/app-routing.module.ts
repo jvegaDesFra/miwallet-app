@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'recover',
     loadChildren: () => import('./recover/recover.module').then( m => m.RecoverPageModule)
   },
+  {
+    path: 'handler',
+    loadChildren: () => import('./modules/handler/handler.module').then( m => m.HandlerPageModule)
+  },
 
 
   

@@ -10,6 +10,7 @@ import { first } from 'rxjs/operators';
 import { FoldersQuery } from '../../akita/query/folders.query';
 import { UIService } from '../../services/ui.service';
 import { CertificadoService } from './documents.service';
+import { HandlerService } from '../handler/handler.service';
 
 @Component({
   selector: 'page-documents',
@@ -31,71 +32,16 @@ export class DocumentsPage implements OnInit {
     private folderQuery: FoldersQuery,
     private ui: UIService,
     private certService: CertificadoService,
-    private platform: Platform) { }
+    private platform: Platform,
+    private handlerService: HandlerService) { }
 
-  route: string = "";
-  routeAndroid: string = "file:///data/user/0/com.miwallet.fastpass/files/";//"file:///storage/emulated/0/Documents/";
-  routeIos: string = "file:///storage/emulated/0/Documents/";
-  getType(filename: string) {
-    let ext = filename.substring(filename.lastIndexOf('.') + 1);
-    let result = "";
-    switch (ext) {
-      case "png":
-        result = "image/png";
-        break;
-      case "gif":
-        result = "image/gif";
-        break;
-      case "jpg":
-        result = "image/jpeg";
-        break;
-      case "pdf":
-        result = "application/pdf";
-        break;
-      case "xlsx":
-        result = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        break;
-      case "pptx":
-        result = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        break;
-      case "docx":
-        result = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-        break;
-      default:
-        break;
-    }
-
-    return result;
-  }
+  
+ 
   ngOnInit() {
-    if (this.platform.is("hybrid")) {
-      this.route = this.platform.is("android") ? this.routeAndroid : this.routeIos;
-    }
-    this.certService
-      .getDocuments(this.auth.currentOwnerValue.id)
-      .pipe(first())
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-          res.forEach(element => {
-            let type = this.getType(element.filename);
-          
-            
-            let file: file = {
-              blob: undefined,
-              name: element.filename,
-              size: 0,
-              type: type
-            }
-            this.documentsService.add(element.title, element.id, file, this.route + element.filename, element.color, element.id_document);
-
-          });
-
-        },
-        error: (error) => {
-
-        },
-      });
+    
+    this.handlerService.getFolders();
+    this.handlerService.getDocuments();
+   
     this.documentsService.searchDocument("");
     //console.log(this.documentos$);
 

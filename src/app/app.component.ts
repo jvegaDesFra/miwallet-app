@@ -56,27 +56,10 @@ export class AppComponent {
     if(this.authService.currentOwnerValue){
       this.user.name = this.authService.currentOwnerValue.name;
       this.user.email = this.authService.currentOwnerValue.email;
-      this.GetService();
+      //this.GetService();
     }
   }
-  GetService(){
-    
-    this.catService
-      .getCAtegories(this.authService.currentOwnerValue.id)
-      .pipe(first())
-      .subscribe({
-        next: (res) => {   
-          //console.log(res);
-          res.forEach(element => {
-            this.service.add(element.categoria, element.color , element.id);
-          });
-          
-        },
-        error: (error) => {
-          
-        },
-      });
-  }
+ 
   
 
   ngOnInit() {

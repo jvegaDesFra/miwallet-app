@@ -101,7 +101,7 @@ export class LoginPage implements OnInit {
                 },
               });
             //this.folderService.add("Inicio","", "0")
-            this.navController.navigateRoot("/documents")
+            this.navController.navigateRoot("/handler")
           },
           error: error => {
             //console.log(error);

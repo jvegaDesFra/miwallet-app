@@ -12,6 +12,7 @@ import { CertificadoService } from '../../documents.service';
 import { first } from 'rxjs/operators';
 import { Share } from '@capacitor/share';
 import { HandlerService } from 'src/app/modules/handler/handler.service';
+import write_blob from 'capacitor-blob-writer';
 export enum StatusFile {
   Local = "local",
   Cloud = "cloud",
@@ -27,7 +28,7 @@ export enum StatusFile {
 export class DocumentComponent implements OnInit {
   @Input() document: Documentos;
   existeFile: boolean = false;
-  StatusFile:StatusFile;
+  StatusFile: StatusFile;
   constructor(private handleService: HandlerService,
     private certService: CertificadoService,
     private documentsService: DocumentService, private fileOpener: FileOpener, private ui: UIService, private modalCtrl: ModalController) { }
@@ -244,14 +245,15 @@ export class DocumentComponent implements OnInit {
     window.URL.revokeObjectURL(blobUrl);
     a.remove();
   }
-
-  async sync_file(state:StatusFile ) {
+  loading = false;
+  async sync_file(state: StatusFile) {
+    this.loading = true;
     console.log(state);
     switch (state) {
       case StatusFile.Local:
         console.log("subiedno");
-        this.existFile().then(async exist=>{
-          if(exist){
+        this.existFile().then(async exist => {
+          if (exist) {
             const file = await Filesystem.readFile({
               directory: APP_DIRECTORY,
               path: this.document.file.name
@@ -261,52 +263,101 @@ export class DocumentComponent implements OnInit {
             console.log("blob", blob);
             console.log("blobUrl", blobUrl);
             this.certService.sync(blob, this.document.id)
-            .pipe(first())
-            .subscribe({
-              next: (res) => {
-                console.log(res);
-                  if(res.result){
+              .pipe(first())
+              .subscribe({
+                next: (res) => {
+                  console.log(res);
+                  if (res.result) {
                     this.handleService.getDocuments();
+                    this.loading = false;
                   }
-              },
-              error: (error) => {
-      
-              },
-            });
+                },
+                error: (error) => {
+                  this.loading = false;
+                },
+              });
           }
-       })
-        
+        })
+
         break;
       case StatusFile.Cloud:
-       this.ui.presentToast("Archivo respaldado", "green", "cloud")
+        this.ui.presentToast("Archivo respaldado", "green", "cloud");
+        this.loading = false;
         break;
       case StatusFile.NotFound:
-        
+        this.ui.presentToast("No existe archivo local, ni remoto", "warning", "warning")
+        this.loading = false;
         break;
       case StatusFile.Download:
-        console.log("descargando");
+        // let stringEncode = Buffer.from(this.document.id).toString('base64');
+        let stringEncode = btoa(this.document.id);
+        console.log("descargando", stringEncode);
+        this.certService.download(stringEncode).pipe(first())
+          .subscribe({
+            next: (blob) => {
+              write_blob({
+                directory: APP_DIRECTORY,
+                path: `${this.document.file.name}`,
+                blob: blob,
+                on_fallback(error) {
+                  console.error('error: ', error);
+                }
+              }).then((result: any) => {
+                console.log(result);
+                this.existeFile = true;
+                this.handleService.getDocuments();
+                //this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "", 0);
+               // loader.dismiss();
+                this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
+                this.loading = false;
+               // this.certService.updateSyncDownload().pipe(first())
+               // .subscribe({
+               //   next: (result)=>{
+               //    
+               //     
+               //   },
+               //   error: (error) => {
+//
+               //   },
+               // })
+               
+              });
+
+            },
+            error: (error) => {
+              console.log(error);
+              if(error.status == 404){
+                this.ui.presentToast("No se encuentra el documento disponible para descargar", "warning", 'warning');
+                this.loading = false;
+              }
+            },
+          });
+        ;
+
+
+
         break;
       default:
         break;
     }
-    
+
     //return;
-    
-   // Filesystem.getUri({
-   //   directory: APP_DIRECTORY,
-   //   path: this.document.file.name,
-   // }).then(url_ => {
-//
-//
-   // })
-   // console.log(this.document);
 
-  
-
-   
+    // Filesystem.getUri({
+    //   directory: APP_DIRECTORY,
+    //   path: this.document.file.name,
+    // }).then(url_ => {
+    //
+    //
+    // })
+    // console.log(this.document);
 
 
-   
+
+
+
+
+
   }
   // }
 }

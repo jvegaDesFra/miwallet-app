@@ -12,5 +12,6 @@ export class Environments {
       : Environments.production; 
     
   
-    public static API_ENDPOINT = `${Environments.ENDPOINT}/api`;  
+    public static API_ENDPOINT = `${Environments.ENDPOINT}/api`; 
+
   }

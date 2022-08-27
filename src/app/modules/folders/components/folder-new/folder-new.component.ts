@@ -198,4 +198,10 @@ export class FolderNewComponent implements OnInit {
   
     this.modalController.dismiss(return_);
   }
+
+  get validForm() {
+    console.log(this.selectedColor);
+    
+    return (this.nombre != "" && this.selectedColor);
+  }
 }

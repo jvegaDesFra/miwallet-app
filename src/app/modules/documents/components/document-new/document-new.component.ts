@@ -26,34 +26,38 @@ export class DocumentNewComponent implements OnInit {
   @ViewChild('filepicker') uploader: ElementRef;
   constructor(private modalController: ModalController,
     private query: FoldersQuery,
-    private documentsService : DocumentService,
+    private documentsService: DocumentService,
     private ui: UIService,
     private auth: AuthenticationService,
-    private certService : CertificadoService,
+    private certService: CertificadoService,
     private handler: HandlerService
-    ) { }
+  ) { }
+  get validForm() {
 
+
+    return this.nombre != "" && this.currentFolder && this.selectedFile;
+  }
   ngOnInit() {
-    this.folders$ = this.query.getFolders$; 
+    this.folders$ = this.query.getFolders$;
     //console.log("APP_DIRECTORY", APP_DIRECTORY);
 
- //  this.loadDocumentos();
-  //this.fileRead();
+    //  this.loadDocumentos();
+    //this.fileRead();
   }
-  async loadDocumentos(){
+  async loadDocumentos() {
     const folderContent = await Filesystem.readdir({
       directory: APP_DIRECTORY,
       path: ""
     });
     folderContent.files.map(file => {
-     //console.log(file);
-     Filesystem.getUri({
-      directory: APP_DIRECTORY,
-      path: file
-     }).then(pathFile => {
+      //console.log(file);
+      Filesystem.getUri({
+        directory: APP_DIRECTORY,
+        path: file
+      }).then(pathFile => {
         //console.log(pathFile);
-        
-     })
+
+      })
     });
   }
   async fileRead() {
@@ -65,28 +69,28 @@ export class DocumentNewComponent implements OnInit {
     //console.log("Read file", contents);
   }
   CloseModal(return_) {
-  
+
     this.modalController.dismiss(return_);
   }
   currentFolder = undefined;
-  nombre:string = "";
+  nombre: string = "";
   handleChange(ev) {
     //console.log(ev.target);
-    
+
     this.currentFolder = ev.target.value;
 
     //console.log(this.currentFolder);
-    
+
   }
-  save(){
+  save() {
 
 
-    this.ui.loader("").then(loader=>{
+    this.ui.loader("").then(loader => {
       loader.present();
       this.certService.add(this.nombre, this.currentFolder.id, this.auth.currentOwnerValue.id, this.selectedFile.blob)
-      .pipe(first())
+        .pipe(first())
         .subscribe({
-          next: (res) => {   
+          next: (res) => {
             console.log(res);
             write_blob({
               directory: APP_DIRECTORY,
@@ -95,16 +99,16 @@ export class DocumentNewComponent implements OnInit {
               on_fallback(error) {
                 console.error('error: ', error);
               }
-            }).then((result:any)=>{
+            }).then((result: any) => {
               console.log(result);
               let ext = this.selectedFile.name.substring(this.selectedFile.name.lastIndexOf('.') + 1);
-             let newfilename = result
+              let newfilename = result
               Filesystem.rename({
                 directory: APP_DIRECTORY,
                 toDirectory: APP_DIRECTORY,
                 from: this.selectedFile.name,
-                to: res.hash + "_."+ ext
-              }).then(rename=>{
+                to: res.hash + "_." + ext
+              }).then(rename => {
                 console.log(rename);
                 console.log(result);
                 this.handler.getDocuments();
@@ -114,34 +118,34 @@ export class DocumentNewComponent implements OnInit {
                 this.CloseModal(null);
               })
 
-            
-             
+
+
             });
           },
           error: (error) => {
-            
+
           },
         });
-     
+
     })
-   
-  
+
+
   }
   compareWith(o1, o2) {
     return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }
 
   selectedFile: file | undefined;
-  deleteFile(){
-    this.selectedFile  = undefined;
+  deleteFile() {
+    this.selectedFile = undefined;
   }
   async fileSelected($event) {
     const selected = $event.target.files[0];
     //console.log(selected);
     this.selectedFile = {
       type: selected.type,
-      name : selected.name,
-      size : selected.size,
+      name: selected.name,
+      size: selected.size,
       blob: selected
     }
     return;
@@ -156,12 +160,12 @@ export class DocumentNewComponent implements OnInit {
       on_fallback(error) {
         console.error('error: ', error);
       }
-    }).then(result=>{
+    }).then(result => {
       //console.log(result);
-      
+
     });
- 
-   
+
+
   }
   addFile() {
     this.uploader.nativeElement.click();

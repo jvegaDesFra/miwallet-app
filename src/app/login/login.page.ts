@@ -17,14 +17,14 @@ import { Device } from '@capacitor/device';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  request : userRequest = {
-    email: "jose.juan.vega@outlook.com",
-    password: "1234567890"
-  }
-  //request: userRequest = {
-  //  email: "",
-  //  password: ""
+  //request : userRequest = {
+  //  email: "jose.juan.vega@outlook.com",
+  //  password: "1234567890"
   //}
+  request: userRequest = {
+    email: "",
+    password: ""
+  }
   constructor(private interfazService: InterfazService,
     private authService: AuthenticationService,
     private navController: NavController,
@@ -102,7 +102,7 @@ export class LoginPage implements OnInit {
               });
             //this.folderService.add("Inicio","", "0")
          //   this.navController.navigateRoot("/handler")
-            this.navController.navigateRoot("/login")
+            this.navController.navigateRoot("/handler")
           },
           error: error => {
             //console.log(error);

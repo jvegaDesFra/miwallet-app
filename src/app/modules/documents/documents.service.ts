@@ -12,6 +12,22 @@ export class CertificadoService {
   constructor(private http: HttpClient) {
   }
 
+  sync(file, id_documento) {
+    const formData: FormData = new FormData();
+   
+    formData.append('cf',  file);
+    
+    formData.append('id_documento', id_documento);
+    return this.http
+      .post<any>(`${Environments.API_ENDPOINT}/documents/sync.php`, formData)
+      .pipe(
+        map((result) => {
+          //console.log(result);
+          
+          return result;
+        })
+      );
+  }
 
   add(nombre, id_categoria, id_usuario, file) {
     const formData: FormData = new FormData();

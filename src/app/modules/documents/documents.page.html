@@ -90,6 +90,11 @@
 </ion-content>
 <ion-footer [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start" >
+      <ion-button color="green" (click)="refresh()">
+        <ion-icon size="large" name="reload-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title> {{(documentos$ | async).length}} registros</ion-title>
     
     <ion-buttons slot="end" >

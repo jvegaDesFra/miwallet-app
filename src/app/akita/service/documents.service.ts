@@ -12,8 +12,8 @@ export class DocumentService {
   }
 
 
-  add(title: string, idFolder: string, fileurl: file, filePath: string, folderColor: string, id_document: string) {
-    const todo = createDocument(title, idFolder, fileurl, filePath, folderColor, id_document);
+  add(title: string, idFolder: string, fileurl: file, filePath: string, folderColor: string, id_document: string, sync: number) {
+    const todo = createDocument(title, idFolder, fileurl, filePath, folderColor, id_document, sync);
     console.log(todo);
     
     this.documentStore.add(todo);
@@ -31,6 +31,12 @@ export class DocumentService {
     this.documentStore.update({
       idFolder
     })
+  }
+
+  updateSync(id,sync){
+    console.log("update", id, sync);
+    
+    this.documentStore.update(id, { sync });
   }
   searchDocument(text){
     this.documentStore.update({

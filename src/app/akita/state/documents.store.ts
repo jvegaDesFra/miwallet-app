@@ -23,7 +23,8 @@ export class DocumentStore extends EntityStore<DocumentState> {
   constructor() {
     super(createInitialName());
   }
- 
+
+
  // setName(name: string) {
  //   this.update({name});
  // }

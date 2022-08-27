@@ -11,19 +11,68 @@ import { DocumentSendComponent } from '../document-send/document-send.component'
 import { CertificadoService } from '../../documents.service';
 import { first } from 'rxjs/operators';
 import { Share } from '@capacitor/share';
-
+import { HandlerService } from 'src/app/modules/handler/handler.service';
+export enum StatusFile {
+  Local = "local",
+  Cloud = "cloud",
+  NotFound = "notFound",
+  Download = "download"
+};
 @Component({
   selector: 'app-document',
   templateUrl: './document.component.html',
   styleUrls: ['./document.component.scss'],
 })
+
 export class DocumentComponent implements OnInit {
   @Input() document: Documentos;
-  constructor(private certService: CertificadoService,
+  existeFile: boolean = false;
+  StatusFile:StatusFile;
+  constructor(private handleService: HandlerService,
+    private certService: CertificadoService,
     private documentsService: DocumentService, private fileOpener: FileOpener, private ui: UIService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
+    this.existFile().then(result => {
+      this.existeFile = result;
+    });
+  }
 
+  getIcon(type: StatusFile) {
+    let icon = "";
+    switch (type) {
+      case StatusFile.Local:
+        icon = "cloud-upload";
+        break;
+      case StatusFile.Cloud:
+        icon = "cloud";
+        break;
+      case StatusFile.NotFound:
+        icon = "warning";
+        break;
+      case StatusFile.Download:
+        icon = "cloud-download";
+        break;
+      default:
+        break;
+    }
+    return icon;
+  }
+  get StateFile() {
+    let result: StatusFile;
+    if (this.existeFile && this.document.sync == 0) {
+      result = StatusFile.Local;
+    }
+    if (this.existeFile && this.document.sync == 1) {
+      result = StatusFile.Cloud;
+    }
+    if (!this.existeFile && this.document.sync == 0) {
+      result = StatusFile.NotFound;
+    }
+    if (!this.existeFile && this.document.sync == 1) {
+      result = StatusFile.Download;
+    }
+    return result
   }
 
   async delete(document) {
@@ -44,12 +93,12 @@ export class DocumentComponent implements OnInit {
                 Filesystem.deleteFile({
                   path: document.file.name,
                   directory: APP_DIRECTORY
-                }).then(result=>{
+                }).then(result => {
                   console.log("DELETED ", result);
-                }).catch(error=>{
+                }).catch(error => {
                   console.log("Error ", error);
                 })
-                
+
                 this.documentsService.delete(document.id);
                 // }
                 loader.dismiss();
@@ -65,30 +114,30 @@ export class DocumentComponent implements OnInit {
       (error) => console.log(error))
   }
 
-  async share(document){
+  async share(document) {
     console.log(document);
-    
+
 
     Filesystem.getUri({
       directory: APP_DIRECTORY,
       path: document.file.name,
-    }).then(url_=>{
+    }).then(url_ => {
       console.log("----URI---", url_);
       Share.share({
         title: "documento",
-       // text: document.title,
+        // text: document.title,
         url: url_.uri,
         dialogTitle: 'Share with buddies',
-      }).then(share=>{
+      }).then(share => {
         console.log(share);
-        
-      }).catch(error=>{
+
+      }).catch(error => {
         console.log(error);
-        
+
       });
     })
 
-    
+
   }
   async openSend() {
     const modal = await this.modalCtrl.create({
@@ -129,23 +178,39 @@ export class DocumentComponent implements OnInit {
     return blob;
   }
 
+  //Pasar a un service 
+  existFile(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      Filesystem.readFile({
+        directory: APP_DIRECTORY,
+        path: this.document.file.name,
+      }).then(readFile => {
+        resolve(true);
+
+      }).catch(error => {
+        resolve(false)
+
+      })
+    })
+
+  }
 
   openFile() {
-   // console.log(this.document.filePath);
-    
+    // console.log(this.document.filePath);
+
     Filesystem.getUri({
       directory: APP_DIRECTORY,
       path: this.document.file.name,
-    }).then(url_=>{
+    }).then(url_ => {
       console.log("----URI---", url_);
       this.fileOpener.open(url_.uri, this.document.file.type)
-      .then(() => console.log('File is opened'))
-      .catch(e => {
-        this.ui.presentToast("No se encuentra el archivo en el dispositivo", "warning", "alert-circle")
-        console.log('Error opening file', e)
-      });
+        .then(() => console.log('File is opened'))
+        .catch(e => {
+          this.ui.presentToast("No se encuentra el archivo en el dispositivo", "warning", "alert-circle")
+          console.log('Error opening file', e)
+        });
     })
-    
+
   }
   async openFile2(name) {
     // //console.log(isPlatform('android'));
@@ -178,6 +243,70 @@ export class DocumentComponent implements OnInit {
     a.click();
     window.URL.revokeObjectURL(blobUrl);
     a.remove();
+  }
+
+  async sync_file(state:StatusFile ) {
+    console.log(state);
+    switch (state) {
+      case StatusFile.Local:
+        console.log("subiedno");
+        this.existFile().then(async exist=>{
+          if(exist){
+            const file = await Filesystem.readFile({
+              directory: APP_DIRECTORY,
+              path: this.document.file.name
+            });
+            const blob = this.b64toBlob(file.data, this.document.file.type);
+            const blobUrl = URL.createObjectURL(blob);
+            console.log("blob", blob);
+            console.log("blobUrl", blobUrl);
+            this.certService.sync(blob, this.document.id)
+            .pipe(first())
+            .subscribe({
+              next: (res) => {
+                console.log(res);
+                  if(res.result){
+                    this.handleService.getDocuments();
+                  }
+              },
+              error: (error) => {
+      
+              },
+            });
+          }
+       })
+        
+        break;
+      case StatusFile.Cloud:
+       this.ui.presentToast("Archivo respaldado", "green", "cloud")
+        break;
+      case StatusFile.NotFound:
+        
+        break;
+      case StatusFile.Download:
+        console.log("descargando");
+        break;
+      default:
+        break;
+    }
+    
+    //return;
+    
+   // Filesystem.getUri({
+   //   directory: APP_DIRECTORY,
+   //   path: this.document.file.name,
+   // }).then(url_ => {
+//
+//
+   // })
+   // console.log(this.document);
+
+  
+
+   
+
+
+   
   }
   // }
 }

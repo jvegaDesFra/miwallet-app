@@ -54,6 +54,8 @@ export class HandlerService {
           next: (res) => {
             //console.log(res);
             res.forEach(element => {
+                console.log(element);
+                
               let type = this.getType(element.filename);
             
               
@@ -63,7 +65,9 @@ export class HandlerService {
                 size: 0,
                 type: type
               }
-              this.documentsService.add(element.title, element.id, file, this.route + element.filename, element.color, element.id_document);
+              this.documentsService.add(element.title, element.id, file, this.route + element.filename, element.color, element.id_document, element.sync);
+
+              this.documentsService.updateSync(element.id_document,  element.sync);
     
             });
             resolve(true);

@@ -11,6 +11,7 @@ import { UIService } from '../../../../services/ui.service';
 import { AuthenticationService } from '../../../../services/authentication.service';
 import { CertificadoService } from '../../documents.service';
 import { first } from 'rxjs/operators';
+import { HandlerService } from '../../../handler/handler.service';
 
 //const APP_DIRECTORY = Directory.Documents;
 const APP_DIRECTORY = Directory.Data;
@@ -28,7 +29,8 @@ export class DocumentNewComponent implements OnInit {
     private documentsService : DocumentService,
     private ui: UIService,
     private auth: AuthenticationService,
-    private certService : CertificadoService
+    private certService : CertificadoService,
+    private handler: HandlerService
     ) { }
 
   ngOnInit() {
@@ -93,12 +95,27 @@ export class DocumentNewComponent implements OnInit {
               on_fallback(error) {
                 console.error('error: ', error);
               }
-            }).then(result=>{
-              //console.log(result);
-              this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "");
-              loader.dismiss();
-              this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
-              this.CloseModal(null);
+            }).then((result:any)=>{
+              console.log(result);
+              let ext = this.selectedFile.name.substring(this.selectedFile.name.lastIndexOf('.') + 1);
+             let newfilename = result
+              Filesystem.rename({
+                directory: APP_DIRECTORY,
+                toDirectory: APP_DIRECTORY,
+                from: this.selectedFile.name,
+                to: res.hash + "_."+ ext
+              }).then(rename=>{
+                console.log(rename);
+                console.log(result);
+                this.handler.getDocuments();
+                //this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "", 0);
+                loader.dismiss();
+                this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
+                this.CloseModal(null);
+              })
+
+            
+             
             });
           },
           error: (error) => {

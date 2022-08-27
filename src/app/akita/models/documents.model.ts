@@ -7,9 +7,10 @@ export type Documentos = {
   completed: boolean;
   idFolder: string;
   filePath: string;
+  sync: number;
 };
 
-export function createDocument(title: string, idFolder: string, file: file, filePath: string, folderColor: string, id: string) {
+export function createDocument(title: string, idFolder: string, file: file, filePath: string, folderColor: string, id: string, sync: number) {
   return {
     id: id == "" ? guid() : id,
     title,
@@ -17,7 +18,8 @@ export function createDocument(title: string, idFolder: string, file: file, file
     filePath: filePath,
     completed: false,
     idFolder: idFolder,
-    folderColor: folderColor
+    folderColor: folderColor,
+    sync: sync
   } as Documentos;
 }
 

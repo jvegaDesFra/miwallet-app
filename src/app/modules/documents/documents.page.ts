@@ -39,8 +39,7 @@ export class DocumentsPage implements OnInit {
  
   ngOnInit() {
     
-    this.handlerService.getFolders();
-    this.handlerService.getDocuments();
+   this.refresh();
    
     this.documentsService.searchDocument("");
     //console.log(this.documentos$);
@@ -89,6 +88,10 @@ export class DocumentsPage implements OnInit {
       //console.log(role);
 
     }
+  }
+  refresh(){
+    this.handlerService.getFolders();
+    this.handlerService.getDocuments();
   }
   lsFilter = [];
   lsData = [];

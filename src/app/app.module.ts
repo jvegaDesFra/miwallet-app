@@ -16,11 +16,13 @@ import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { JwtInterceptor } from './services/jwt.interceptor';
 import { ErrorInterceptor } from './services/error.interceptor';
 //modals { mode: 'ios', animated: true }
-
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+const config: SocketIoConfig = { url: 'http://192.168.1.181:3001', options: {transports: ['websocket']} };
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [HttpClientModule, BrowserModule, IonicModule.forRoot(), AppRoutingModule, DocumentsPageModule, FoldersPageModule],
+  imports: [HttpClientModule, BrowserModule, IonicModule.forRoot(), AppRoutingModule, DocumentsPageModule, FoldersPageModule,
+    SocketIoModule.forRoot(config)],
   providers: [
     {provide : HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi:true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi:true},

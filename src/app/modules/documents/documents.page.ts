@@ -11,6 +11,8 @@ import { FoldersQuery } from '../../akita/query/folders.query';
 import { UIService } from '../../services/ui.service';
 import { CertificadoService } from './documents.service';
 import { HandlerService } from '../handler/handler.service';
+import { Socket } from 'ngx-socket-io';
+import { Device } from '@capacitor/device';
 
 @Component({
   selector: 'page-documents',
@@ -33,14 +35,43 @@ export class DocumentsPage implements OnInit {
     private ui: UIService,
     private certService: CertificadoService,
     private platform: Platform,
-    private handlerService: HandlerService) { }
+    private handlerService: HandlerService,
+    private socket: Socket) { }
 
-  
- 
+
+  interval;
+  ngOnDestroy() {
+    //  this.Socket_emit("GetInfoDriver:ID:OUT", null)
+    clearInterval(this.interval);
+  }
+  ionViewDidEnter() {
+    this.socket.connect();
+    this.socket.fromEvent('logout').subscribe(id => {
+      console.log("FromEvent", id);
+      this.auth.logout();
+      this.ui.presentToast("Se ha iniciado sesion en otro dispositivo",'warning')
+    });
+  }
   ngOnInit() {
+
     
-   this.refresh();
-   
+
+    console.log("ngOnInit", this.auth);
+
+
+    this.refresh();
+    Device.getId().then(id => {
+      console.log(id);
+      this.socket.connect();
+      this.socket.emit('latido', this.auth.currentOwnerValue.id, this.auth.currentOwnerValue.token, id.uuid);
+      this.interval = setInterval(() => {
+        this.socket.connect();
+        this.socket.emit('latido', this.auth.currentOwnerValue.id, this.auth.currentOwnerValue.token, id.uuid);
+        if (!this.auth.currentOwnerValue) {
+          clearInterval(this.interval);
+        }
+      }, 2000);
+    })
     this.documentsService.searchDocument("");
     //console.log(this.documentos$);
 
@@ -89,7 +120,7 @@ export class DocumentsPage implements OnInit {
 
     }
   }
-  refresh(){
+  refresh() {
     this.handlerService.getFolders();
     this.handlerService.getDocuments();
   }

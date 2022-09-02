@@ -10,6 +10,7 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 import { AuthenticationService } from './services/authentication.service';
 import { CategoriesServices } from './modules/folders/categories.services';
 import { first } from 'rxjs/operators';
+import { HandlerService } from './modules/handler/handler.service';
 
 
 @Component({
@@ -38,7 +39,9 @@ export class AppComponent {
     private modalCtrl: ModalController,
     public menuCtrl: MenuController,
     private authService: AuthenticationService,
-    private catService: CategoriesServices,) {
+    private catService: CategoriesServices,
+    private handlerService: HandlerService
+    ) {
       
       this.menuCtrl.enable(false);
       StatusBar.setStyle({ style: Style.Light });
@@ -46,7 +49,13 @@ export class AppComponent {
       //
       console.log(this.authService.currentOwnerValue);
       this.getInfoLogged();
+     // console.log(this.authService.currentOwnerValue);
       
+    //  alert(this.authService.currentOwnerValue)
+      //TODO: Cambiar por un servicio verificador
+      if(this.authService.currentOwnerValue){
+        this.handlerService.getFolders();
+      }
     }
 
   trackByFn(index, param) {
@@ -63,6 +72,7 @@ export class AppComponent {
   
 
   ngOnInit() {
+   
     //persistState();
     this.folders$ = this.query.getFolders$;  
    // this.menuCtrl.enable(true)

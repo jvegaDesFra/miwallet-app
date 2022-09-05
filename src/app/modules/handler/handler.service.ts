@@ -38,7 +38,7 @@ export class HandlerService {
             resolve(true);
           },
           error: (error) => {
-            reject(false);
+            resolve(false);
           },
         });
     })
@@ -73,7 +73,7 @@ export class HandlerService {
             resolve(true);
           },
           error: (error) => {
-            reject(false);
+            resolve(false);
           },
         });
     })

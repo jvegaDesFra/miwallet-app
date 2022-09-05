@@ -21,7 +21,7 @@ import { Device } from '@capacitor/device';
 })
 export class DocumentsPage implements OnInit {
   documentos$: Observable<Documentos[]>;
-  loaded = false;
+  loaded = true;
   wordToSearch = "";
   nameFolder = "";
   idFolder$;
@@ -36,7 +36,9 @@ export class DocumentsPage implements OnInit {
     private certService: CertificadoService,
     private platform: Platform,
     private handlerService: HandlerService,
-    private socket: Socket) { }
+    private socket: Socket) { 
+      this.loaded = true;
+    }
 
 
   interval;
@@ -58,24 +60,26 @@ export class DocumentsPage implements OnInit {
 
     console.log("ngOnInit", this.auth);
 
-
-    this.refresh();
-    Device.getId().then(id => {
-      console.log(id);
-      this.socket.connect();
-      this.socket.emit('latido', this.auth.currentOwnerValue.id, this.auth.currentOwnerValue.token, id.uuid);
-      this.interval = setInterval(() => {
+    this.loaded = true;
+    this.refresh().then(loaded=>{
+      Device.getId().then(id => {
+        console.log(id);
         this.socket.connect();
         this.socket.emit('latido', this.auth.currentOwnerValue.id, this.auth.currentOwnerValue.token, id.uuid);
-        if (!this.auth.currentOwnerValue) {
-          clearInterval(this.interval);
-        }
-      }, 2000);
-    })
+        this.interval = setInterval(() => {
+          this.socket.connect();
+          this.socket.emit('latido', this.auth.currentOwnerValue.id, this.auth.currentOwnerValue.token, id.uuid);
+          if (!this.auth.currentOwnerValue) {
+            clearInterval(this.interval);
+          }
+        }, 3000);
+      })
+    });
+    
     this.documentsService.searchDocument("");
     //console.log(this.documentos$);
 
-    this.loaded = true;
+    
     this.documentos$ = this.documentQuery.getDocs$;
     this.menuController.enable(true);
     this.idFolder$ = this.documentQuery.selectVisibilityFilter$;
@@ -86,6 +90,7 @@ export class DocumentsPage implements OnInit {
       this.folderQuery.getNameFolder(idFolder.idFolder || "0").subscribe(folder => {
         //console.log(folder);
         this.nameFolder = folder.length ? folder.shift().name : "Todos";
+        
       })
     })
     // 
@@ -120,9 +125,18 @@ export class DocumentsPage implements OnInit {
 
     }
   }
-  refresh() {
-    this.handlerService.getFolders();
-    this.handlerService.getDocuments();
+  refresh():Promise<any> {
+    return new Promise<any>((resolve, reject)=>{
+      this.handlerService.getFolders().then(loaded=>{
+        this.handlerService.getDocuments().then(loaded=>{
+          if(loaded){
+            this.loaded = false;
+            resolve(true);
+          }
+        });
+      });
+    })
+    
   }
   lsFilter = [];
   lsData = [];

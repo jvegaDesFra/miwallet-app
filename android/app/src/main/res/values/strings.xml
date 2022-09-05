@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">miwallet-app</string>
-    <string name="title_activity_main">miwallet-app</string>
-    <string name="package_name">com.miwallet.fastpass</string>
-    <string name="custom_url_scheme">com.miwallet.fastpass</string>
+    <string name="app_name">Mi Wallet Médico</string>
+    <string name="title_activity_main">Mi Wallet Médico</string>
+    <string name="package_name">com.miwallet.medico</string>
+    <string name="custom_url_scheme">com.miwallet.medico</string>
 </resources>

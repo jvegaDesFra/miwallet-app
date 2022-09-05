@@ -1,4 +1,4 @@
-package com.miwallet.fastpass;
+package com.miwallet.medico;
 
 import com.getcapacitor.BridgeActivity;
 

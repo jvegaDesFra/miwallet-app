@@ -11,7 +11,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "dev-ios": "ionic cap run ios -l --external",
-    "dev-android": "ionic cap run android -l --external"
+    "dev-android": "ionic cap run android -l --external",
+    "android":"ionic cap run android",
+    "ios":"ionic cap run ios"
   },
   "private": true,
   "dependencies": {

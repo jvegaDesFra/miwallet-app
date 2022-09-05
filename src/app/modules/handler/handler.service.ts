@@ -54,7 +54,7 @@ export class HandlerService {
           next: (res) => {
             //console.log(res);
             res.forEach(element => {
-                console.log(element);
+               // console.log(element);
                 
               let type = this.getType(element.filename);
             

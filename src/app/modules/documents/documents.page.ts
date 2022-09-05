@@ -13,6 +13,7 @@ import { CertificadoService } from './documents.service';
 import { HandlerService } from '../handler/handler.service';
 import { Socket } from 'ngx-socket-io';
 import { Device } from '@capacitor/device';
+import { Filesystem } from '@capacitor/filesystem';
 
 @Component({
   selector: 'page-documents',
@@ -53,17 +54,21 @@ export class DocumentsPage implements OnInit {
       this.auth.logout();
       this.ui.presentToast("Se ha iniciado sesion en otro dispositivo",'warning')
     });
+    
   }
   ngOnInit() {
+    Filesystem.checkPermissions().then(result => {
+      if (!(result.publicStorage == 'granted')) {
+        this.navController.navigateRoot("/handler")
+      }
+    })
 
-    
-
-    console.log("ngOnInit", this.auth);
+ //   console.log("ngOnInit", this.auth);
 
     this.loaded = true;
     this.refresh().then(loaded=>{
       Device.getId().then(id => {
-        console.log(id);
+     //   console.log(id);
         this.socket.connect();
         this.socket.emit('latido', this.auth.currentOwnerValue.id, this.auth.currentOwnerValue.token, id.uuid);
         this.interval = setInterval(() => {

@@ -77,7 +77,7 @@ export class DocumentComponent implements OnInit {
   }
 
   async delete(document) {
-    console.log(document);
+   // console.log(document);
     // return;
 
     this.ui.presentAlertConfirm("", "¿Desea eliminar el archivo " + this.document.title + "?",
@@ -116,7 +116,7 @@ export class DocumentComponent implements OnInit {
   }
 
   async share(document) {
-    console.log(document);
+  //  console.log(document);
 
 
     Filesystem.getUri({
@@ -248,10 +248,10 @@ export class DocumentComponent implements OnInit {
   loading = false;
   async sync_file(state: StatusFile) {
     this.loading = true;
-    console.log(state);
+    //console.log(state);
     switch (state) {
       case StatusFile.Local:
-        console.log("subiedno");
+       // console.log("subiedno");
         this.existFile().then(async exist => {
           if (exist) {
             const file = await Filesystem.readFile({
@@ -260,8 +260,8 @@ export class DocumentComponent implements OnInit {
             });
             const blob = this.b64toBlob(file.data, this.document.file.type);
             const blobUrl = URL.createObjectURL(blob);
-            console.log("blob", blob);
-            console.log("blobUrl", blobUrl);
+           // console.log("blob", blob);
+            //console.log("blobUrl", blobUrl);
             this.certService.sync(blob, this.document.id)
               .pipe(first())
               .subscribe({

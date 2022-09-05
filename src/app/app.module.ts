@@ -18,7 +18,9 @@ import { ErrorInterceptor } from './services/error.interceptor';
 //modals { mode: 'ios', animated: true }
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 //const config: SocketIoConfig = { url: 'http://192.168.1.181:3001', options: {transports: ['websocket']} };
+//const config: SocketIoConfig = { url: 'https://miwallet-socket-prod.herokuapp.com', options: {transports: ['websocket']} };
 const config: SocketIoConfig = { url: 'https://miwallet-socket.herokuapp.com', options: {transports: ['websocket']} };
+
 @NgModule({
   declarations: [AppComponent],
   imports: [HttpClientModule, BrowserModule, IonicModule.forRoot(), AppRoutingModule, DocumentsPageModule, FoldersPageModule,

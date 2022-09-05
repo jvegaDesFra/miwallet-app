@@ -12,10 +12,11 @@ import { HandlerService } from './handler.service';
 export class HandlerPage implements OnInit {
 
   data = {
-    folders : false,
+    folders: false,
     documents: false,
-    permissions: false
-  } 
+    permissions: false,
+    permissions_procesado: false
+  }
 
 
   constructor(
@@ -24,18 +25,37 @@ export class HandlerPage implements OnInit {
 
   ngOnInit() {
     this.load();
-    
 
+
+    Filesystem.checkPermissions().then(result => {
+      if (!(result.publicStorage == 'granted')) {
+        this.requestPermissions();
+      } else {
+        this.data.permissions = true;
+      }
+    })
   }
 
-  async load(){
+  requestPermissions() {
+    Filesystem.requestPermissions().then(permiso => {
+      if (permiso.publicStorage == 'granted') {
+        this.data.permissions = true;
+        this.data.permissions_procesado = false;
+      } else {
+        this.data.permissions_procesado = true;
+      }
+      //console.log(permiso);
+    })
+  }
+
+  async load() {
     this.data.folders = await this.handlerService.getFolders();
     this.data.documents = await this.handlerService.getDocuments(true);
   }
 
- 
 
-  entrar(){
+
+  entrar() {
     this.navController.navigateRoot('/documents')
   }
 

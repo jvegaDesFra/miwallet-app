@@ -14,7 +14,7 @@ export class DocumentService {
 
   add(title: string, idFolder: string, fileurl: file, filePath: string, folderColor: string, id_document: string, sync: number) {
     const todo = createDocument(title, idFolder, fileurl, filePath, folderColor, id_document, sync);
-    console.log(todo);
+    //console.log(todo);
     
     this.documentStore.add(todo);
   }
@@ -34,7 +34,7 @@ export class DocumentService {
   }
 
   updateSync(id,sync){
-    console.log("update", id, sync);
+   // console.log("update", id, sync);
     
     this.documentStore.update(id, { sync });
   }

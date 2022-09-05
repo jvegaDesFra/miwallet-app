@@ -9,7 +9,7 @@
       <ion-title size="large">Configurando cuenta</ion-title>
     </ion-toolbar>
   </ion-header>
- 
+
 
   <h3 *ngIf="!data.folders && !data.documents">Estamos sincronizando tu informacion en este nuevo dispositivo</h3>
   <h3 *ngIf="data.folders && data.documents">El dispositivo esta listo para usar</h3>
@@ -17,32 +17,41 @@
   <br>
   <ion-list-header>
     <ion-icon size="large" name="checkbox" color="green" *ngIf="data.folders"></ion-icon>
-    <ion-label> <h1>{{data.folders ? 'Categorias sincronizadas' : 'Sincronizando categorias'}}</h1> </ion-label>
+    <ion-label>
+      <h1>{{data.folders ? 'Categorías sincronizadas' : 'Sincronizando categorías'}}</h1>
+    </ion-label>
   </ion-list-header>
   <ion-progress-bar type="indeterminate" *ngIf="!data.folders"></ion-progress-bar>
   <br><br><br>
   <ion-list-header>
     <ion-icon size="large" name="checkbox" color="green" *ngIf="data.documents"></ion-icon>
-    <ion-label> <h1>{{data.documents ? 'Documentos sincronizadas' : 'Sincronizando Documentos'}}</h1> </ion-label>
+    <ion-label>
+      <h1>{{data.documents ? 'Documentos sincronizados' : 'Sincronizando Documentos'}}</h1>
+    </ion-label>
   </ion-list-header>
   <ion-progress-bar type="indeterminate" *ngIf="!data.documents"></ion-progress-bar>
   <br><br><br>
-  
-  <br>
-  <!--<ion-list-header>
+  <ion-list-header>
     <ion-icon size="large" name="checkbox" color="green" *ngIf="data.permissions"></ion-icon>
-    <ion-label> <h1>{{data.permissions ? 'Permisos obtenidos' : 'Validando permisos'}}</h1> </ion-label>
+    <ion-label>
+      <h1 *ngIf="!data.permissions_procesado">{{data.permissions ? 'Permisos obtenidos' : 'Validando permisos'}}</h1>
+      <h1 *ngIf="data.permissions_procesado">Es necesario aceptar los permisos para continuar</h1>
+    </ion-label>
   </ion-list-header>
-  <ion-progress-bar type="indeterminate" *ngIf="!data.permissions"></ion-progress-bar>-->
+  <ion-button *ngIf="data.permissions_procesado" (click)="requestPermissions()">Solicitar permisos</ion-button>
+  <ion-progress-bar type="indeterminate" *ngIf="!data.permissions && !data.permissions_procesado"></ion-progress-bar>
+  <!---->
 
-  <ion-button expand="block" color="green" (click)="entrar()" *ngIf="data.folders && data.documents">Entrar</ion-button>
+  <br><br>
 
 
 </ion-content>
 
 <ion-footer  class="ion-no-border">
   <ion-toolbar>
-   
+    <ion-button expand="block" color="green" (click)="entrar()" *ngIf="data.folders && data.documents && data.permissions">Entrar</ion-button>
+
+
   </ion-toolbar>
 
 </ion-footer>

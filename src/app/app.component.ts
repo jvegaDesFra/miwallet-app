@@ -4,13 +4,14 @@ import { FoldersQuery } from '../app/akita//query/folders.query';
 import { FoldersService } from '../app/akita//service/folders.service';
 import { persistState} from '@datorama/akita'
 import { Observable } from 'rxjs';
-import { ModalController, MenuController  } from '@ionic/angular';
+import { ModalController, MenuController, NavController  } from '@ionic/angular';
 import { FolderNewComponent } from './modules/folders/components/folder-new/folder-new.component';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { AuthenticationService } from './services/authentication.service';
 import { CategoriesServices } from './modules/folders/categories.services';
 import { first } from 'rxjs/operators';
 import { HandlerService } from './modules/handler/handler.service';
+import { Filesystem } from '@capacitor/filesystem';
 
 
 @Component({
@@ -40,7 +41,8 @@ export class AppComponent {
     public menuCtrl: MenuController,
     private authService: AuthenticationService,
     private catService: CategoriesServices,
-    private handlerService: HandlerService
+    private handlerService: HandlerService,
+    private navController: NavController,
     ) {
       
       this.menuCtrl.enable(false);
@@ -72,6 +74,7 @@ export class AppComponent {
   
 
   ngOnInit() {
+   
    
     //persistState();
     this.folders$ = this.query.getFolders$;  

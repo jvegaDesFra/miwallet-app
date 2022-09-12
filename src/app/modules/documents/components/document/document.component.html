@@ -6,7 +6,7 @@
   </ion-avatar>
   <ion-label (click)="openFile()">{{document.title}}</ion-label>
 
-  <ion-icon *ngIf="!loading" class="clickeable" [ngStyle]="{'color':document.sync == '1' ? '#fff': '#fff' }" style="color:#fff"
+  <ion-icon *ngIf="!loading" class="clickeable" style="color:#fff"
     (click)="sync_file(StateFile)" name="{{getIcon(StateFile)}}" slot="end"></ion-icon>
     <ion-spinner name="lines" *ngIf="loading"></ion-spinner>
   <ng-container *ngIf="!('notFound' == StateFile) && existeFile">

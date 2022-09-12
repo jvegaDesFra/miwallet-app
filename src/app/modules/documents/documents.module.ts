@@ -10,6 +10,7 @@ import { DocumentsPage } from './documents.page';
 import { DocumentsComponent } from "./components/documents/documents.component";
 import { DocumentComponent } from "./components/document/document.component";
 import { DocumentNewComponent } from "./components/document-new/document-new.component";
+import { DocumentSendComponent } from "./components/document-send/document-send.component";
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { DocumentNewComponent } from "./components/document-new/document-new.com
     IonicModule,
     DocumentsPageRoutingModule
   ],
-  exports: [ DocumentsComponent, DocumentComponent, DocumentNewComponent],
-  declarations: [DocumentsPage, DocumentsComponent, DocumentComponent, DocumentNewComponent]
+  exports: [ DocumentsComponent, DocumentComponent, DocumentNewComponent, DocumentSendComponent],
+  declarations: [DocumentsPage, DocumentsComponent, DocumentComponent, DocumentNewComponent, DocumentSendComponent]
 })
 export class DocumentsPageModule {}

@@ -6,6 +6,7 @@ export type Documentos = {
   file: file;
   completed: boolean;
   idFolder: string;
+  folderColor: string;
   filePath: string;
   sync: number;
 };

@@ -5,7 +5,7 @@ import { FoldersQuery } from '../../../../akita/query/folders.query';
 import { Folders } from '../../../../akita/models/folders.model';
 import { DocumentService } from '../../../../akita/service/documents.service';
 import write_blob from 'capacitor-blob-writer';
-import { Filesystem, Directory, FilesystemDirectory, FilesystemEncoding } from '@capacitor/filesystem';
+import { Filesystem, Directory, FilesystemDirectory, FilesystemEncoding, Encoding } from '@capacitor/filesystem';
 import { file } from '../../../../akita/models/documents.model';
 import { UIService } from '../../../../services/ui.service';
 import { AuthenticationService } from '../../../../services/authentication.service';
@@ -83,6 +83,7 @@ export class DocumentNewComponent implements OnInit {
 
   }
   save() {
+   
 
 
     this.ui.loader("").then(loader => {
@@ -91,7 +92,7 @@ export class DocumentNewComponent implements OnInit {
         .pipe(first())
         .subscribe({
           next: (res) => {
-            console.log(res);
+
             write_blob({
               directory: APP_DIRECTORY,
               path: `${this.selectedFile.name}`,
@@ -99,28 +100,29 @@ export class DocumentNewComponent implements OnInit {
               on_fallback(error) {
                 console.error('error: ', error);
               }
-            }).then((result: any) => {
-              console.log(result);
-              let ext = this.selectedFile.name.substring(this.selectedFile.name.lastIndexOf('.') + 1);
-              let newfilename = result
-              Filesystem.rename({
-                directory: APP_DIRECTORY,
-                toDirectory: APP_DIRECTORY,
-                from: this.selectedFile.name,
-                to: res.hash + "_." + ext
-              }).then(rename => {
-                console.log(rename);
+            })
+              .then((result: any) => {
                 console.log(result);
-                this.handler.getDocuments();
-                //this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "", 0);
-                loader.dismiss();
-                this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
-                this.CloseModal(null);
-              })
+                let ext = this.selectedFile.name.substring(this.selectedFile.name.lastIndexOf('.') + 1);
+                let newfilename = result
+                Filesystem.rename({
+                  directory: APP_DIRECTORY,
+                  toDirectory: APP_DIRECTORY,
+                  from: this.selectedFile.name,
+                  to: res.hash + "_." + ext
+                }).then(rename => {
+                  console.log(rename);
+                  console.log(result);
+                  this.handler.getDocuments();
+                  //this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "", 0);
+                  loader.dismiss();
+                  this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
+                  this.CloseModal(null);
+                })
 
 
 
-            });
+              });
           },
           error: (error) => {
 
@@ -139,6 +141,20 @@ export class DocumentNewComponent implements OnInit {
   deleteFile() {
     this.selectedFile = undefined;
   }
+  getBase64(file) {
+    
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        console.log("test", reader);
+        resolve(reader.result)
+      };
+      reader.onerror = error => reject(error);
+    });
+  }
+
+  base64File: any;
   async fileSelected($event) {
     const selected = $event.target.files[0];
     //console.log(selected);
@@ -148,6 +164,7 @@ export class DocumentNewComponent implements OnInit {
       size: selected.size,
       blob: selected
     }
+
     return;
     let mimetype = selected.type;
     let name = selected.name;

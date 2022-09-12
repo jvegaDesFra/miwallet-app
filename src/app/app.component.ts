@@ -4,7 +4,7 @@ import { FoldersQuery } from '../app/akita//query/folders.query';
 import { FoldersService } from '../app/akita//service/folders.service';
 import { persistState} from '@datorama/akita'
 import { Observable } from 'rxjs';
-import { ModalController, MenuController, NavController  } from '@ionic/angular';
+import { ModalController, MenuController, NavController, Platform  } from '@ionic/angular';
 import { FolderNewComponent } from './modules/folders/components/folder-new/folder-new.component';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { AuthenticationService } from './services/authentication.service';
@@ -43,11 +43,27 @@ export class AppComponent {
     private catService: CategoriesServices,
     private handlerService: HandlerService,
     private navController: NavController,
+    private platform: Platform,
     ) {
       
       this.menuCtrl.enable(false);
-      StatusBar.setStyle({ style: Style.Light });
-      StatusBar.setBackgroundColor({ color: "#ffffff" })
+
+      if(this.platform.is("android")){
+        StatusBar.setStyle({ style: Style.Light });
+        StatusBar.setBackgroundColor({ color: "#ffffff" })
+        alert("android");
+      }
+      
+      if(this.platform.is("ios")){
+        alert("ios");
+        
+      }
+
+      if(this.platform.is("electron")){
+        alert("electron");
+      }
+
+      
       //
       console.log(this.authService.currentOwnerValue);
       this.getInfoLogged();

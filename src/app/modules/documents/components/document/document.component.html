@@ -1,4 +1,4 @@
-<ion-item lines="full" [ngStyle]="{'--background': document.folderColor, '--color': '#fff'}" detail>
+<ion-item lines="full" [ngStyle]="{'--background': document.folderColor, '--color': color}" detail>
 
   <ion-avatar slot="start" (click)="openFile()">
     <ion-icon name="image-outline" size="large" *ngIf="document.file.type.indexOf('image/') >= 0"></ion-icon>
@@ -6,16 +6,16 @@
   </ion-avatar>
   <ion-label (click)="openFile()">{{document.title}}</ion-label>
 
-  <ion-icon *ngIf="!loading" class="clickeable" style="color:#fff"
+  <ion-icon *ngIf="!loading" class="clickeable" [ngStyle]="{'color': color}"
     (click)="sync_file(StateFile)" name="{{getIcon(StateFile)}}" slot="end"></ion-icon>
     <ion-spinner name="lines" *ngIf="loading"></ion-spinner>
   <ng-container *ngIf="!('notFound' == StateFile) && existeFile">
-    <ion-icon class="clickeable" style="color:#fff" (click)="share(document)" name="share-social-outline" slot="end">
+    <ion-icon class="clickeable" [ngStyle]="{'color': color}" (click)="share(document)" name="share-social-outline" slot="end">
     </ion-icon>
     
   </ng-container>
 
-  <ion-icon class="clickeable" style="color:#fff" (click)="delete(document)" name="trash-outline" slot="end">
+  <ion-icon class="clickeable" [ngStyle]="{'color': color}" (click)="delete(document)" name="trash-outline" slot="end">
   </ion-icon>
 
 </ion-item>

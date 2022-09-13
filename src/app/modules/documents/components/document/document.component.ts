@@ -29,11 +29,14 @@ export class DocumentComponent implements OnInit {
   @Input() document: Documentos;
   existeFile: boolean = false;
   StatusFile: StatusFile;
+  color:string = "";
   constructor(private handleService: HandlerService,
     private certService: CertificadoService,
     private documentsService: DocumentService, private fileOpener: FileOpener, private ui: UIService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
+    //console.log(this.document, this.document.folderColor);
+    this.color = this.document.folderColor == '#FFFFFF' ? '#000' : '#FFFFFF';
     this.existFile().then(result => {
       this.existeFile = result;
     });

@@ -48,16 +48,12 @@ export class AppComponent {
       
       this.menuCtrl.enable(false);
 
-      if(this.platform.is("android")){
+      if(this.platform.is("android") || this.platform.is("ios")){
         StatusBar.setStyle({ style: Style.Light });
         StatusBar.setBackgroundColor({ color: "#ffffff" })
-        alert("android");
       }
       
-      if(this.platform.is("ios")){
-        alert("ios");
-        
-      }
+     
 
       if(this.platform.is("electron")){
         alert("electron");

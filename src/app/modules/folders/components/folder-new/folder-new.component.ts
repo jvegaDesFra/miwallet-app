@@ -149,15 +149,50 @@ export class FolderNewComponent implements OnInit {
       hexa: "#616161"
     }
   ];
+  
+  sugerencias = [
+    {
+      name: "Recetas"
+    },
+    {
+      name: "Certificados de vacunación"
+    },
+    {
+      name: "Radiografias"
+    },
+    {
+      name: "Covid"
+    },
+    {
+      name: "Facturas"
+    },
+    {
+      name: "Poliza de seguro"
+    },
+    {
+      name: "Medicamentos"
+    },
+    {
+      name: "Nueva categoria"
+    }
+  ]
+
   constructor(private modalController: ModalController,
     private service : FoldersService,
     private ui: UIService,
     private catService: CategoriesServices,
     private authService: AuthenticationService) { }
 
-  
+  setNameCat(nombre){
+    this.nombre = nombre;
+    this.showSugerencias(false);
+  }
   ngOnInit() {
    // this.ui.presentToast("Se ha guardado la categoria", "success")
+  }
+  showingSugerencias= false;
+  showSugerencias(val){
+    this.showingSugerencias = val;
   }
   save(){
     //console.log(this.selectedColor);

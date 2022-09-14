@@ -29,7 +29,6 @@ export class FolderComponent implements OnInit {
     this.documentQuery.getDocumentsByFolder(this.folder.id).subscribe(data=>{
       this.countFiles = data.length
     });
-    //console.log(this.countFiles );
     
   }
   deleted(id){

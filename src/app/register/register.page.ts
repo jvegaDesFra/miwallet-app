@@ -64,7 +64,7 @@ export class RegisterPage implements OnInit {
         .pipe(first())
         .subscribe({
           next: (userInfo) => {
-            console.log(userInfo);
+           //c console.log(userInfo);
             loader.dismiss();
             if (userInfo.result) {
               this.interfazService.presentToast("Correo registrado, active su cuenta para continuar", "dark");

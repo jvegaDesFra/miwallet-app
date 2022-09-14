@@ -61,7 +61,7 @@ export class AppComponent {
 
       
       //
-      console.log(this.authService.currentOwnerValue);
+     // console.log(this.authService.currentOwnerValue);
       this.getInfoLogged();
      // console.log(this.authService.currentOwnerValue);
       

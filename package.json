@@ -14,8 +14,8 @@
     "dev-android": "ionic cap run android -l --external",
     "android": "ionic cap run android",
     "ios": "ionic cap run ios",
-    "res-android":"cordova-res android --skip-config",
-    "res-ios":"cordova-res ios --skip-config"
+    "res-android": "cordova-res android --skip-config --copy",
+    "res-ios": "cordova-res ios --skip-config --copy"
   },
   "private": true,
   "dependencies": {

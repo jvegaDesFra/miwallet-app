@@ -98,9 +98,9 @@ export class DocumentComponent implements OnInit {
                   path: document.file.name,
                   directory: APP_DIRECTORY
                 }).then(result => {
-                  console.log("DELETED ", result);
+                  //cconsole.log("DELETED ", result);
                 }).catch(error => {
-                  console.log("Error ", error);
+                 //c console.log("Error ", error);
                 })
 
                 this.documentsService.delete(document.id);
@@ -206,12 +206,12 @@ export class DocumentComponent implements OnInit {
       directory: APP_DIRECTORY,
       path: this.document.file.name,
     }).then(url_ => {
-      console.log("----URI---", url_);
+      //cconsole.log("----URI---", url_);
       this.fileOpener.open(url_.uri, this.document.file.type)
         .then(() => console.log('File is opened'))
         .catch(e => {
           this.ui.presentToast("No se encuentra el archivo en el dispositivo", "warning", "alert-circle")
-          console.log('Error opening file', e)
+        //c  console.log('Error opening file', e)
         });
     })
 
@@ -269,7 +269,7 @@ export class DocumentComponent implements OnInit {
               .pipe(first())
               .subscribe({
                 next: (res) => {
-                  console.log(res);
+                 //c console.log(res);
                   if (res.result) {
                     this.handleService.getDocuments();
                     this.loading = false;
@@ -294,7 +294,7 @@ export class DocumentComponent implements OnInit {
       case StatusFile.Download:
         // let stringEncode = Buffer.from(this.document.id).toString('base64');
         let stringEncode = btoa(this.document.id);
-        console.log("descargando", stringEncode);
+      //c  console.log("descargando", stringEncode);
         this.certService.download(stringEncode).pipe(first())
           .subscribe({
             next: (blob) => {
@@ -306,7 +306,7 @@ export class DocumentComponent implements OnInit {
                   console.error('error: ', error);
                 }
               }).then((result: any) => {
-                console.log(result);
+              //c  console.log(result);
                 this.existeFile = true;
                 this.handleService.getDocuments();
                 //this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "", 0);
@@ -328,7 +328,7 @@ export class DocumentComponent implements OnInit {
 
             },
             error: (error) => {
-              console.log(error);
+             //c console.log(error);
               if(error.status == 404){
                 this.ui.presentToast("No se encuentra el documento disponible para descargar", "warning", 'warning');
                 this.loading = false;

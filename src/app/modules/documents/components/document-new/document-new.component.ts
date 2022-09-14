@@ -102,7 +102,7 @@ export class DocumentNewComponent implements OnInit {
               }
             })
               .then((result: any) => {
-                console.log(result);
+             //c   console.log(result);
                 let ext = this.selectedFile.name.substring(this.selectedFile.name.lastIndexOf('.') + 1);
                 let newfilename = result
                 Filesystem.rename({
@@ -111,8 +111,8 @@ export class DocumentNewComponent implements OnInit {
                   from: this.selectedFile.name,
                   to: res.hash + "_." + ext
                 }).then(rename => {
-                  console.log(rename);
-                  console.log(result);
+                //c  console.log(rename);
+                //c  console.log(result);
                   this.handler.getDocuments();
                   //this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "", 0);
                   loader.dismiss();
@@ -147,7 +147,7 @@ export class DocumentNewComponent implements OnInit {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        console.log("test", reader);
+        //cconsole.log("test", reader);
         resolve(reader.result)
       };
       reader.onerror = error => reject(error);

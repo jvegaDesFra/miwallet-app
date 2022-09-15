@@ -9,7 +9,7 @@
   <ion-icon *ngIf="!loading" class="clickeable" [ngStyle]="{'color': color}"
     (click)="sync_file(StateFile)" name="{{getIcon(StateFile)}}" slot="end"></ion-icon>
     <ion-spinner name="lines" *ngIf="loading"></ion-spinner>
-  <ng-container *ngIf="!('notFound' == StateFile) && existeFile">
+  <ng-container *ngIf="!('notFound' == StateFile) && existeFile && !electron.isElectronApp()">
     <ion-icon class="clickeable" [ngStyle]="{'color': color}" (click)="share(document)" name="share-social-outline" slot="end">
     </ion-icon>
     

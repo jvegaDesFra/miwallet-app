@@ -2,7 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DocumentService } from '../../../../akita/service/documents.service';
 import { Documentos } from '../../../../akita/models/documents.model';
 import { isPlatform, ModalController } from '@ionic/angular';
-import { Directory, Filesystem } from '@capacitor/filesystem';
+
+import { Filesystem, Directory } from '@capacitor/filesystem';
+
 //const APP_DIRECTORY = Directory.Documents;
 const APP_DIRECTORY = Directory.Data;
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
@@ -13,6 +15,8 @@ import { first } from 'rxjs/operators';
 import { Share } from '@capacitor/share';
 import { HandlerService } from 'src/app/modules/handler/handler.service';
 import write_blob from 'capacitor-blob-writer';
+import { ElectronService } from 'ngx-electron';
+import { ElectronHelperService } from '../../../../services/electron.service';
 export enum StatusFile {
   Local = "local",
   Cloud = "cloud",
@@ -29,12 +33,17 @@ export class DocumentComponent implements OnInit {
   @Input() document: Documentos;
   existeFile: boolean = false;
   StatusFile: StatusFile;
-  color:string = "";
+  color: string = "";
   constructor(private handleService: HandlerService,
     private certService: CertificadoService,
-    private documentsService: DocumentService, private fileOpener: FileOpener, private ui: UIService, private modalCtrl: ModalController) { }
+    private electronService: ElectronService,
+    private electron: ElectronHelperService,
+    private documentsService: DocumentService, private fileOpener: FileOpener, private ui: UIService, private modalCtrl: ModalController) {
+
+  }
 
   ngOnInit() {
+
     //console.log(this.document, this.document.folderColor);
     this.color = this.document.folderColor == '#FFFFFF' ? '#000' : '#FFFFFF';
     this.existFile().then(result => {
@@ -80,7 +89,7 @@ export class DocumentComponent implements OnInit {
   }
 
   async delete(document) {
-   // console.log(document);
+    // console.log(document);
     // return;
 
     this.ui.presentAlertConfirm("", "¿Desea eliminar el archivo " + this.document.title + "?",
@@ -100,7 +109,7 @@ export class DocumentComponent implements OnInit {
                 }).then(result => {
                   //cconsole.log("DELETED ", result);
                 }).catch(error => {
-                 //c console.log("Error ", error);
+                  //c console.log("Error ", error);
                 })
 
                 this.documentsService.delete(document.id);
@@ -119,7 +128,7 @@ export class DocumentComponent implements OnInit {
   }
 
   async share(document) {
-  //  console.log(document);
+    //  console.log(document);
 
 
     Filesystem.getUri({
@@ -181,23 +190,47 @@ export class DocumentComponent implements OnInit {
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
   }
-
+  BlobToB64(blob) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      let dataUrl = reader.result;
+      var base64 = dataUrl.toString().split(',')[1];
+      return base64;
+    };
+    reader.readAsDataURL(blob);
+  }
+  blobToBase64(blob) {
+    return new Promise((resolve, _) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result.toString().split(',')[1]);
+      reader.readAsDataURL(blob);
+    });
+  }
   //Pasar a un service 
   existFile(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      Filesystem.readFile({
-        directory: APP_DIRECTORY,
-        path: this.document.file.name,
-      }).then(readFile => {
-        resolve(true);
-
-      }).catch(error => {
-        resolve(false)
-
-      })
+      if(this.electron.isElectronApp()){
+        this.electron.ExistFile(this.document.file.name).then(existe=>{
+          resolve(existe);
+        })
+      }else {
+        Filesystem.readFile({
+          directory: APP_DIRECTORY,
+          path: this.document.file.name,
+        }).then(readFile => {
+          resolve(true);
+  
+        }).catch(error => {
+          resolve(false)
+  
+        })
+      }
+    
     })
 
   }
+
+
 
   openFile() {
     // console.log(this.document.filePath);
@@ -207,12 +240,22 @@ export class DocumentComponent implements OnInit {
       path: this.document.file.name,
     }).then(url_ => {
       //cconsole.log("----URI---", url_);
-      this.fileOpener.open(url_.uri, this.document.file.type)
-        .then(() => console.log('File is opened'))
-        .catch(e => {
-          this.ui.presentToast("No se encuentra el archivo en el dispositivo", "warning", "alert-circle")
-        //c  console.log('Error opening file', e)
+      if (this.electron.isElectronApp()) {
+        this.electron.OpenFile(this.document.file.name).then(existe=>{
+          if(!existe.result){
+            this.ui.presentToast("No se encuentra el archivo en el dispositivo", "warning", "alert-circle")
+          }
+        
         });
+      } else {
+        this.fileOpener.open(url_.uri, this.document.file.type)
+          .then(() => console.log('File is opened'))
+          .catch(e => {
+            this.ui.presentToast("No se encuentra el archivo en el dispositivo", "warning", "alert-circle")
+            //c  console.log('Error opening file', e)
+          });
+      }
+
     })
 
   }
@@ -254,7 +297,7 @@ export class DocumentComponent implements OnInit {
     //console.log(state);
     switch (state) {
       case StatusFile.Local:
-       // console.log("subiedno");
+        // console.log("subiedno");
         this.existFile().then(async exist => {
           if (exist) {
             const file = await Filesystem.readFile({
@@ -263,13 +306,13 @@ export class DocumentComponent implements OnInit {
             });
             const blob = this.b64toBlob(file.data, this.document.file.type);
             const blobUrl = URL.createObjectURL(blob);
-           // console.log("blob", blob);
+            // console.log("blob", blob);
             //console.log("blobUrl", blobUrl);
             this.certService.sync(blob, this.document.id)
               .pipe(first())
               .subscribe({
                 next: (res) => {
-                 //c console.log(res);
+                  //c console.log(res);
                   if (res.result) {
                     this.handleService.getDocuments();
                     this.loading = false;
@@ -294,42 +337,65 @@ export class DocumentComponent implements OnInit {
       case StatusFile.Download:
         // let stringEncode = Buffer.from(this.document.id).toString('base64');
         let stringEncode = btoa(this.document.id);
-      //c  console.log("descargando", stringEncode);
+        //c  console.log("descargando", stringEncode);
         this.certService.download(stringEncode).pipe(first())
           .subscribe({
             next: (blob) => {
-              write_blob({
-                directory: APP_DIRECTORY,
-                path: `${this.document.file.name}`,
-                blob: blob,
-                on_fallback(error) {
-                  console.error('error: ', error);
-                }
-              }).then((result: any) => {
-              //c  console.log(result);
-                this.existeFile = true;
-                this.handleService.getDocuments();
-                //this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "", 0);
-               // loader.dismiss();
-                this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
-                this.loading = false;
-               // this.certService.updateSyncDownload().pipe(first())
-               // .subscribe({
-               //   next: (result)=>{
-               //    
-               //     
-               //   },
-               //   error: (error) => {
-//
-               //   },
-               // })
+              console.log("download");
+
+              if (this.electronService.isElectronApp) {
+                this.blobToBase64(blob).then((base64:string)=>{
+                  let filename = this.document.file.name;
+                  
+                  this.electron.SaveFile(filename, base64).then(result=>{
+                    if(result){
+                      this.existeFile = true;
+                      this.handleService.getDocuments();
+                      //this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "", 0);
+                      // loader.dismiss();
+                      this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
+                      this.loading = false;
+                    }
+                    this.loading = false;
+                  });
+                });
                
-              });
+              } else {
+
+
+                write_blob({
+                  directory: APP_DIRECTORY,
+                  path: `${this.document.file.name}`,
+                  blob: blob,
+                  on_fallback(error) {
+                    console.error('error: ', error);
+                  }
+                }).then((result: any) => {
+                  //c  console.log(result);
+                  this.existeFile = true;
+                  this.handleService.getDocuments();
+                  //this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "", 0);
+                  // loader.dismiss();
+                  this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
+                  this.loading = false;
+                  // this.certService.updateSyncDownload().pipe(first())
+                  // .subscribe({
+                  //   next: (result)=>{
+                  //    
+                  //     
+                  //   },
+                  //   error: (error) => {
+                  //
+                  //   },
+                  // })
+
+                });
+              }
 
             },
             error: (error) => {
-             //c console.log(error);
-              if(error.status == 404){
+              //c console.log(error);
+              if (error.status == 404) {
                 this.ui.presentToast("No se encuentra el documento disponible para descargar", "warning", 'warning');
                 this.loading = false;
               }

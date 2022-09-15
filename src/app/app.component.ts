@@ -56,7 +56,7 @@ export class AppComponent {
      
 
       if(this.platform.is("electron")){
-        alert("electron");
+       // alert("electron");
       }
 
       

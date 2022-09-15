@@ -15,7 +15,8 @@
     "android": "ionic cap run android",
     "ios": "ionic cap run ios",
     "res-android": "cordova-res android --skip-config --copy",
-    "res-ios": "cordova-res ios --skip-config --copy"
+    "res-ios": "cordova-res ios --skip-config --copy",
+    "electron:build": "ionic build && npx cap copy @capacitor-community/electron"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +29,8 @@
     "@awesome-cordova-plugins/core": "^5.44.0",
     "@awesome-cordova-plugins/file-opener": "^5.44.0",
     "@awesome-cordova-plugins/in-app-browser": "^5.44.0",
+    "@capacitor-community/electron": "^4.1.2",
+    "@capacitor-community/filesystem": "git+https://github.com/digaus/capacitor-community-filesystem.git",
     "@capacitor/android": "3.6.0",
     "@capacitor/app": "1.1.1",
     "@capacitor/core": "3.6.0",
@@ -43,7 +46,9 @@
     "capacitor-blob-writer": "^1.1.0",
     "cordova-plugin-file-opener2": "^3.0.5",
     "cordova-plugin-inappbrowser": "^5.0.0",
+    "electron": "^19.0.0",
     "jetifier": "^2.0.0",
+    "ngx-electron": "^2.2.0",
     "ngx-socket-io": "^4.3.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",

@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicModule, IonicRouteStrategy, isPlatform } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -20,10 +20,17 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 //const config: SocketIoConfig = { url: 'http://192.168.1.181:3001', options: {transports: ['websocket']} };
 //const config: SocketIoConfig = { url: 'https://miwallet-socket-prod.herokuapp.com', options: {transports: ['websocket']} };
 const config: SocketIoConfig = { url: 'https://miwallet-socket.herokuapp.com', options: {transports: ['websocket']} };
-
+import { NgxElectronModule } from 'ngx-electron';
 @NgModule({
   declarations: [AppComponent],
-  imports: [HttpClientModule, BrowserModule, IonicModule.forRoot(), AppRoutingModule, DocumentsPageModule, FoldersPageModule,
+  imports: [
+    NgxElectronModule, 
+    HttpClientModule, 
+    BrowserModule, 
+    IonicModule.forRoot({ mode: isPlatform("electron") ||  isPlatform("ios") ? 'ios' : 'md'}), 
+    AppRoutingModule, 
+    DocumentsPageModule, 
+    FoldersPageModule,
     SocketIoModule.forRoot(config)],
   providers: [
     {provide : HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi:true},

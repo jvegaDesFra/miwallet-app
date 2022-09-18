@@ -51,6 +51,134 @@ export class ElectronCapacitorApp {
   private TrayMenuTemplate: (MenuItem | MenuItemConstructorOptions)[] = [
     new MenuItem({ label: 'Quit App', role: 'quit' }),
   ];
+
+
+  private isMac = process.platform === 'darwin';
+
+  private AppMenuMac: (MenuItem | MenuItemConstructorOptions)[] = [
+    {
+      label: 'Mi Wallet Medic',
+      submenu: [
+        { role: 'about' },
+        { type: 'separator' },
+        { role: 'services' },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideOthers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    }
+  ];
+  private AppMenuWin: (MenuItem | MenuItemConstructorOptions)[] = [
+   
+
+    {
+      label: 'File',
+      submenu: [
+        this.isMac ? { role: 'close' } : { role: 'quit' }
+      ]
+    }
+  ];
+  private template = [
+    // { role: 'appMenu' }
+    ...(this.isMac ? [{
+      label: app.name,
+      submenu: [
+        { role: 'about' },
+        { type: 'separator' },
+        { role: 'services' },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideOthers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    }] : []),
+    // { role: 'fileMenu' }
+    {
+      label: 'File',
+      submenu: [
+        this.isMac ? { role: 'close' } : { role: 'quit' }
+      ]
+    },
+    // { role: 'editMenu' }
+    {
+      label: 'Editar',
+      submenu: [
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        ...(this.isMac ? [
+          { role: 'pasteAndMatchStyle' },
+          { role: 'delete' },
+          { role: 'selectAll' },
+          { type: 'separator' },
+          {
+            label: 'Speech',
+            submenu: [
+              { role: 'startSpeaking' },
+              { role: 'stopSpeaking' }
+            ]
+          }
+        ] : [
+          { role: 'delete' },
+          { type: 'separator' },
+          { role: 'selectAll' }
+        ])
+      ]
+    },
+    // { role: 'viewMenu' }
+    {
+      label: 'View',
+      submenu: [
+        { role: 'reload' },
+        { role: 'forceReload' },
+        { role: 'toggleDevTools' },
+        { type: 'separator' },
+        { role: 'resetZoom' },
+        { role: 'zoomIn' },
+        { role: 'zoomOut' },
+        { type: 'separator' },
+        { role: 'togglefullscreen' }
+      ]
+    },
+    // { role: 'windowMenu' }
+    {
+      label: 'Window',
+      submenu: [
+        { role: 'minimize' },
+        { role: 'zoom' },
+        ...(this.isMac ? [
+          { type: 'separator' },
+          { role: 'front' },
+          { type: 'separator' },
+          { role: 'window' }
+        ] : [
+          { role: 'close' }
+        ])
+      ]
+    },
+    {
+      role: 'help',
+      submenu: [
+        {
+          label: 'Learn More',
+          click: async () => {
+            const { shell } = require('electron')
+            await shell.openExternal('https://electronjs.org')
+          }
+        }
+      ]
+    }
+  ]
+  
+  
   private AppMenuBarMenuTemplate: (MenuItem | MenuItemConstructorOptions)[] = [
     { role: process.platform === 'darwin' ? 'appMenu' : 'fileMenu' },
     { role: 'viewMenu' },
@@ -163,7 +291,7 @@ export class ElectronCapacitorApp {
     }
 
     // Setup the main manu bar at the top of our window.
-    Menu.setApplicationMenu(Menu.buildFromTemplate(this.AppMenuBarMenuTemplate));
+    Menu.setApplicationMenu(Menu.buildFromTemplate(this.isMac ?  this.AppMenuMac: this.AppMenuWin));
 
     // If the splashscreen is enabled, show it first while the main window loads then dwitch it out for the main window, or just load the main window from the start.
     if (this.CapacitorFileConfig.electron?.splashScreenEnabled) {

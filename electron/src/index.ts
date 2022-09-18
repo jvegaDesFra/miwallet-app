@@ -129,9 +129,7 @@ const mkDir = path => {
     });    
   });
 };
-const writeFile = (filename, blob) => {
- 
-  
+const writeFile = (filename, blob) => {  
   return new Promise(resolve => {
     mkDir(appPath()).then(()=>{
       var buf = new Buffer(blob, 'base64');
@@ -150,10 +148,13 @@ ipcMain.handle('exist-file-mw', async (event, filename) => {
   return await existFile(filename);
 })
 ipcMain.handle('save-file-mw', async (event, filename, blob) => {
-
   return await writeFile(filename, blob);
-
-
 })
 
-
+ipcMain.handle('read-file-mw', async (event, filename) => {
+  
+  const contents = fs.readFileSync(path.join(appPath(),filename), {encoding: 'base64'});
+  return contents;
+  //console.log(contents);
+  
+})

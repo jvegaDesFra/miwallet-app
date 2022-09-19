@@ -3,7 +3,7 @@ import { DocumentService } from '../../../../akita/service/documents.service';
 import { Documentos } from '../../../../akita/models/documents.model';
 import { isPlatform, ModalController } from '@ionic/angular';
 
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Filesystem, Directory, ReadFileResult } from '@capacitor/filesystem';
 
 //const APP_DIRECTORY = Directory.Documents;
 const APP_DIRECTORY = Directory.Data;
@@ -37,7 +37,7 @@ export class DocumentComponent implements OnInit {
   constructor(private handleService: HandlerService,
     private certService: CertificadoService,
     private electronService: ElectronService,
-    private electron: ElectronHelperService,
+    public electron: ElectronHelperService,
     private documentsService: DocumentService, private fileOpener: FileOpener, private ui: UIService, private modalCtrl: ModalController) {
 
   }
@@ -209,23 +209,23 @@ export class DocumentComponent implements OnInit {
   //Pasar a un service 
   existFile(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      if(this.electron.isElectronApp()){
-        this.electron.ExistFile(this.document.file.name).then(existe=>{
+      if (this.electron.isElectronApp()) {
+        this.electron.ExistFile(this.document.file.name).then(existe => {
           resolve(existe);
         })
-      }else {
+      } else {
         Filesystem.readFile({
           directory: APP_DIRECTORY,
           path: this.document.file.name,
         }).then(readFile => {
           resolve(true);
-  
+
         }).catch(error => {
           resolve(false)
-  
+
         })
       }
-    
+
     })
 
   }
@@ -241,11 +241,11 @@ export class DocumentComponent implements OnInit {
     }).then(url_ => {
       //cconsole.log("----URI---", url_);
       if (this.electron.isElectronApp()) {
-        this.electron.OpenFile(this.document.file.name).then(existe=>{
-          if(!existe.result){
+        this.electron.OpenFile(this.document.file.name).then(existe => {
+          if (!existe.result) {
             this.ui.presentToast("No se encuentra el archivo en el dispositivo", "warning", "alert-circle")
           }
-        
+
         });
       } else {
         this.fileOpener.open(url_.uri, this.document.file.type)
@@ -297,14 +297,22 @@ export class DocumentComponent implements OnInit {
     //console.log(state);
     switch (state) {
       case StatusFile.Local:
-        // console.log("subiedno");
+        console.log("subiedno");
         this.existFile().then(async exist => {
           if (exist) {
-            const file = await Filesystem.readFile({
-              directory: APP_DIRECTORY,
-              path: this.document.file.name
-            });
-            const blob = this.b64toBlob(file.data, this.document.file.type);
+            let file: ReadFileResult;
+            let base64: string = "";
+            if (!this.electron.isElectronApp()) {
+              file = await Filesystem.readFile({
+                directory: APP_DIRECTORY,
+                path: this.document.file.name
+              });
+            } else {
+              base64 = await this.electron.ReadFile(this.document.file.name);
+              
+            }
+            let base64Final = this.electron.isElectronApp() ? base64 : file.data;
+            const blob = this.b64toBlob(base64Final, this.document.file.type);
             const blobUrl = URL.createObjectURL(blob);
             // console.log("blob", blob);
             //console.log("blobUrl", blobUrl);
@@ -343,12 +351,12 @@ export class DocumentComponent implements OnInit {
             next: (blob) => {
               console.log("download");
 
-              if (this.electronService.isElectronApp) {
-                this.blobToBase64(blob).then((base64:string)=>{
+              if (this.electron.isElectronApp()) {
+                this.blobToBase64(blob).then((base64: string) => {
                   let filename = this.document.file.name;
-                  
-                  this.electron.SaveFile(filename, base64).then(result=>{
-                    if(result){
+
+                  this.electron.SaveFile(filename, base64).then(result => {
+                    if (result) {
                       this.existeFile = true;
                       this.handleService.getDocuments();
                       //this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "", 0);
@@ -359,10 +367,8 @@ export class DocumentComponent implements OnInit {
                     this.loading = false;
                   });
                 });
-               
+
               } else {
-
-
                 write_blob({
                   directory: APP_DIRECTORY,
                   path: `${this.document.file.name}`,
@@ -371,23 +377,10 @@ export class DocumentComponent implements OnInit {
                     console.error('error: ', error);
                   }
                 }).then((result: any) => {
-                  //c  console.log(result);
                   this.existeFile = true;
                   this.handleService.getDocuments();
-                  //this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "", 0);
-                  // loader.dismiss();
                   this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
                   this.loading = false;
-                  // this.certService.updateSyncDownload().pipe(first())
-                  // .subscribe({
-                  //   next: (result)=>{
-                  //    
-                  //     
-                  //   },
-                  //   error: (error) => {
-                  //
-                  //   },
-                  // })
 
                 });
               }

@@ -29,6 +29,12 @@ export class ElectronHelperService {
     return result;
   }
 
+  async ReadFile(filename:string){
+    let result = await this.electronService.ipcRenderer.invoke('read-file-mw', filename);
+    console.log(result);
+    
+    return result;
+  }
   isElectronApp(){
     return this.electronService.isElectronApp;
   }

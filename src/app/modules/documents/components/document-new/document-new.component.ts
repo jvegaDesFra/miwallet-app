@@ -12,6 +12,7 @@ import { AuthenticationService } from '../../../../services/authentication.servi
 import { CertificadoService } from '../../documents.service';
 import { first } from 'rxjs/operators';
 import { HandlerService } from '../../../handler/handler.service';
+import { ElectronHelperService } from '../../../../services/electron.service';
 
 //const APP_DIRECTORY = Directory.Documents;
 const APP_DIRECTORY = Directory.Data;
@@ -30,7 +31,8 @@ export class DocumentNewComponent implements OnInit {
     private ui: UIService,
     private auth: AuthenticationService,
     private certService: CertificadoService,
-    private handler: HandlerService
+    private handler: HandlerService,
+    private electron: ElectronHelperService,
   ) { }
   get validForm() {
 
@@ -82,6 +84,13 @@ export class DocumentNewComponent implements OnInit {
     //console.log(this.currentFolder);
 
   }
+  blobToBase64(blob) {
+    return new Promise((resolve, _) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result.toString().split(',')[1]);
+      reader.readAsDataURL(blob);
+    });
+  }
   save() {
    
 
@@ -92,7 +101,27 @@ export class DocumentNewComponent implements OnInit {
         .pipe(first())
         .subscribe({
           next: (res) => {
+            let ext = this.selectedFile.name.substring(this.selectedFile.name.lastIndexOf('.') + 1);
 
+            if (this.electron.isElectronApp()) {
+              this.blobToBase64(this.selectedFile.blob).then((base64:string)=>{
+                let filename = res.hash + "_." + ext;
+                
+                this.electron.SaveFile(filename, base64).then(result=>{
+                  if(result){
+                    this.handler.getDocuments();
+                  //this.documentsService.add(this.nombre, this.currentFolder.id, this.selectedFile, result, this.currentFolder.color, "", 0);
+                  loader.dismiss();
+                  this.ui.presentToast("Se ha guardado el archivo", "green", 'checkmark-circle');
+                  this.CloseModal(null);
+                  }
+                  
+                });
+              });
+             
+            } else {
+
+            }
             write_blob({
               directory: APP_DIRECTORY,
               path: `${this.selectedFile.name}`,

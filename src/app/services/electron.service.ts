@@ -35,6 +35,12 @@ export class ElectronHelperService {
     
     return result;
   }
+  async OpenExternal(link:string){
+    let result = await this.electronService.ipcRenderer.invoke('open-link-mw', link);
+    console.log(result);
+    
+    return result;
+  }
   isElectronApp(){
     return this.electronService.isElectronApp;
   }

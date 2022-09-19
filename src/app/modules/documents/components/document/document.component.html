@@ -1,4 +1,4 @@
-<ion-item lines="full" [ngStyle]="{'--background': document.folderColor, '--color': color}" detail>
+<ion-item lines="full" [ngStyle]="{'--background': document.folderColor, '--color': color, 'cursor': 'pointer'}" detail>
 
   <ion-avatar slot="start" (click)="openFile()">
     <ion-icon name="image-outline" size="large" *ngIf="document.file.type.indexOf('image/') >= 0"></ion-icon>

@@ -1,5 +1,5 @@
 <ion-item-sliding>
-  <ion-item lines="none" detail="true" (click)="setFolder()">
+  <ion-item lines="none" detail="true" (click)="setFolder()" style=" cursor: pointer">
 
     <ion-icon name="home-outline" size="large" slot="start" *ngIf="folder.id == '0'"></ion-icon>   
     <ion-icon name="folder" size="large" slot="start" [ngStyle]="{'color':folder.color}" *ngIf="folder.id != '0' && folder.color != '#FFFFFF'"></ion-icon>             

@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form #form="ngForm" (ngSubmit)="submitForm(form)">
+  <form #form="ngForm" (ngSubmit)="submitForm(form)" style="max-width: 500px; margin:auto;">
     <ion-grid>
       <ion-row class="ion-justify-content-center">
         <ion-col class="ion-align-self-center" size-md="12" size-lg="12" size-xs="12">
@@ -37,13 +37,13 @@
           </div>
 
           <div class="ion-text-center ion-padding">
-            <a (click)="OpenRecoverPage()">Recuperar Contraseña</a>
+            <a (click)="OpenRecoverPage()" style="cursor: pointer">Recuperar Contraseña</a>
           </div>
         </ion-col>
         <ion-col size-md="12" size-lg="12" size-xs="12">        
           <div class="ion-text-center ion-padding">
             <p>¿No tienes una cuenta?</p> 
-            <a (click)="OpenRegisterPage()">Registrarse</a>
+            <a (click)="OpenRegisterPage()" style="cursor: pointer">Registrarse</a>
           </div>
         </ion-col>
       </ion-row>

@@ -158,3 +158,17 @@ ipcMain.handle('read-file-mw', async (event, filename) => {
   //console.log(contents);
   
 })
+
+ipcMain.handle('open-link-mw', async (event, path) => {
+  return await openExternal(path);
+})
+const openExternal = path => {
+ 
+  return new Promise(resolve => {    
+        shell.beep();
+        shell.openExternal(path)
+        resolve({result: true, message:"OK"});      
+    })  
+   
+
+};

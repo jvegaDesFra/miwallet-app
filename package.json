@@ -16,7 +16,8 @@
     "ios": "ionic cap run ios",
     "res-android": "cordova-res android --skip-config --copy",
     "res-ios": "cordova-res ios --skip-config --copy",
-    "electron:build": "ionic build && npx cap copy @capacitor-community/electron"
+    "electron:build": "ionic build && npx cap copy @capacitor-community/electron",
+    "electron:build-prod": "ionic build --prod --release && npx cap copy @capacitor-community/electron"
   },
   "private": true,
   "dependencies": {

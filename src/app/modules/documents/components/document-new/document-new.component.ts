@@ -13,6 +13,7 @@ import { CertificadoService } from '../../documents.service';
 import { first } from 'rxjs/operators';
 import { HandlerService } from '../../../handler/handler.service';
 import { ElectronHelperService } from '../../../../services/electron.service';
+import { InterfazService } from '../../../../services/interfaz.service';
 
 //const APP_DIRECTORY = Directory.Documents;
 const APP_DIRECTORY = Directory.Data;
@@ -33,6 +34,7 @@ export class DocumentNewComponent implements OnInit {
     private certService: CertificadoService,
     private handler: HandlerService,
     private electron: ElectronHelperService,
+    private interfazService: InterfazService
   ) { }
   get validForm() {
 
@@ -154,7 +156,9 @@ export class DocumentNewComponent implements OnInit {
               });
           },
           error: (error) => {
-
+            loader.dismiss();
+            let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
+            this.interfazService.presentToast(messageError, "error")
           },
         });
 

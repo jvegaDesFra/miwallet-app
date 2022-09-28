@@ -35,10 +35,11 @@ export class RegisterPage implements OnInit {
     // this.openPDF();
   }
   public openPDF() {
+    let urlSite = "https://wallet.mifastpass.com.mx/AVISO-DE-PRIVACIDAD_FAST_PASS_2022.pdf";
     if(this.electron.isElectronApp()){
-      this.electron.OpenExternal('https://wallet.mifastpass.com.mx/AVISO-DE-PRIVACIDAD_FAST_PASS_2022.pdf');
+      this.electron.OpenExternal(urlSite);
     } else {
-      this.iab.create('https://wallet.mifastpass.com.mx/AVISO-DE-PRIVACIDAD_FAST_PASS_2022.pdf', '_system', 'location=yes');
+      this.iab.create(urlSite, '_system', 'location=yes');
     }
     
   }
@@ -86,6 +87,8 @@ export class RegisterPage implements OnInit {
             //console.log(error);
 
             loader.dismiss();
+            let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
+            this.interfazService.presentToast(messageError, "error")
           }
         });
       // this.loading =loader;

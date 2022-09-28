@@ -3,6 +3,7 @@
   "directories": {
     "buildResources": "resources"
   },
+  
   "files": [
     "assets/**/*",
     "build/**/*",

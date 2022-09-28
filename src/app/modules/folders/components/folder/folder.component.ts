@@ -8,6 +8,7 @@ import { UIService } from '../../../../services/ui.service';
 import { CategoriesServices } from '../../categories.services';
 import { AuthenticationService } from '../../../../services/authentication.service';
 import { first } from 'rxjs/operators';
+import { InterfazService } from '../../../../services/interfaz.service';
 
 @Component({
   selector: 'app-folder',
@@ -23,7 +24,8 @@ export class FolderComponent implements OnInit {
     private menuController: MenuController,
     private ui: UIService,
     private catService: CategoriesServices,
-    private authService: AuthenticationService) { }
+    private authService: AuthenticationService,
+    private interfazService: InterfazService) { }
 
   ngOnInit() {
     this.documentQuery.getDocumentsByFolder(this.folder.id).subscribe(data=>{
@@ -56,7 +58,9 @@ export class FolderComponent implements OnInit {
           
         },
         error: (error) => {
-          
+         
+          let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
+          this.interfazService.presentToast(messageError, "error")
         },
       });
     

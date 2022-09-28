@@ -17,10 +17,10 @@ import { Device } from '@capacitor/device';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  //request : userRequest = {
-  //  email: "jose.juan.vega@outlook.com",
-  //  password: "1234567890"
-  //}
+ // request : userRequest = {
+ //   email: "jose.juan.vega@outlook.com",
+ //   password: "1234567890"
+ // }
   request: userRequest = {
     email: "",
     password: ""
@@ -106,9 +106,10 @@ export class LoginPage implements OnInit {
             this.navController.navigateRoot("/documents")
           },
           error: error => {
-            //console.log(error);
+            console.log(error);
             loader.dismiss();
-            this.interfazService.presentToast(error.error.message, "error")
+            let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
+            this.interfazService.presentToast(messageError, "error")
           }
         });
     })

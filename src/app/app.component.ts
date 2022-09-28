@@ -69,6 +69,7 @@ export class AppComponent {
       //TODO: Cambiar por un servicio verificador
       if(this.authService.currentOwnerValue){
         this.handlerService.getFolders();
+      
       }
     }
 
@@ -91,9 +92,13 @@ export class AppComponent {
     //persistState();
     this.folders$ = this.query.getFolders$;  
    // this.menuCtrl.enable(true)
+   this.getInfoLogged();
   }
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
+   
+    
+    this.getInfoLogged();
    }
   async openModal() {
     const modal = await this.modalCtrl.create({

@@ -13,10 +13,11 @@ import { DocumentSendComponent } from '../document-send/document-send.component'
 import { CertificadoService } from '../../documents.service';
 import { first } from 'rxjs/operators';
 import { Share } from '@capacitor/share';
-import { HandlerService } from 'src/app/modules/handler/handler.service';
+import { HandlerService } from '../../../../modules/handler/handler.service';
 import write_blob from 'capacitor-blob-writer';
 import { ElectronService } from 'ngx-electron';
 import { ElectronHelperService } from '../../../../services/electron.service';
+import { InterfazService } from '../../../../services/interfaz.service';
 export enum StatusFile {
   Local = "local",
   Cloud = "cloud",
@@ -38,6 +39,7 @@ export class DocumentComponent implements OnInit {
     private certService: CertificadoService,
     private electronService: ElectronService,
     public electron: ElectronHelperService,
+    private interfazService: InterfazService,
     private documentsService: DocumentService, private fileOpener: FileOpener, private ui: UIService, private modalCtrl: ModalController) {
 
   }
@@ -118,6 +120,8 @@ export class DocumentComponent implements OnInit {
               },
               error: (error) => {
                 loader.dismiss();
+                let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
+                this.interfazService.presentToast(messageError, "error")
               },
             });
         })

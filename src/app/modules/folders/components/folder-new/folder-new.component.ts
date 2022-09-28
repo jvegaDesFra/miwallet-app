@@ -6,6 +6,7 @@ import { FoldersService } from '../../../../akita/service/folders.service';
 import { CategoriesServices } from '../../categories.services';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { first } from 'rxjs/operators';
+import { InterfazService } from '../../../../services/interfaz.service';
 
 @Component({
   selector: 'app-folder-new',
@@ -181,7 +182,8 @@ export class FolderNewComponent implements OnInit {
     private service : FoldersService,
     private ui: UIService,
     private catService: CategoriesServices,
-    private authService: AuthenticationService) { }
+    private authService: AuthenticationService,
+    private interfazService: InterfazService) { }
 
   setNameCat(nombre){
     this.nombre = nombre;
@@ -215,7 +217,9 @@ export class FolderNewComponent implements OnInit {
           this.CloseModal(null);
         },
         error: (error) => {
-          
+          loader.dismiss();
+            let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
+            this.interfazService.presentToast(messageError, "error")
         },
       });
 
@@ -235,8 +239,6 @@ export class FolderNewComponent implements OnInit {
   }
 
   get validForm() {
-    console.log(this.selectedColor);
-    
     return (this.nombre != "" && this.selectedColor);
   }
 }

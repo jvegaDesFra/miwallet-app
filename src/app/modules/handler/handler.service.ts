@@ -9,6 +9,7 @@ import { FoldersService } from '../../akita/service/folders.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { CertificadoService } from '../documents/documents.service';
 import { CategoriesServices } from '../folders/categories.services';
+import { InterfazService } from '../../services/interfaz.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class HandlerService {
     private authService: AuthenticationService,
     private fService : FoldersService,
     private certService: CertificadoService,
-    private documentsService: DocumentService) {
+    private documentsService: DocumentService,
+    private interfazService: InterfazService) {
   }
 
   getFolders(): Promise<boolean>{
@@ -38,6 +40,8 @@ export class HandlerService {
             resolve(true);
           },
           error: (error) => {
+            let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
+            this.interfazService.presentToast(messageError, "error")
             resolve(false);
           },
         });
@@ -73,6 +77,8 @@ export class HandlerService {
             resolve(true);
           },
           error: (error) => {
+            let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
+            this.interfazService.presentToast(messageError, "error")
             resolve(false);
           },
         });

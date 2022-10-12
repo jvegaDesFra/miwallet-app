@@ -21,8 +21,9 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 //const config: SocketIoConfig = { url: 'https://miwallet-socket-prod.herokuapp.com', options: {transports: ['websocket']} };
 const config: SocketIoConfig = { url: 'https://miwallet-socket.herokuapp.com', options: {transports: ['websocket']} };
 import { NgxElectronModule } from 'ngx-electron';
+import { SidebarComponent } from './modules/sidebar/sidebar.component';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, SidebarComponent],
   imports: [
     NgxElectronModule, 
     HttpClientModule, 

@@ -16,18 +16,18 @@
     </ion-toolbar>
   </ion-header>
   <ion-list>
-   
 
-    <ion-item >
+
+    <ion-item>
       <ion-label position="stacked">Nombre de categoria</ion-label>
-      <ion-input [(ngModel)]="nombre" placeholder="" (click)="showSugerencias(true)" ></ion-input>
-     
+      <ion-input [(ngModel)]="nombre" placeholder="" (click)="showSugerencias(true)"></ion-input>
+
       <ion-list class="lsItems" lines="full" *ngIf="showingSugerencias">
-       
+
         <ion-item *ngFor="let sug of sugerencias" (click)="setNameCat(sug.name)" detail>
           <ion-label>{{sug.name}}</ion-label>
         </ion-item>
-        
+
       </ion-list>
     </ion-item><br>
     <br>
@@ -47,7 +47,7 @@
 
 </ion-content>
 
-<ion-footer  class="ion-no-border">
+<ion-footer class="ion-no-border">
   <ion-toolbar>
     <ion-button expand="block" color="green" (click)="save()" disabled="{{!validForm}}">Guardar</ion-button>
   </ion-toolbar>

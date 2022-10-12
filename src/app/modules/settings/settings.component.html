@@ -1,0 +1,27 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+
+    <ion-title>Mi Cuenta</ion-title>
+    <ion-buttons slot="end">
+      <ion-button title="Cerrar" (click)="CloseModal('close')">
+        <ion-icon size="large" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-header collapse="condense" class="ion-no-border">
+    <ion-toolbar>
+      <ion-title size="large">Mi Cuenta</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-list>
+
+    <ion-list-header>Ajustes</ion-list-header>
+    <ion-item button detail="true" (click)="deleteAccount()">
+      <ion-label color="danger">Eliminar cuenta</ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
+

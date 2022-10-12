@@ -12,6 +12,7 @@ import { CategoriesServices } from './modules/folders/categories.services';
 import { first } from 'rxjs/operators';
 import { HandlerService } from './modules/handler/handler.service';
 import { Filesystem } from '@capacitor/filesystem';
+import { SettingsComponent } from './modules/settings/settings.component';
 
 
 @Component({
@@ -30,10 +31,8 @@ export class AppComponent {
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
-  user = {
-    name: "",
-    email: ""
-  }
+  isOpen: boolean  = false;
+ 
   folders$: Observable<Folders[]>;
   constructor(private service : FoldersService,
     private query: FoldersQuery,
@@ -46,60 +45,27 @@ export class AppComponent {
     private platform: Platform,
     ) {
       
-      this.menuCtrl.enable(false);
+     // this.menuCtrl.enable(false);
 
       if(this.platform.is("android") || this.platform.is("ios")){
         StatusBar.setStyle({ style: Style.Light });
         StatusBar.setBackgroundColor({ color: "#ffffff" })
       }
       
-     
-
-      if(this.platform.is("electron")){
-       // alert("electron");
-      }
-
-      
-      //
-     // console.log(this.authService.currentOwnerValue);
-      this.getInfoLogged();
-     // console.log(this.authService.currentOwnerValue);
-      
-    //  alert(this.authService.currentOwnerValue)
-      //TODO: Cambiar por un servicio verificador
-      if(this.authService.currentOwnerValue){
-        this.handlerService.getFolders();
-      
-      }
-    }
-
-  trackByFn(index, param) {
-    return param.id;
-  }
-  getInfoLogged(){
-    if(this.authService.currentOwnerValue){
-      this.user.name = this.authService.currentOwnerValue.name;
-      this.user.email = this.authService.currentOwnerValue.email;
-      //this.GetService();
-    }
-  }
  
-  
+    }
+
 
   ngOnInit() {
-   
-   
-    //persistState();
-    this.folders$ = this.query.getFolders$;  
-   // this.menuCtrl.enable(true)
-   this.getInfoLogged();
+
   }
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
-   
     
-    this.getInfoLogged();
-   }
+  }
+  openMenu(){
+    
+  }
   async openModal() {
     const modal = await this.modalCtrl.create({
       component: FolderNewComponent,
@@ -114,6 +80,27 @@ export class AppComponent {
     if (role === 'confirm') {
       //console.log(role);
       
+    }
+  }
+
+  async openSettings() {
+    this.menuCtrl.close();
+    const modal = await this.modalCtrl.create({
+      component: SettingsComponent,
+      //presentingElement: document.querySelector('.ion-page')
+      initialBreakpoint: 0.5,
+      breakpoints: [0.25, 0.5],
+      backdropDismiss: true,
+      canDismiss: true
+      // backdropBreakpoint: 0.5
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
+    if (role === 'confirm') {
+      //console.log(role);
+
     }
   }
 }

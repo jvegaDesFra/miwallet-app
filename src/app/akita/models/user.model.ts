@@ -13,7 +13,9 @@ export class userRequest {
 
 export class userRegister {
     name?: string;
+    lastname?: string;
     email?: string;
     password?: string;
     passwordConfirm?: string;
+    phone?:string;
 }

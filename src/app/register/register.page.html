@@ -19,15 +19,26 @@
   <form (ngSubmit)="Save(fRegister)" #fRegister="ngForm" autocomplete="off">
     <div  class="ion-padding">
       <ion-item>
-        <ion-label position="stacked">NOMBRE Y APELLIDO COMPLETO*</ion-label>
+        <ion-label position="stacked">NOMBRE*</ion-label>
         <ion-input type="text" name="name" [(ngModel)]="data.name" required autocomplete="off"></ion-input>
         
       </ion-item>
       <small style="color:red; margin-left: 20px;" *ngIf="validaNombre"><ion-icon name="close"></ion-icon> Nombre no valido</small>
       <ion-item>
+        <ion-label position="stacked">APELLIDOS *</ion-label>
+        <ion-input type="text" name="lastname" [(ngModel)]="data.lastname" required autocomplete="off"></ion-input>
+        
+      </ion-item>
+      <small style="color:red; margin-left: 20px;" *ngIf="validaApellido"><ion-icon name="close"></ion-icon> Apellido no valido</small>
+      <ion-item>
+        <ion-label position="stacked">TELEFONO</ion-label>
+        <ion-input type="tel" name="phone" [(ngModel)]="data.phone" required></ion-input>
+      </ion-item>
+      <ion-item>
         <ion-label position="stacked">CORREO*</ion-label>
         <ion-input type="email" name="email" [(ngModel)]="data.email" required></ion-input>
       </ion-item>
+     
       <small style="color:red; margin-left: 20px;" *ngIf="validaEmail"> <ion-icon name="close"></ion-icon> Correo no valido</small>
       <ion-item>
         <ion-label position="stacked">CONTRASEÑA*</ion-label>

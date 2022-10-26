@@ -10,6 +10,7 @@ import { FoldersService } from '../akita/service/folders.service';
 import { CategoriesServices } from '../modules/folders/categories.services';
 import { RecoverPage } from '../recover/recover.page';
 import { Device } from '@capacitor/device';
+import { CreamedicLoginRequest, CreamedicService } from '../services/creamedic.service';
 
 @Component({
   selector: 'app-login',
@@ -17,14 +18,14 @@ import { Device } from '@capacitor/device';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  request : userRequest = {
+  request: userRequest = {
     email: "jose.juan.vega@outlook.com",
     password: "1234567890"
   }
- // request: userRequest = {
- //   email: "",
- //   password: ""
- // }
+  // request: userRequest = {
+  //   email: "",
+  //   password: ""
+  // }
   constructor(private interfazService: InterfazService,
     private authService: AuthenticationService,
     private navController: NavController,
@@ -32,6 +33,7 @@ export class LoginPage implements OnInit {
     private folderService: FoldersService,
     private menuController: MenuController,
     private catService: CategoriesServices,
+    private creamedicService: CreamedicService
   ) {
 
   }
@@ -39,19 +41,19 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     this.menuController.enable(false);
 
-   // Device.getInfo().then(info=>{
-   //   console.log(info);
-   //   
-   // })
-   // Device.getId().then(id=>{
-   //   console.log(id);
-   //   
-   // })
-//
-   // Device.getBatteryInfo().then(id=>{
-   //   console.log(id);
-   //   
-   // })
+    // Device.getInfo().then(info=>{
+    //   console.log(info);
+    //   
+    // })
+    // Device.getId().then(id=>{
+    //   console.log(id);
+    //   
+    // })
+    //
+    // Device.getBatteryInfo().then(id=>{
+    //   console.log(id);
+    //   
+    // })
     // this.OpenRegisterPage();
     //this.OpenRecoverPage();
   }
@@ -73,45 +75,55 @@ export class LoginPage implements OnInit {
     }
     this.interfazService.loader("Procesando").then(loader => {
       loader.present();
-      this.authService.authenticate(this.request)
+      let loginCreamedic: CreamedicLoginRequest = {
+        email: this.request.email,
+        password: this.request.password
+      }
+      this.creamedicService.Login(loginCreamedic)
         .pipe(first())
         .subscribe({
-          next: (userInfo) => {
-            //console.log(userInfo);
-
-            loader.dismiss();
-
-            if (userInfo.result == false) {
-              this.interfazService.presentToast(userInfo.message, "error")
-              return;
-            }
-            this.catService
-              .getCAtegories(this.authService.currentOwnerValue.id)
-              .pipe(first())
-              .subscribe({
-                next: (res) => {
-                  //console.log(res);
-                  res.forEach(element => {
-                    this.folderService.add(element.categoria, element.color, element.id);
+          next: (result) => {
+            this.authService.setCurrentTokenValue = result.token;
+         
+            this.authService.authenticate(this.request)
+            .pipe(first())
+            .subscribe({
+              next: (userInfo) => {
+                loader.dismiss();
+                if (userInfo.result == false) {
+                  this.interfazService.presentToast(userInfo.message, "error")
+                  return;
+                }
+                this.catService
+                  .getCAtegories(this.authService.currentOwnerValue.id)
+                  .pipe(first())
+                  .subscribe({
+                    next: (res) => {
+                      res.forEach(element => {
+                        this.folderService.add(element.categoria, element.color, element.id);
+                      });
+                    },
+                    error: (error) => { },
                   });
-
-                  
-                },
-                error: (error) => {
-
-                },
-              });
-            //this.folderService.add("Inicio","", "0")
-         //   this.navController.navigateRoot("/handler")
-            this.navController.navigateRoot("/documents")
+                this.navController.navigateRoot("/documents")
+              },
+              error: error => {
+                console.log(error);
+                loader.dismiss();
+                //let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
+                let messageError = "Error de sincronizacion, intente de nuevo mas tarde";
+                this.interfazService.presentToast(messageError, "error")
+              }
+            });
           },
           error: error => {
-            console.log(error);
+            //console.log(error);
             loader.dismiss();
-            let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
+            let messageError = error.error.err.message ? error.error.err.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
             this.interfazService.presentToast(messageError, "error")
           }
-        });
+        })
+     
     })
   };
   async OpenRegisterPage() {

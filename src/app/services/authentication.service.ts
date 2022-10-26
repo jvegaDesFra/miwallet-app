@@ -16,6 +16,9 @@ export class AuthenticationService {
     private currentOwnerSubject: BehaviorSubject<user>;
     public currentOwner: Observable<user>;
 
+    private currentTokenCreamedic: BehaviorSubject<string>;
+    public currentToken: Observable<string>;
+
 
     constructor(private http: HttpClient, private navController: NavController, private socket: Socket) {
         this.currentOwnerSubject = new BehaviorSubject<user>(
@@ -23,10 +26,26 @@ export class AuthenticationService {
         );
         this.currentOwner = this.currentOwnerSubject.asObservable();
 
+        this.currentTokenCreamedic = new BehaviorSubject<string>(
+            JSON.parse(localStorage.getItem("jwtoken" || 'null'))
+        );
+        this.currentToken = this.currentTokenCreamedic.asObservable();
     }
 
     public get currentOwnerValue(): user {
         return this.currentOwnerSubject.value;
+    }
+
+    public get currentTokenValue(): string {
+        return this.currentTokenCreamedic.value;
+    }
+
+    public set setCurrentTokenValue(value: string){
+        let token = {
+            token: value
+        }
+        localStorage.setItem("jwtoken", JSON.stringify(token));
+        this.currentTokenCreamedic.next(value);
     }
 
 
@@ -47,7 +66,7 @@ export class AuthenticationService {
     register(data) {
         const body = new HttpParams()
             .set('email', data.email)
-            .set('nombre', data.name)
+            .set('nombre', data.name + " " + data.lastname)
             .set('password1', data.password)
             .set('password2', data.password)
         return this.http.post<any>(`${Environments.API_ENDPOINT}/register.php`, body).pipe(

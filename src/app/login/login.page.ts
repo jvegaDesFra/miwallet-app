@@ -12,6 +12,8 @@ import { RecoverPage } from '../recover/recover.page';
 import { Device } from '@capacitor/device';
 import { CreamedicLoginRequest, CreamedicService } from '../services/creamedic.service';
 
+import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -35,10 +37,29 @@ export class LoginPage implements OnInit {
     private catService: CategoriesServices,
     private creamedicService: CreamedicService
   ) {
-
+    
   }
 
+
+  async signIn(){
+    await GoogleAuth.initialize();
+    
+  
+    GoogleAuth.signIn().then(result=>{
+      console.log("OK", result);
+    }, (error:any)=>{
+      if(error.code == "12501"){
+        this.interfazService.presentToast("Inicio de sesión cancelado por el usuario")
+      }
+      if(error.code == "12500"){
+        this.interfazService.presentToast("Inicio de sesión no soportado por el dispositivo")
+      }
+    });
+    console.log(user);
+    
+  }
   ngOnInit() {
+    //GoogleAuth.initialize();
     this.menuController.enable(false);
 
     // Device.getInfo().then(info=>{
@@ -69,6 +90,9 @@ export class LoginPage implements OnInit {
   get validaPassword() {
     return this.request.password != "" && this.request.password.length < 8;
   }
+  tryesToConnect : number = 0;
+  showRecoverPassword : boolean = false;
+
   async submitForm(form) {
     if (this.validaEmail && this.validaPassword) {
       return;
@@ -79,45 +103,56 @@ export class LoginPage implements OnInit {
         email: this.request.email,
         password: this.request.password
       }
+      this.tryesToConnect++;
+      console.log(this.tryesToConnect);
+
+      if(this.tryesToConnect == 3){
+        this.showRecoverPassword = true;
+      }
+      
+      this.authService.authenticate(this.request)
+      .pipe(first())
+      .subscribe({
+        next: (userInfo) => {
+          loader.dismiss();
+          
+          if (userInfo.result == false) {
+            this.interfazService.presentToast(userInfo.message, "error")
+            //return;
+          }
+          this.catService
+            .getCAtegories(this.authService.currentOwnerValue.id)
+            .pipe(first())
+            .subscribe({
+              next: (res) => {
+                res.forEach(element => {
+                  this.folderService.add(element.categoria, element.color, element.id);
+                });
+              },
+              error: (error) => { },
+            });
+          this.navController.navigateRoot("/documents")
+        },
+        error: error => {
+          console.log(error);
+          loader.dismiss();
+          //let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
+          let messageError = "Error de sincronizacion, intente de nuevo mas tarde";
+          this.interfazService.presentToast(messageError, "error")
+        }
+      });
+      
       this.creamedicService.Login(loginCreamedic)
         .pipe(first())
         .subscribe({
           next: (result) => {
+            //se guarda el token de creamedic
             this.authService.setCurrentTokenValue = result.token;
          
-            this.authService.authenticate(this.request)
-            .pipe(first())
-            .subscribe({
-              next: (userInfo) => {
-                loader.dismiss();
-                if (userInfo.result == false) {
-                  this.interfazService.presentToast(userInfo.message, "error")
-                  return;
-                }
-                this.catService
-                  .getCAtegories(this.authService.currentOwnerValue.id)
-                  .pipe(first())
-                  .subscribe({
-                    next: (res) => {
-                      res.forEach(element => {
-                        this.folderService.add(element.categoria, element.color, element.id);
-                      });
-                    },
-                    error: (error) => { },
-                  });
-                this.navController.navigateRoot("/documents")
-              },
-              error: error => {
-                console.log(error);
-                loader.dismiss();
-                //let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
-                let messageError = "Error de sincronizacion, intente de nuevo mas tarde";
-                this.interfazService.presentToast(messageError, "error")
-              }
-            });
+           
           },
           error: error => {
-            //console.log(error);
+            console.log(error);
             loader.dismiss();
             let messageError = error.error.err.message ? error.error.err.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
             this.interfazService.presentToast(messageError, "error")

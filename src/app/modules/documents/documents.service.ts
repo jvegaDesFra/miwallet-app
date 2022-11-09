@@ -30,6 +30,8 @@ export class CertificadoService {
   }
 
   add(nombre, id_categoria, id_usuario, file) {
+    console.log(file);
+    
     const formData: FormData = new FormData();
     formData.append('id', '');
     formData.append('nc', nombre);
@@ -38,10 +40,13 @@ export class CertificadoService {
     formData.append('llave', '');
     //formData.append('t', "BH/Ji54KYad)AwC$Qhyj8kIvc(RAwDh1FTjEuK8c6a52my0n" );
     formData.append('em', "false");
-    formData.append('cf', file);
+    //formData.append('cf', file);
     formData.append('tt', "n");
     formData.append('ac', "subirCertificadoNuevo");
+    formData.append('fileName', file.name);
     formData.append('id_usuario_get', id_usuario);
+    formData.append('fileSize', file.size);
+    formData.append('fileType', file.type);
     return this.http
       .post<any>(`${Environments.API_ENDPOINT}/documents/add.php`, formData)
       .pipe(

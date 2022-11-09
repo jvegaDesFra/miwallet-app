@@ -48,16 +48,33 @@ export class AppComponent {
      // this.menuCtrl.enable(false);
 
       if(this.platform.is("android") || this.platform.is("ios")){
-        StatusBar.setStyle({ style: Style.Light });
-        StatusBar.setBackgroundColor({ color: "#ffffff" })
+        if(StatusBar){
+          StatusBar.setStyle({ style: Style.Light });
+          StatusBar.setBackgroundColor({ color: "#ffffff" })
+        }
+        
       }
+
+      
       
  
     }
 
 
   ngOnInit() {
+    this.authService.currentOwner.subscribe((result:any) => {
+      console.log(".....SIDEBAR", result);
+     
+      if (result) {
+        if(result.result){
+          this.isOpen = true;
+        }
+       
 
+      } else {
+        this.isOpen = false;
+      }
+    })
   }
   ionViewWillEnter() {
     this.menuCtrl.enable(false);

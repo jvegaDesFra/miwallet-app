@@ -4,4 +4,6 @@
     <string name="title_activity_main">Mi Wallet Medic</string>
     <string name="package_name">com.miwallet.medico</string>
     <string name="custom_url_scheme">com.miwallet.medico</string>
+ <string name="server_client_id">595655099601-qbbrrapnc1577ko92mosvg66o7p73f3t.apps.googleusercontent.com</string>
+    
 </resources>

@@ -3,3 +3,14 @@ ion-toolbar {
     --border-color: #fff;
 }
 
+ion-button{
+    :host{
+        .button-block {
+            span{
+                justify-content: initial;
+            }
+            
+        }
+    }
+    
+}

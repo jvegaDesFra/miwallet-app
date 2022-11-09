@@ -1,19 +1,12 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar class="ion-text-center"><br>
-    <img src="./../../../assets/icon.png" style="width: 200px; margin: auto;" alt="">
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
+  <div style="text-align: center;">
+    <img src="./../../../assets/icon.png" style="width: 180px; " alt="">
+  </div>
   <form #form="ngForm" (ngSubmit)="submitForm(form)" style="max-width: 500px; margin:auto;">
     <ion-grid>
       <ion-row class="ion-justify-content-center">
         <ion-col class="ion-align-self-center" size-md="12" size-lg="12" size-xs="12">
-         
-          <div class="ion-text-center">
-            
-          </div>
-          <br>
+
           <div class="ion-text-center">
             <h3>Ingresa con tu cuenta</h3>
           </div>
@@ -22,28 +15,58 @@
               <ion-label position="stacked">Correo electronico</ion-label>
               <ion-input [(ngModel)]="request.email" type="email" name="username" required></ion-input>
             </ion-item>
-            <small style="color:red; margin-left: 20px;" *ngIf="validaEmail"> <ion-icon name="close"></ion-icon> Correo no valido</small>
+            <small style="color:red; margin-left: 20px;" *ngIf="validaEmail">
+              <ion-icon name="close"></ion-icon> Correo no valido
+            </small>
             <ion-item>
               <ion-label position="stacked">Contraseña</ion-label>
               <ion-input [(ngModel)]="request.password" type="password" name="password" required></ion-input>
             </ion-item>
-            <small style="color:red; margin-left: 20px;" *ngIf="validaPassword"> <ion-icon name="close"></ion-icon> Contraseña minima de 8 caracteres</small>
+            <small style="color:red; margin-left: 20px;" *ngIf="validaPassword">
+              <ion-icon name="close"></ion-icon> Contraseña minima de 8 caracteres
+            </small>
           </div>
-    
+
           <div padding>
             <ion-button color="green" type="submit" expand="block" disabled="{{!validForm}}">
               <h3>Ingresar</h3>
             </ion-button>
           </div>
-
-          <div class="ion-text-center ion-padding">
+          <div class="ion-text-center ion-padding" *ngIf="showRecoverPassword">
             <a (click)="OpenRecoverPage()" style="cursor: pointer">Recuperar Contraseña</a>
           </div>
+          <div class="ion-text-center">
+
+            <h4>o</h4>
+
+          </div>
+          <div padding>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button color="danger" (click)="signIn()" expand="block">
+                    <ion-icon name="logo-google"> </ion-icon> Google
+                  </ion-button>
+                </ion-col>
+            
+
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-button color="primary" (click)="signIn()" expand="block">
+                    <ion-icon name="logo-facebook"> </ion-icon>FACEBOOK
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+
+            </ion-grid>
+
+          </div>
+
         </ion-col>
-        <ion-col size-md="12" size-lg="12" size-xs="12">        
-          <div class="ion-text-center ion-padding">
-            <p>¿No tienes una cuenta?</p> 
-            <a (click)="OpenRegisterPage()" style="cursor: pointer">Registrarse</a>
+        <ion-col size-md="12" size-lg="12" size-xs="12">
+          <div class="ion-text-center ion-padding">           
+            <a (click)="OpenRegisterPage()" style="cursor: pointer">REGISTRATE</a>
           </div>
         </ion-col>
       </ion-row>

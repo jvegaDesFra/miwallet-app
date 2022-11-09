@@ -217,6 +217,7 @@ export class FolderNewComponent implements OnInit {
           this.CloseModal(null);
         },
         error: (error) => {
+          alert("")
           loader.dismiss();
             let messageError = error.error.message ? error.error.message : "No es posible conectarse al servidor, intente de nuevo mas tarde";
             this.interfazService.presentToast(messageError, "error")

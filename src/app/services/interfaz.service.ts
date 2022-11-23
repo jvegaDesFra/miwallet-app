@@ -63,7 +63,7 @@ export class InterfazService {
  //   //})
  // }
 
-  async presentToast(message:string,color:string = "", duration:number = 4000) {
+  async presentToast(message:string,color:string = "", duration:number = 4000, position = 'bottom') {
     //console.log('toast');
     
     const toast = await this.toastController.create( {

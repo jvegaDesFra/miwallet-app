@@ -50,7 +50,10 @@ export class AppComponent {
       if(this.platform.is("android") || this.platform.is("ios")){
         if(StatusBar){
           StatusBar.setStyle({ style: Style.Light });
-          StatusBar.setBackgroundColor({ color: "#ffffff" })
+          if(this.platform.is("android")){
+            StatusBar.setBackgroundColor({ color: "#ffffff" })
+          }
+         
         }
         
       }

@@ -42,9 +42,11 @@ export class LoginPage implements OnInit {
 
 
   async signIn(){
-    await GoogleAuth.initialize();
-    
   
+  // await GoogleAuth.initialize();
+    
+   let user = await GoogleAuth.signIn();
+   console.log(user);
     GoogleAuth.signIn().then(result=>{
       console.log("OK", result);
     }, (error:any)=>{
@@ -55,11 +57,11 @@ export class LoginPage implements OnInit {
         this.interfazService.presentToast("Inicio de sesión no soportado por el dispositivo")
       }
     });
-    console.log(user);
+    
     
   }
   ngOnInit() {
-    //GoogleAuth.initialize();
+   // GoogleAuth.initialize();
     this.menuController.enable(false);
 
     // Device.getInfo().then(info=>{

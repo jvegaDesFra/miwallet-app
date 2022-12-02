@@ -28,7 +28,7 @@ import { SidebarComponent } from './modules/sidebar/sidebar.component';
     NgxElectronModule, 
     HttpClientModule, 
     BrowserModule, 
-    IonicModule.forRoot({ mode: isPlatform("electron") ||  isPlatform("ios") ? 'ios' : 'md'}), 
+    IonicModule.forRoot({ mode: isPlatform("electron") ||  isPlatform("ios") ? 'ios' : isPlatform('android') ? 'md' : 'md'}), 
     AppRoutingModule, 
     DocumentsPageModule, 
     FoldersPageModule,

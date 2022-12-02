@@ -13,9 +13,14 @@ export class CertificadoService {
   }
 
   sync(file, id_documento) {
+    console.log(file, id_documento);
+    
     const formData: FormData = new FormData();
 
     formData.append('cf', file);
+    formData.append('tp', "");
+    formData.append('id', id_documento);
+    formData.append('cat_tipo_certificado', '');
 
     formData.append('id_documento', id_documento);
     return this.http
@@ -29,7 +34,7 @@ export class CertificadoService {
       );
   }
 
-  add(nombre, id_categoria, id_usuario, file) {
+  add(nombre, id_categoria, id_usuario, file, saveFile:boolean = false) {
     console.log(file);
     
     const formData: FormData = new FormData();
@@ -40,7 +45,12 @@ export class CertificadoService {
     formData.append('llave', '');
     //formData.append('t', "BH/Ji54KYad)AwC$Qhyj8kIvc(RAwDh1FTjEuK8c6a52my0n" );
     formData.append('em', "false");
-    //formData.append('cf', file);
+   
+    formData.append('saveFile', saveFile.toString());
+    if(saveFile){      
+      formData.append('cf', file);
+    }
+    
     formData.append('tt', "n");
     formData.append('ac', "subirCertificadoNuevo");
     formData.append('fileName', file.name);
@@ -83,7 +93,7 @@ export class CertificadoService {
 
   download(urlEncode: string) {
     return this.http.get(
-      `${Environments.ENDPOINT}/pdf/CERT_API.php?${urlEncode}`,
+      `${Environments.API_ENDPOINT}/files/CERT_API.php?${urlEncode}`,
       {
         responseType: 'blob',
       }

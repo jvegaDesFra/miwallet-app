@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { isPlatform, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { FoldersQuery } from '../../../../akita/query/folders.query';
 import { Folders } from '../../../../akita/models/folders.model';
@@ -26,6 +26,9 @@ export class DocumentNewComponent implements OnInit {
   folders$: Observable<Folders[]>;
   dirBase = '';
   @ViewChild('filepicker') uploader: ElementRef;
+
+  isWeb = !(isPlatform('android') || isPlatform('ios'));
+
   constructor(private modalController: ModalController,
     private query: FoldersQuery,
     private documentsService: DocumentService,
@@ -99,7 +102,7 @@ export class DocumentNewComponent implements OnInit {
 
     this.ui.loader("").then(loader => {
       loader.present();
-      this.certService.add(this.nombre, this.currentFolder.id, this.auth.currentOwnerValue.id, this.selectedFile.blob)
+      this.certService.add(this.nombre, this.currentFolder.id, this.auth.currentOwnerValue.id, this.selectedFile.blob, this.isWeb)
         .pipe(first())
         .subscribe({
           next: (res) => {

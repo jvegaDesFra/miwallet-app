@@ -77,11 +77,11 @@ export class AuthenticationService {
             })
         )
     }
-    authenticate(data: any) {
+    authenticateGoogle(data: any) {
         const body = new HttpParams()
             .set('email', data.email)
             .set('pasw', data.password)
-        return this.http.post<any>(`${Environments.API_ENDPOINT}/login.php`, body).pipe(
+        return this.http.get<any>(`http://localhost:3001/login/google/mw`).pipe(
             map((userInfo) => {
                 //console.log(userInfo);
 
@@ -97,20 +97,52 @@ export class AuthenticationService {
             })
         )
 
-        // if (data.email == "jose.juan.vega@outlook.com" && data.password == "1234") {
-        //     let user: user = {
-        //         correo: "jose.juan.vega@outlook.com",
-        //         id: 1,
-        //         lastname: "vega",
-        //         name: "jose"
-        //     }
-        //     localStorage.setItem("currentOwner", JSON.stringify(user)); 
-        //     this.currentOwnerSubject.next(user);
-        //     return of(user)
-        // } else {
-        //     
-        //     return of(null)
-        // }
+       
+    }//
+    authenticateFacebook(data: any) {
+        const body = new HttpParams()
+            .set('email', data.email)
+            .set('pasw', data.password)
+        return this.http.get<any>(`http://localhost:3001/login/facebook/mw`).pipe(
+            map((userInfo) => {
+                //console.log(userInfo);
+
+                if(userInfo.result){
+                    localStorage.setItem("currentOwner", JSON.stringify(userInfo));
+                    this.currentOwnerSubject.next(userInfo);
+                    
+                }
+                return userInfo;
+               
+
+
+            })
+        )
+
+       
+    }//
+     
+    authenticate(data: any) {
+        const body = new HttpParams()
+            .set('email', data.email)
+            .set('pasw', data.password)
+        return this.http.post<any>(`${Environments.API_ENDPOINT}/login.php`, body).pipe(
+            map((userInfo) => {
+                console.log(userInfo);
+
+                if(userInfo.result){
+                    localStorage.setItem("currentOwner", JSON.stringify(userInfo));
+                    this.currentOwnerSubject.next(userInfo);
+                    
+                }
+                return userInfo;
+               
+
+
+            })
+        )
+
+       
     }//
 
 

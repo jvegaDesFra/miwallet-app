@@ -32,7 +32,7 @@
 
 
   </ion-header>
-  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)" *ngIf="!isWeb">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <app-documents  *ngIf="!loaded" [documents]="documentos$ | async"></app-documents>

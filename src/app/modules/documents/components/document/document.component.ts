@@ -252,6 +252,10 @@ export class DocumentComponent implements OnInit {
 
   openFile() {
     // console.log(this.document.filePath);
+    if(this.isWeb){
+      this.view({});
+      return;
+    }
 
     Filesystem.getUri({
       directory: APP_DIRECTORY,

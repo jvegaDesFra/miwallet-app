@@ -111,12 +111,16 @@ export class LoginPage implements OnInit {
   }
   async signIn() {
 
-    if (!(this.platform.is('android') && this.platform.is('ios'))) {  
+    if (this.isWeb) {  
       //await GoogleAuth.signOut();   
-      let user = await GoogleAuth.signIn();
-      console.log("OK", user);
-      //valida usuario en google
-      this.externalLoginService.LoginGoogleCreamedic(user);
+      let user = await GoogleAuth.signIn().then(ok=>{
+        console.log("OK", user);
+        //valida usuario en google
+        this.externalLoginService.LoginGoogleCreamedic(user);
+      }).catch(error=>{
+        console.log("OK", user);
+      });
+     
       //this.navController.navigateRoot("/documents")
     }
 

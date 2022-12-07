@@ -17,6 +17,14 @@ import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { ExternalLoginService } from '../services/external-login.service';
 import { Observable } from 'rxjs';
 
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { GoogleAuthProvider, AuthCredential } from 'firebase/auth';
+
+import { GooglePlus } from '@awesome-cordova-plugins/google-plus/ngx';
+
+import * as firebase from 'firebase/compat/app';
+import { firebaseConfig } from 'src/environments/env.constant';
+
 export enum loginType {
   Normal = 0,
   Google = 1,
@@ -51,7 +59,9 @@ export class LoginPage implements OnInit {
     private catService: CategoriesServices,
     private creamedicService: CreamedicService,
     private externalLoginService: ExternalLoginService,
-    private platform: Platform
+    private platform: Platform,
+    private afAuth: AngularFireAuth,
+    private gPlus: GooglePlus
   ) {
 
 
@@ -67,13 +77,13 @@ export class LoginPage implements OnInit {
   async ngOnInit() {
 
 
-   
+
 
 
     if (this.isWeb) {
-     
+
       await GoogleAuth.initialize();
-     
+
     }
 
     // this.login(loginType.Normal);
@@ -101,46 +111,64 @@ export class LoginPage implements OnInit {
 
 
 
-  async signFacebook(){
-    if (!(this.platform.is('android') && this.platform.is('ios'))) {  
-      
+  async signFacebook() {
+    if (!(this.platform.is('android') && this.platform.is('ios'))) {
+
       this.externalLoginService.LoginFacebookCreamedic(null);
       //this.navController.navigateRoot("/documents")
     }
 
   }
+
   async signIn() {
 
-    if (this.isWeb) {  
-      //await GoogleAuth.signOut();   
-      let user = await GoogleAuth.signIn().then(ok=>{
+    if (this.isWeb) {
+      //await GoogleAuth.signOut(); 
+
+      const res = await this.afAuth.signInWithPopup(new GoogleAuthProvider());
+      console.log(res);
+      this.externalLoginService.LoginGoogleCreamedic("","","");
+      return;
+      let user = await GoogleAuth.signIn().then(ok => {
         console.log("OK", user);
         //valida usuario en google
-        this.externalLoginService.LoginGoogleCreamedic(user);
-      }).catch(error=>{
+       // this.externalLoginService.LoginGoogleCreamedic();
+      }).catch(error => {
         console.log("OK", user);
       });
-     
+
       //this.navController.navigateRoot("/documents")
+    } else if (isPlatform('android')) {
+      this.gPlus.login({
+        'webClientId': '595655099601-qbbrrapnc1577ko92mosvg66o7p73f3t.apps.googleusercontent.com',
+        'offline': true
+      })
+        .then(async res => {
+          console.log(res)
+          //var auth : AuthCredential = GoogleAuthProvider.credential(res.idToken, res.accessToken);
+          //Validacion con creamedic
+
+          this.externalLoginService.LoginGoogleCreamedic(res.email, res.givenName, res.familyName);
+
+          
+          //this.creamedicService.googleSuccess(res.accessToken);
+///////////////////////////////////////////////////////////////////////////////
+          //Revalidacion con google, descomentar para continuar programar esta funcionalidad
+          //const firebaseApp = firebase.default.initializeApp(firebaseConfig);
+          //let result = await firebaseApp.auth().signInWithCredential(firebase.default.auth.GoogleAuthProvider.credential(res.idToken));
+          //console.log(result);
+        })
+        .catch(err => {
+          if (err == "12501") {
+            this.interfazService.presentToast("Inicio de sesión cancelado por el usuario")
+          }
+          if (err == "12500") {
+            this.interfazService.presentToast("Inicio de sesión no soportado por el dispositivo")
+          }
+        });
+
+
     }
-
-
-    // await GoogleAuth.initialize();
-
-  //  let user = await GoogleAuth.signIn();
-  //  console.log(user);
-  //  GoogleAuth.signIn().then(result => {
-  //    console.log("OK", result);
-  //  }, (error: any) => {
-  //    if (error.code == "12501") {
-  //      this.interfazService.presentToast("Inicio de sesión cancelado por el usuario")
-  //    }
-  //    if (error.code == "12500") {
-  //      this.interfazService.presentToast("Inicio de sesión no soportado por el dispositivo")
-  //    }
-  //  });
-//
-
   }
   ionViewWillEnter() {
     //this.menuController.enable(false);

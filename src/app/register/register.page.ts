@@ -15,7 +15,7 @@ import { CreamedicRegisterRequest, CreamedicRegisterResponse, CreamedicService }
 })
 export class RegisterPage implements OnInit {
   data: userRegister = {
-    email: "jose.juan.vega2@outlook.com",
+    email: "chezitovega@gmail.com",
     name: "jose",
     lastname: "vega",
     password: "1234567890",

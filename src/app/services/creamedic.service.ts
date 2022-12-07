@@ -106,4 +106,41 @@ export class CreamedicService {
         })
       );
   }
+
+  googleSuccess(token:string) {
+    const headers = {
+      'Content-type': 'application/x-www-form-urlencoded'
+    }
+    const body = new HttpParams()
+      .set('code', token)
+     
+
+    return this.http
+      .post<any>(`${this.url}/google-success`, body, { headers })
+      .pipe(
+        map((response: any ) => {
+          return response;
+        })
+      );
+  }
+
+  registerSocial(request: CreamedicRegisterRequest) {
+    const headers = {
+      'Content-type': 'application/x-www-form-urlencoded'
+    }
+    const body = new HttpParams()
+      .set('email', request.email)
+      .set('password', 'Creamedic_2022')
+      .set('nombre', request.nombre)
+      .set('apellido', request.apellido)
+      .set('telefono', request.celular)
+
+    return this.http
+      .post<any>(`${this.url}/registro-redes`, body, { headers })
+      .pipe(
+        map((response: CreamedicRegisterResponse) => {
+          return response;
+        })
+      );
+  }
 }

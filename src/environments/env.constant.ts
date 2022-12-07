@@ -9,7 +9,9 @@ export class Environments {
     public static local = "http://localhost/miwallet";
     public static production = "https://wallet.creamedicdigital.mx/app"; 
     
-    public static ENDPOINTANDROID = Environments.islocal ? 'http://192.168.1.203/miwallet' : Environments.production;
+    //192.168.1.203
+    //172.20.10.2
+    public static ENDPOINTANDROID = Environments.islocal ? 'http://172.20.10.2/miwallet' : Environments.production;
     
   
     public static ENDPOINT = Environments.islocal
@@ -25,4 +27,15 @@ export class Environments {
       console.log(isPlatform('android'));
       
     }
+  }
+
+  export const firebaseConfig = {
+    apiKey: "AIzaSyAYEu6Jk642JHKKtSC5galMO67lZfyUjdA",
+    authDomain: "mi-wallet-medic.firebaseapp.com",
+    databaseURL: "",
+    projectId: "mi-wallet-medic",
+    storageBucket: "mi-wallet-medic.appspot.com",
+    messagingSenderId: "129703565669",
+    appId: "1:129703565669:web:99046cad8c7a4099fea98c",
+    measurementId: ""
   }

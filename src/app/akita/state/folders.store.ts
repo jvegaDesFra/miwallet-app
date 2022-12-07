@@ -13,13 +13,15 @@ export function createInitialName(): FoldersState {
 }
  
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'folders' })
+@StoreConfig({ name: 'folders', resettable: true  })
 export class FoldersStore extends EntityStore<FoldersState> {
     FoldersState
   constructor() {
     super(createInitialName());
   }
- 
+  test(){
+    
+  }
  // setName(name: string) {
  //   this.update({name});
  // }

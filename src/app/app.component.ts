@@ -66,7 +66,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.authService.currentOwner.subscribe((result:any) => {
-      console.log(".....SIDEBAR", result);
+      //console.log(".....SIDEBAR", result);
      
       if (result) {
         if(result.result){

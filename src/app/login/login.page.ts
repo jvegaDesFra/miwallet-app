@@ -12,7 +12,7 @@ import { RecoverPage } from '../recover/recover.page';
 import { Device } from '@capacitor/device';
 import { CreamedicLoginRequest, CreamedicLoginResponse, CreamedicService } from '../services/creamedic.service';
 
-import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
+//import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 
 import { ExternalLoginService } from '../services/external-login.service';
 import { Observable } from 'rxjs';
@@ -82,7 +82,7 @@ export class LoginPage implements OnInit {
 
     if (this.isWeb) {
 
-      await GoogleAuth.initialize();
+     // await GoogleAuth.initialize();
 
     }
 
@@ -129,14 +129,14 @@ export class LoginPage implements OnInit {
       console.log(res);
       this.externalLoginService.LoginGoogleCreamedic("","","");
       return;
-      let user = await GoogleAuth.signIn().then(ok => {
-        console.log("OK", user);
-        //valida usuario en google
-       // this.externalLoginService.LoginGoogleCreamedic();
-      }).catch(error => {
-        console.log("OK", user);
-      });
-
+      //let user = await GoogleAuth.signIn().then(ok => {
+      //  console.log("OK", user);
+      //  //valida usuario en google
+      // // this.externalLoginService.LoginGoogleCreamedic();
+      //}).catch(error => {
+      //  console.log("OK", user);
+      //});
+//
       //this.navController.navigateRoot("/documents")
     } else if (isPlatform('android')) {
       this.gPlus.login({

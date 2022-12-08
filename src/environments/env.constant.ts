@@ -11,7 +11,7 @@ export class Environments {
     
     //192.168.1.203
     //172.20.10.2
-    public static ENDPOINTANDROID = Environments.islocal ? 'http://172.20.10.2/miwallet' : Environments.production;
+    public static ENDPOINTANDROID = Environments.islocal ? 'http://192.168.1.203/miwallet' : Environments.production;
     
   
     public static ENDPOINT = Environments.islocal

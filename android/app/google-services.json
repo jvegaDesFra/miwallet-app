@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "129703565669",
+    "project_id": "mi-wallet-medic",
+    "storage_bucket": "mi-wallet-medic.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129703565669:android:dc86f97be5b235cafea98c",
+        "android_client_info": {
+          "package_name": "com.miwallet.medico"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129703565669-p3fl6vu338l4ha11jopd1m7caqrnnttk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.miwallet.medico",
+            "certificate_hash": "ac5d3459c2e1dac1ca2e6e8419ee8ad40a959c8b"
+          }
+        },
+        {
+          "client_id": "129703565669-9900kec8pmckhrvhd6mlee4gr5534jqn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwv7ll1DcfWypb5VjDrYRCH88a0eWXNFs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129703565669-9900kec8pmckhrvhd6mlee4gr5534jqn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

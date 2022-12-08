@@ -3,6 +3,8 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="false">localhost</domain>
         <!-- Add your IP if you want to use livereload on a device -->
-        <domain includeSubdomains="true">192.168.1.181</domain>
+        <domain includeSubdomains="true">192.168.1.193</domain>
+        <domain includeSubdomains="true">192.168.1.203</domain>
+        <domain includeSubdomains="true">172.20.10.2</domain>
     </domain-config>
 </network-security-config>

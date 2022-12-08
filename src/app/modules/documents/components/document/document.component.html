@@ -6,13 +6,20 @@
   </ion-avatar>
   <ion-label (click)="openFile()">{{document.title}}</ion-label>
 
-  <ion-icon *ngIf="!loading" class="clickeable" [ngStyle]="{'color': color}"
-    (click)="sync_file(StateFile)" name="{{getIcon(StateFile)}}" slot="end"></ion-icon>
-    <ion-spinner name="lines" *ngIf="loading"></ion-spinner>
-  <ng-container *ngIf="!('notFound' == StateFile) && existeFile && !electron.isElectronApp()">
-    <ion-icon class="clickeable" [ngStyle]="{'color': color}" (click)="share(document)" name="share-social-outline" slot="end">
+  <ion-icon *ngIf="!loading && isWeb" class="clickeable" [ngStyle]="{'color': color}" (click)="view(StateFile)" name="eye"
+    slot="end"></ion-icon>
+
+
+  <ion-icon *ngIf="!loading && !isWeb" class="clickeable" [ngStyle]="{'color': color}" (click)="sync_file(StateFile)"
+    name="{{getIcon(StateFile)}}" slot="end"></ion-icon>
+
+
+  <ion-spinner name="lines" *ngIf="loading"></ion-spinner>
+  <ng-container *ngIf="!('notFound' == StateFile) && existeFile && !electron.isElectronApp() && !isWeb">
+    <ion-icon class="clickeable" [ngStyle]="{'color': color}" (click)="share(document)" name="share-social-outline"
+      slot="end">
     </ion-icon>
-    
+
   </ng-container>
 
   <ion-icon class="clickeable" [ngStyle]="{'color': color}" (click)="delete(document)" name="trash-outline" slot="end">

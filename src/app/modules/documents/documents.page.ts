@@ -4,7 +4,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { Documentos, file } from '../../akita/models/documents.model';
 import { DocumentsQuery } from '../../akita/query/documents.query';
 import { DocumentService } from '../../akita/service/documents.service';
-import { MenuController, ModalController, NavController, Platform } from '@ionic/angular';
+import { isPlatform, MenuController, ModalController, NavController, Platform } from '@ionic/angular';
 import { DocumentNewComponent } from './components/document-new/document-new.component'
 import { first } from 'rxjs/operators';
 import { FoldersQuery } from '../../akita/query/folders.query';
@@ -26,6 +26,8 @@ export class DocumentsPage implements OnInit {
   wordToSearch = "";
   nameFolder = "";
   idFolder$;
+  isWeb = !(isPlatform('android') || isPlatform('ios'));
+
   constructor(private documentsService: DocumentService,
     private documentQuery: DocumentsQuery,
     private auth: AuthenticationService,
@@ -56,6 +58,8 @@ export class DocumentsPage implements OnInit {
     });
     
   }
+
+  
   ngOnInit() {
     Filesystem.checkPermissions().then(result => {
       if (!(result.publicStorage == 'granted')) {
@@ -102,6 +106,15 @@ export class DocumentsPage implements OnInit {
 
     //  this.openModal();
   }
+  handleRefresh(event) {
+    //setTimeout(() => {
+      // Any calls to load data go here
+      this.refresh().then(()=>{
+        event.target.complete();
+      });
+      
+    //}, 2000);
+  };
 
   delete(id) {
     this.ui.presentAlertConfirm("¿Desea eliminar el archivo?", "",

@@ -22,21 +22,32 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 const config: SocketIoConfig = { url: 'https://miwallet-socket.herokuapp.com', options: {transports: ['websocket']} };
 import { NgxElectronModule } from 'ngx-electron';
 import { SidebarComponent } from './modules/sidebar/sidebar.component';
+
+// Firebase
+import { firebaseConfig } from '../environments/env.constant';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { GooglePlus } from '@awesome-cordova-plugins/google-plus/ngx';
+
+
 @NgModule({
   declarations: [AppComponent, SidebarComponent],
   imports: [
     NgxElectronModule, 
     HttpClientModule, 
     BrowserModule, 
-    IonicModule.forRoot({ mode: isPlatform("electron") ||  isPlatform("ios") ? 'ios' : 'md'}), 
+    IonicModule.forRoot({ mode: isPlatform("electron") ||  isPlatform("ios") ? 'ios' : isPlatform('android') ? 'md' : 'md'}), 
     AppRoutingModule, 
     DocumentsPageModule, 
     FoldersPageModule,
-    SocketIoModule.forRoot(config)],
+    SocketIoModule.forRoot(config),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule
+  ],
   providers: [
     {provide : HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi:true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi:true},
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, FileOpener, InAppBrowser],
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, FileOpener, InAppBrowser, GooglePlus],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

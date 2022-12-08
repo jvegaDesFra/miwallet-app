@@ -29,3 +29,11 @@
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 
 }
+
+
+ion-item{
+    cursor: pointer;
+    &:hover{
+        background-color: aqua;
+    }
+}

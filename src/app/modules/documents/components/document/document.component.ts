@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DocumentService } from '../../../../akita/service/documents.service';
 import { Documentos } from '../../../../akita/models/documents.model';
-import { isPlatform, ModalController } from '@ionic/angular';
+import { isPlatform, ModalController, Platform } from '@ionic/angular';
 
 import { Filesystem, Directory, ReadFileResult } from '@capacitor/filesystem';
 
@@ -18,6 +18,8 @@ import write_blob from 'capacitor-blob-writer';
 import { ElectronService } from 'ngx-electron';
 import { ElectronHelperService } from '../../../../services/electron.service';
 import { InterfazService } from '../../../../services/interfaz.service';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { Environments } from 'src/environments/env.constant';
 export enum StatusFile {
   Local = "local",
   Cloud = "cloud",
@@ -35,7 +37,11 @@ export class DocumentComponent implements OnInit {
   existeFile: boolean = false;
   StatusFile: StatusFile;
   color: string = "";
-  constructor(private handleService: HandlerService,
+  isWeb = !(isPlatform('android') || isPlatform('ios'));
+  constructor(
+    private platform: Platform,
+    private iab: InAppBrowser,
+    private handleService: HandlerService,
     private certService: CertificadoService,
     private electronService: ElectronService,
     public electron: ElectronHelperService,
@@ -50,7 +56,15 @@ export class DocumentComponent implements OnInit {
     this.color = this.document.folderColor == '#FFFFFF' ? '#000' : '#FFFFFF';
     this.existFile().then(result => {
       this.existeFile = result;
+      
     });
+  console.log(this.document);
+  
+  }
+
+  view(data){
+    let urlSite = Environments.ENDPOINT + "/data/" + this.document.id+ "/" + this.document.filePath;
+    this.iab.create(urlSite, '_system', 'location=yes');
   }
 
   getIcon(type: StatusFile) {
@@ -238,6 +252,10 @@ export class DocumentComponent implements OnInit {
 
   openFile() {
     // console.log(this.document.filePath);
+    if(this.isWeb){
+      this.view({});
+      return;
+    }
 
     Filesystem.getUri({
       directory: APP_DIRECTORY,

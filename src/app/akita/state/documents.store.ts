@@ -17,7 +17,7 @@ export function createInitialName(): DocumentState {
 }
  
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'documents' })
+@StoreConfig({ name: 'documents', resettable: true })
 export class DocumentStore extends EntityStore<DocumentState> {
  
   constructor() {

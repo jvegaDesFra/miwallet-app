@@ -1,4 +1,9 @@
 <ion-list>
  <app-document [document]="document" *ngFor="let document of documents; trackBy: trackByFn">
  </app-document>
+ <div style="width: 100%; height: 50px; padding: 15px; text-align: center;">
+    {{documents.length}} registros
+ </div>
+
 </ion-list>
+
